@@ -51,3 +51,6 @@ Ruby Sinatra app that analyzes GitHub Comments for special emoji that indicate t
 3. Breakdown by User
 4. Breakdown by Labels
 5. Printable View
+6. Import from CSV
+7. Export to CSV
+8. Budget Tracking (What is the allocated budget of a issue, milestone, label, etc)
