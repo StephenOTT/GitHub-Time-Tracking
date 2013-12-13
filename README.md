@@ -39,3 +39,8 @@ Ruby Sinatra app that analyzes GitHub Comments for special emoji that indicate t
 ":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", ":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", ":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", ":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", ":clock4:", ":clock530:", ":clock7:", ":clock830:"
 
 
+## Sample Data Structure for Reporting
+
+![screen shot 2013-12-13 at 1 38 58 am](https://f.cloud.github.com/assets/1994838/1740302/e4281c18-63c1-11e3-8674-fda74e89f628.png)
+
+
