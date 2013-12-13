@@ -22,6 +22,17 @@ class GitHubTimeTracking
 		end
 	end
 
+	def getIssues(repo)
+		issueResultsOpen = @ghClient.list_issues(repo, {
+			:state => :open
+			})
+		issueResultsClosed = @ghClient.list_issues(repo, {
+			:state => :closed
+			})
+
+		return mergedIssues = issueResultsOpen + issueResultsClosed
+	end
+
 	def mongoConnect
 		# MongoDB Database Connect
 		@client = MongoClient.new("localhost", 27017)
