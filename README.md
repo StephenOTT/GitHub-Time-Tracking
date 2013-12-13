@@ -44,3 +44,10 @@ Ruby Sinatra app that analyzes GitHub Comments for special emoji that indicate t
 ![screen shot 2013-12-13 at 1 38 58 am](https://f.cloud.github.com/assets/1994838/1740302/e4281c18-63c1-11e3-8674-fda74e89f628.png)
 
 
+## Future Features
+
+1. Tracking of Billable and non-billable hours
+2. Breakdown by Milestones
+3. Breakdown by User
+4. Breakdown by Labels
+5. Printable View
