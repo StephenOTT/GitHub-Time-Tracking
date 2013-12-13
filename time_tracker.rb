@@ -5,20 +5,22 @@ require 'chronic_duration'
 # require 'chronic'
 require 'mongo'
 
-
 class GitHubTimeTracking
 	include Mongo
-
 
 	def controller(repo, username, password)
 		self.gh_Authenticate(username, password)
 		self.mongoConnect
+
 		@collTimeCommits.remove
+		@collBudgetCommits.remove
+
 		issues = self.getIssues(repo)
 
 		issues.each do |i|
 			issueNumber = i.attrs[:number]
 			self.get_issue_time(repo, issueNumber)
+			self.get_issue_budget(repo,issueNumber)
 		end
 	end
 
@@ -39,12 +41,16 @@ class GitHubTimeTracking
 		@db = @client["GitHub-TimeCommits"]
 
 		@collTimeCommits = @db["TimeCommits"]
+		@collBudgetCommits = @db["BudgetCommits"]
 	end
 
 	def putIntoMongoCollTimeCommits(mongoPayload)
 		@collTimeCommits.insert(mongoPayload)
 	end
 
+	def putIntoMongoCollBudgetCommits(mongoPayload)
+		@collBudgetCommits.insert(mongoPayload)
+	end
 
 	def gh_Authenticate(username, password)
 		@ghClient = Octokit::Client.new(:login => username.to_s, :password => password.to_s, :auto_paginate => true)
@@ -124,20 +130,62 @@ class GitHubTimeTracking
 				puts "Work Logged By: #{userCreated}"
 				puts "Issue ID: #{issueNumber}"
 				puts "Repo Name: #{repo}"
-
 			end
 		end
 	end
-end
 
-class GitHubBudget
+	def get_issue_budget(repo, issueNumber)
 
-	def getIssueBudget
+		acceptedClockEmoji = [":dart:"]
+		issueComments = @ghClient.issue_comments(repo, issueNumber)
+		
+		# Cycle through each comment in the issue
+		issueComments.each do |c|
+			parsedComment = ""
+			budgetComment = ""
 
-	end
+			commentBody = c.attrs[:body]
 
-	def getMilestoneBudget
+			# Check if any of the accepted emoji are in the comment
+			if acceptedClockEmoji.any? { |w| commentBody =~ /#{w}/ }
 
+				commentId = c.attrs[:id]
+				userCreated = c.attrs[:user].attrs[:login]
+				createdAtDate = c.attrs[:created_at]
+				updatedAtDate = c.attrs[:updated_at]
+
+				acceptedClockEmoji.each do |x|
+					if commentBody.gsub!("#{x} ","") != nil
+						parsedComment = commentBody.gsub("#{x} ","").split(" | ")
+					end
+				end
+
+				budgetDuration = ChronicDuration.parse(parsedComment[0])
+				
+				if parsedComment[1].nil? == false
+					budgetComment = parsedComment[1].lstrip.gsub("\r\n", " ")
+				end
+				
+				budgetCommitHash = {"budget_druration" => budgetDuration,
+									"budget_description" => budgetComment,
+									"comment_id" => commentId,
+									"comment_created_date" => createdAtDate,
+									"budget_logged_by" => userCreated,
+									"issue_id" => issueNumber,
+									"repo_name" => repo
+								}
+				self.putIntoMongoCollBudgetCommits(budgetCommitHash)
+				puts "******"
+				puts "Budget Duration: #{budgetDuration}"
+				puts "Budget Description: #{budgetComment}"
+				puts "Comment ID: #{commentId}"
+				puts "Comment Created Date: #{createdAtDate}"
+				puts "Work Logged By: #{userCreated}"
+				puts "Issue ID: #{issueNumber}"
+				puts "Repo Name: #{repo}"
+
+			end
+		end
 	end
 end
 
