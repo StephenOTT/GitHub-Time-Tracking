@@ -6,6 +6,17 @@ require 'chronic_duration'
 
 
 class GitHubTimeTracking
+	def controller(repo, username, password)
+		self.gh_Authenticate(username, password)
+		self.mongoConnect
+		@collTimeCommits.remove
+		issues = self.getIssues(repo)
+
+		issues.each do |i|
+			issueNumber = i.attrs[:number]
+			self.get_issue_time(repo, issueNumber)
+		end
+	end
 
 	def gh_Authenticate(username, password)
 		@ghClient = Octokit::Client.new(:login => username.to_s, :password => password.to_s, :auto_paginate => true)
