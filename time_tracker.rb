@@ -12,13 +12,6 @@ class GitHubTimeTracking
 	end
 
 	def get_issue_time(repo, issueNumber)
-		ghUsername = ""
-		ghRepo = "StephenOTT/Test1"
-		ghUserOrg = ""
-		ghLabels = []
-		ghMilestone = ""
-		ghBody = ""
-
 
 		acceptedClockEmoji = [":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", 
 								":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", 
@@ -27,12 +20,14 @@ class GitHubTimeTracking
 								":clock4:", ":clock530:", ":clock7:", ":clock830:"]
 		issueComments = @ghClient.issue_comments(repo, issueNumber)
 		
+		# Cycle through each comment in the issue
 		issueComments.each do |c|
 			parsedComment = ""
 			timeComment = ""
 
 			commentBody = c.attrs[:body]
 
+			# Check if any of the accepted Clock emoji are in the comment
 			if acceptedClockEmoji.any? { |w| commentBody =~ /#{w}/ }
 
 				commentId = c.attrs[:id]
@@ -45,19 +40,26 @@ class GitHubTimeTracking
 						parsedComment = commentBody.gsub("#{x} ","").split(" | ")
 					end
 				end
+				# Parse first value as a duration
 				duration = ChronicDuration.parse(parsedComment[0])
 				
+				# Is there anything more than a duration value?
 				if parsedComment[1].nil?
 					workDate = ""
 				else
 					begin
+						# Determine if the second item is a Date.
+						# Try to parse the item as a Date
 						workDate = Time.parse(parsedComment[1]).utc
 					rescue
-						#do something if invalid
+						# If date parse is invalid then we assume second item is not a date
+						# We assume it is not a date then it is treated as a comment
 						if parsedComment[1].nil? == false
 							timeComment = parsedComment[1].lstrip.gsub("\r\n", " ")
 						end
 					end
+					# if there is a Druation and a Date then there will be a third item in the array
+					# If there is a third item then we treat it as a comment
 					if parsedComment[2].nil? == false
 						timeComment = parsedComment[2].lstrip.gsub("\r\n", " ")
 					end
@@ -77,7 +79,26 @@ class GitHubTimeTracking
 	end
 end
 
+class GitHubBudget
+
+	def getIssueBudget
+
+
+	end
+
+	def getMilestoneBudget
+
+
+
+	end
+
+end
+
 start = GitHubTimeTracking.new
 start.gh_Authenticate("USERNAME", "PASSWORD")
 start.get_issue_time("StephenOTT/Test1", 2)
+
+
+
+
 		
