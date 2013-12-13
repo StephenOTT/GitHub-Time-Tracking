@@ -7,6 +7,7 @@ Ruby Sinatra app that analyzes GitHub Comments for special emoji that indicate t
 
 ## Usage Patterns
 
+### Logging Time for a Issue
 
 1. `:clock1: 2h`
 
@@ -37,6 +38,14 @@ Ruby Sinatra app that analyzes GitHub Comments for special emoji that indicate t
 
 - Any GitHub.com support clock Emoji is supported:
 ":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", ":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", ":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", ":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", ":clock4:", ":clock530:", ":clock7:", ":clock830:"
+
+
+### Logging Budgets for a Issue
+
+1. `:dart: 1w` # => :dart: 1h
+
+2. `:dart: 1w | We cannot go over this time at all!` # => :dart: 1w | We cannot go over this time at all! 
+
 
 
 ## Sample Data Structure for Reporting
