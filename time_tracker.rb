@@ -114,6 +114,7 @@ class GitHubTimeTracking
 									"issue_id" => issueNumber,
 									"repo_name" => repo
 								}
+				self.putIntoMongoCollTimeCommits(timeCommitHash)
 				puts "******"
 				puts "Duration: #{duration}"
 				puts "Work Date: #{workDate}"
