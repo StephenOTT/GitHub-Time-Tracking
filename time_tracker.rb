@@ -41,6 +41,7 @@ class GitHubTimeTracking
 					end
 				end
 				# Parse first value as a duration
+				# TODO add support for duration not be parsed correctly. (use case is that the clock emoji is used in a regular comment that is not part of a time commit)
 				duration = ChronicDuration.parse(parsedComment[0])
 				
 				# Is there anything more than a duration value?
