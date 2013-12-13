@@ -105,6 +105,15 @@ class GitHubTimeTracking
 					end
 				end
 				
+				timeCommitHash = {"druration" => duration,
+									"work_date" => workDate,
+									"time_description" => timeComment,
+									"comment_id" => commentId,
+									"comment_created_date" => createdAtDate,
+									"work_logged_by" => userCreated,
+									"issue_id" => issueNumber,
+									"repo_name" => repo
+								}
 				puts "******"
 				puts "Duration: #{duration}"
 				puts "Work Date: #{workDate}"
