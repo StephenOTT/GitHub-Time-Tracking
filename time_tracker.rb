@@ -3,9 +3,13 @@ require 'octokit'
 require 'pp'
 require 'chronic_duration'
 # require 'chronic'
+require 'mongo'
 
 
 class GitHubTimeTracking
+	include Mongo
+
+
 	def controller(repo, username, password)
 		self.gh_Authenticate(username, password)
 		self.mongoConnect
@@ -17,6 +21,19 @@ class GitHubTimeTracking
 			self.get_issue_time(repo, issueNumber)
 		end
 	end
+
+	def mongoConnect
+		# MongoDB Database Connect
+		@client = MongoClient.new("localhost", 27017)
+		@db = @client["GitHub-TimeCommits"]
+
+		@collTimeCommits = @db["TimeCommits"]
+	end
+
+	def putIntoMongoCollTimeCommits(mongoPayload)
+		@collTimeCommits.insert(mongoPayload)
+	end
+
 
 	def gh_Authenticate(username, password)
 		@ghClient = Octokit::Client.new(:login => username.to_s, :password => password.to_s, :auto_paginate => true)
