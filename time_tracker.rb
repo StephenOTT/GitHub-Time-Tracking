@@ -142,8 +142,7 @@ class GitHubBudget
 end
 
 start = GitHubTimeTracking.new
-start.gh_Authenticate("USERNAME", "PASSWORD")
-start.get_issue_time("StephenOTT/Test1", 2)
+start.controller("StephenOTT/Test1", "USERNAME", "PASSWORD")
 
 
 
