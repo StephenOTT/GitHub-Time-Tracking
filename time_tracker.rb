@@ -124,6 +124,7 @@ class GitHubTimeTracking
 				puts "Work Logged By: #{userCreated}"
 				puts "Issue ID: #{issueNumber}"
 				puts "Repo Name: #{repo}"
+
 			end
 		end
 	end
@@ -133,15 +134,11 @@ class GitHubBudget
 
 	def getIssueBudget
 
-
 	end
 
 	def getMilestoneBudget
 
-
-
 	end
-
 end
 
 start = GitHubTimeTracking.new
