@@ -55,7 +55,7 @@ Ruby Sinatra app that analyzes GitHub Comments for special emoji that indicate t
 
 
 ### Budget Logging
-![screen shot 2013-12-13 at 5 46 44 pm](https://f.cloud.github.com/assets/1994838/1746771/8e213872-6448-11e3-8fbf-c286b5eff044.png)
+![screen shot 2013-12-13 at 5 48 52 pm](https://f.cloud.github.com/assets/1994838/1746777/c65ec7d6-6448-11e3-9e66-161bb3b05739.png)
 
 
 ## Future Features
