@@ -36,6 +36,76 @@ class GitHubTimeTracking
 	end
 
 	def mongoConnect
+	def get_milestone_budget (repo, milestones = nil)
+		
+		if milestones == nil
+			milestones = self.get_Milestones(repo)
+		end
+
+		acceptedBudgetEmoji = [":dart:"]
+		
+		# Cycle through each milestone
+		milestones.each do |c|
+			parsedDescription = []
+			budgetComment = ""
+
+			commentBody = c.attrs[:description]
+
+			# Check if any of the accepted emoji are in the comment
+			if acceptedBudgetEmoji.any? { |w| commentBody =~ /#{w}/ }
+
+				milestoneTitle = c.attrs[:title]
+				milestoneNumber = c.attrs[:number]
+				createdAtDate = c.attrs[:created_at]
+				milestoneState = c.attrs[:state]
+				milestoneDueDate = c.attrs[:due_on]
+				type = "Milestone Budget"
+				recordCreationDate = Time.now.utc
+
+
+
+				acceptedBudgetEmoji.each do |x|
+					if commentBody.gsub!("#{x} ","") != nil
+						parsedDescription = commentBody.gsub("#{x} ","").split(" | ")
+					end
+				end
+				# Parse first value as a duration
+				# TODO add error catching for improper duration format.
+				duration = ChronicDuration.parse(parsedDescription[0])
+				
+				if parsedDescription[1].nil? == false
+					budgetComment = parsedDescription[1].lstrip.gsub("\r\n", " ")
+				end
+				
+				timeCommitHash = {"type" => type,
+									"druration" => duration,
+									"milestone_due_date" => milestoneDueDate,
+									"time_description" => budgetComment,
+									"milestone_number" => milestoneNumber,
+									"milestone_created_date" => createdAtDate,
+									"repo_name" => repo,
+									"milestone_state" => milestoneState,
+									"milestone_title" => milestoneTitle,
+									"record_creation_date" => recordCreationDate
+								}
+				self.putIntoMongoCollTimeCommits(timeCommitHash)
+				puts "******"
+				puts "Type: #{type}"
+				puts "Milestone Title: #{milestoneTitle}"
+				puts "Duration: #{duration}"
+				puts "Milestone Due Date: #{milestoneDueDate}"
+				puts "Description: #{budgetComment}"
+				puts "Milestone Number: #{milestoneNumber}"
+				puts "Milestone Created Date: #{createdAtDate}"
+				puts "Repo Name: #{repo}"
+				puts "Milestone State: #{milestoneState}"
+				puts "Record Creation Date: #{recordCreationDate}"
+			end
+		end
+	end 
+
+
+
 		# MongoDB Database Connect
 		@client = MongoClient.new("localhost", 27017)
 		@db = @client["GitHub-TimeCommits"]
