@@ -15,7 +15,7 @@ class GitHubTimeTracking
 		@collTimeCommits.remove
 		@collBudgetCommits.remove
 
-		issues = self.getIssues(repo)
+		issues = self.get_Issues(repo)
 
 		issues.each do |i|
 			issueNumber = i.attrs[:number]
@@ -24,7 +24,7 @@ class GitHubTimeTracking
 		end
 	end
 
-	def getIssues(repo)
+	def get_Issues(repo)
 		issueResultsOpen = @ghClient.list_issues(repo, {
 			:state => :open
 			})
@@ -35,7 +35,6 @@ class GitHubTimeTracking
 		return mergedIssues = issueResultsOpen + issueResultsClosed
 	end
 
-	def mongoConnect
 	def get_milestone_budget (repo, milestones = nil)
 		
 		if milestones == nil
@@ -106,6 +105,7 @@ class GitHubTimeTracking
 
 
 
+	def mongo_Connect
 		# MongoDB Database Connect
 		@client = MongoClient.new("localhost", 27017)
 		@db = @client["GitHub-TimeCommits"]
