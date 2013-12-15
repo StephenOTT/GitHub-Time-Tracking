@@ -164,6 +164,10 @@ class GitHubTimeTracking
 				userCreated = c.attrs[:user].attrs[:login]
 				createdAtDate = c.attrs[:created_at]
 				updatedAtDate = c.attrs[:updated_at]
+				issueState = issueDetails[:state]
+				issueTitle = issueDetails[:title]
+				type = "Issue Time"
+				recordCreationDate = Time.now.utc
 
 				acceptedClockEmoji.each do |x|
 					if commentBody.gsub!("#{x} ","") != nil
@@ -196,25 +200,33 @@ class GitHubTimeTracking
 					end
 				end
 				
-				timeCommitHash = {"druration" => duration,
+				timeCommitHash = {"type" => type,
+									"druration" => duration,
 									"work_date" => workDate,
 									"time_description" => timeComment,
 									"comment_id" => commentId,
 									"comment_created_date" => createdAtDate,
 									"work_logged_by" => userCreated,
-									"issue_id" => issueNumber,
-									"repo_name" => repo
+									"issue_number" => issueNumber,
+									"repo_name" => repo,
+									"issue_title" => issueTitle,
+									"issue_state" => issueState,
+									"record_creation_date" => recordCreationDate
 								}
 				self.putIntoMongoCollTimeCommits(timeCommitHash)
 				puts "******"
+				puts "Type: #{type}"
+				puts "Issue Title: #{issueTitle}"
 				puts "Duration: #{duration}"
 				puts "Work Date: #{workDate}"
 				puts "Description: #{timeComment}"
 				puts "Comment ID: #{commentId}"
 				puts "Comment Created Date: #{createdAtDate}"
 				puts "Work Logged By: #{userCreated}"
-				puts "Issue ID: #{issueNumber}"
+				puts "Issue Number: #{issueNumber}"
 				puts "Repo Name: #{repo}"
+				puts "Issue State: #{issueState}"
+				puts "Record Creation Date: #{recordCreationDate}"
 			end
 		end
 	end
@@ -239,6 +251,10 @@ class GitHubTimeTracking
 				userCreated = c.attrs[:user].attrs[:login]
 				createdAtDate = c.attrs[:created_at]
 				updatedAtDate = c.attrs[:updated_at]
+				issueState = issueDetails[:state]
+				issueTitle = issueDetails[:title]
+				type = "Issue Budget"
+				recordCreationDate = Time.now.utc
 
 				acceptedClockEmoji.each do |x|
 					if commentBody.gsub!("#{x} ","") != nil
@@ -252,23 +268,31 @@ class GitHubTimeTracking
 					budgetComment = parsedComment[1].lstrip.gsub("\r\n", " ")
 				end
 				
-				budgetCommitHash = {"budget_druration" => budgetDuration,
+				budgetCommitHash = {"type" => type,
+									"budget_druration" => budgetDuration,
 									"budget_description" => budgetComment,
 									"comment_id" => commentId,
 									"comment_created_date" => createdAtDate,
 									"budget_logged_by" => userCreated,
-									"issue_id" => issueNumber,
-									"repo_name" => repo
+									"issue_number" => issueNumber,
+									"repo_name" => repo,
+									"issue_state" => issueState,
+									"issue_title" => issueTitle,
+									"record_creation_date" => recordCreationDate
 								}
 				self.putIntoMongoCollBudgetCommits(budgetCommitHash)
 				puts "******"
+				puts "Type: #{type}"
+				puts "Issue Title: #{issueTitle}"
 				puts "Budget Duration: #{budgetDuration}"
 				puts "Budget Description: #{budgetComment}"
 				puts "Comment ID: #{commentId}"
 				puts "Comment Created Date: #{createdAtDate}"
 				puts "Work Logged By: #{userCreated}"
-				puts "Issue ID: #{issueNumber}"
+				puts "Issue Number: #{issueNumber}"
 				puts "Repo Name: #{repo}"
+				puts "Issue State: #{issueState}"
+				puts "Record Creation Date: #{recordCreationDate}"
 
 			end
 		end
