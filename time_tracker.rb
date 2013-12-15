@@ -38,6 +38,17 @@ class GitHubTimeTracking
 		return mergedIssues = issueResultsOpen + issueResultsClosed
 	end
 
+	def get_Milestones(repo)
+		milestonesResultsOpen = @ghClient.list_milestones(repo, {
+			:state => :open
+			})
+		milestonesResultsClosed = @ghClient.list_milestones(repo, {
+			:state => :closed
+			})
+
+		return mergedMilestones = milestonesResultsOpen + milestonesResultsClosed
+	end
+
 	def get_milestone_budget (repo, milestones = nil)
 		
 		if milestones == nil
