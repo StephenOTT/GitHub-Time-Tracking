@@ -10,7 +10,7 @@ class GitHubTimeTracking
 
 	def controller(repo, username, password)
 		self.gh_Authenticate(username, password)
-		self.mongoConnect
+		self.mongo_Connect
 
 		@collTimeCommits.remove
 		@collBudgetCommits.remove
