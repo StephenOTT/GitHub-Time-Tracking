@@ -22,6 +22,9 @@ class GitHubTimeTracking
 			self.get_issue_time(repo, issueNumber)
 			self.get_issue_budget(repo,issueNumber)
 		end
+
+		self.get_milestone_budget(repo)
+
 	end
 
 	def get_Issues(repo)
