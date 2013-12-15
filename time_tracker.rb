@@ -148,6 +148,7 @@ class GitHubTimeTracking
 								":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", 
 								":clock4:", ":clock530:", ":clock7:", ":clock830:"]
 		issueComments = @ghClient.issue_comments(repo, issueNumber)
+		issueDetails = @ghClient.issue(repo, issueNumber)
 		
 		# Cycle through each comment in the issue
 		issueComments.each do |c|
@@ -222,6 +223,7 @@ class GitHubTimeTracking
 
 		acceptedClockEmoji = [":dart:"]
 		issueComments = @ghClient.issue_comments(repo, issueNumber)
+		issueDetails = @ghClient.issue(repo, issueNumber)
 		
 		# Cycle through each comment in the issue
 		issueComments.each do |c|
