@@ -47,6 +47,12 @@ Ruby Sinatra app that analyzes GitHub Comments for special emoji that indicate t
 2. `:dart: 1w | We cannot go over this time at all!` # => :dart: 1w | We cannot go over this time at all! 
 
 
+### Logging Budgets for a Milestone
+
+1. `:dart: 1w` # => :dart: 1w
+
+2. `:dart: 1w | We cannot go over this time at all!` # => :dart: 1w | We cannot go over this time at all! 
+
 
 ## Sample Data Structure for Reporting
 
