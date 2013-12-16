@@ -134,8 +134,13 @@ Logging a budget for a milestone should be done at the beginning of the mileston
 ### Budget Logging
 ![screen shot 2013-12-13 at 5 48 52 pm](https://f.cloud.github.com/assets/1994838/1746777/c65ec7d6-6448-11e3-9e66-161bb3b05739.png)
 
-### Code Commit Time Loggin
+### Code Commit Time Logging
 ![screen shot 2013-12-15 at 7 23 19 pm](https://f.cloud.github.com/assets/1994838/1751625/3e967ac0-65f5-11e3-9ade-00f9358b967b.png)
+
+### Code Commit Time Logging with Time in Commit Comments rather than Commit Message
+![screen shot 2013-12-16 at 1 10 41 pm](https://f.cloud.github.com/assets/1994838/1757211/8239f490-667d-11e3-8ec1-d60d7c443da5.png)
+
+Notice the parent `Duration` field is empty.  This is due to time being logged in the commit comments rather than the the Git Commit Message.  A use case for this would be if the developer forgot to add the Time tracking information in their Git Commit Message, they can just add it to the Commit Comments after the commit has been pushed to GitHub without any issues or errors.
 
 
 ## Future Features
