@@ -10,7 +10,7 @@ class GitHubTimeTracking
 		self.gh_Authenticate(username, password)
 		self.mongo_Connect
 
-		@collTimeTrackingCommits.remove
+		# @collTimeTrackingCommits.remove
 
 		issues = self.get_Issues(repo)
 		issues.each do |i|
@@ -49,7 +49,12 @@ class GitHubTimeTracking
 	def mongo_Connect
 		# MongoDB Database Connect
 		@client = MongoClient.new("localhost", 27017)
-		@db = @client["GitHub-TimeTracking"]
+
+		# code for working with MongoLab
+		# uri = "mongodb://USERNAME:PASSWORD@ds061268.mongolab.com:61268/time_commits"
+		# @client = MongoClient.from_uri(uri)
+
+		@db = @client["time_commits"]
 
 		@collTimeTrackingCommits = @db["TimeTrackingCommits"]
 	end
