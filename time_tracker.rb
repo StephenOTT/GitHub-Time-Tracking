@@ -10,7 +10,7 @@ class GitHubTimeTracking
 		self.gh_Authenticate(username, password)
 		self.mongo_Connect
 
-		# @collTimeTrackingCommits.remove
+		@collTimeTrackingCommits.remove
 
 		issues = self.get_Issues(repo)
 		issues.each do |i|
