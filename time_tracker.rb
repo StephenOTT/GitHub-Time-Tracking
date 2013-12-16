@@ -13,7 +13,6 @@ class GitHubTimeTracking
 		@collTimeTrackingCommits.remove
 
 		issues = self.get_Issues(repo)
-
 		issues.each do |i|
 			issueNumber = i.attrs[:number]
 			self.get_issue_time(repo, issueNumber)
