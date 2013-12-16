@@ -23,7 +23,6 @@ class GitHubTimeTracking
 		self.get_milestone_budget(repo)
 
 		self.get_commits_messages(repo)
-
 	end
 
 	def get_Issues(repo)
@@ -222,8 +221,6 @@ class GitHubTimeTracking
 				type = "Milestone Budget"
 				recordCreationDate = Time.now.utc
 
-
-
 				acceptedBudgetEmoji.each do |x|
 					if commentBody.gsub!("#{x} ","") != nil
 						parsedDescription = commentBody.gsub("#{x} ","").split(" | ")
@@ -349,17 +346,11 @@ class GitHubTimeTracking
 			commitParentsShas = []
 
 			commitSha = c.attrs[:sha]
-			commitComments = self.get_commit_comments(repo, commitSha)
-
-			
+			commitComments = self.get_commit_comments(repo, commitSha)			
 			commitMessage = c.attrs[:commit].attrs[:message]
 
-
-
-
-			timeInCommitMessageYN = acceptedClockEmoji.any? { |w| commitMessage =~ /#{w}/ }
 			# Check if any of the accepted Clock emoji are in the comment
-			
+			timeInCommitMessageYN = acceptedClockEmoji.any? { |w| commitMessage =~ /#{w}/ }
 
 			type = "Code Commit Time"
 			recordCreationDate = Time.now.utc
