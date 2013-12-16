@@ -1,8 +1,7 @@
-GitHub-Time-Tracking-Hooker
+GitHub-Time-Tracking
 ===========================
 
-Ruby Sinatra app that analyzes GitHub Comments for special emoji that indicate time spent on an issue
-
+Ruby app that analyzes GitHub Issue Comments, Milestones, and Code Commit Messages for Time Tracking and Budget Tracking information 
 
 
 ## Usage Patterns
