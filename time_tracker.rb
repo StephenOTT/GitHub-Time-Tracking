@@ -420,8 +420,3 @@ end
 
 start = GitHubTimeTracking.new
 start.controller("StephenOTT/Test1", "USERNAME", "PASSWORD")
-
-
-
-
-		
