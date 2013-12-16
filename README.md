@@ -50,7 +50,7 @@ Logging time for a specific issue should be done in its own comment.  The commen
 
 ### Logging Time for a Code Commit
 
-When logging time in a Code Commit, the code commit message should follow the usage pattern.  The commit message that you would normally submit as part of the code commit comes after the time tracking information.  See example 7 below for a typical usage pattern.
+When logging time in a Code Commit, the code commit message should follow the usage pattern.  The commit message that you would normally submit as part of the code commit comes after the time tracking information.  See example 7 below for a typical usage pattern.  Code Commit time logging can be done as part of the overall Git Commit Message, individual GitHub Commit Comment or Line Comment.
 
 #### Examples
 
@@ -85,8 +85,15 @@ When logging time in a Code Commit, the code commit message should follow the us
 ":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", ":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", ":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", ":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", ":clock4:", ":clock530:", ":clock7:", ":clock830:"
 
 #### Sample
+##### Code Commit Message:
 ![screen shot 2013-12-15 at 8 42 55 pm](https://f.cloud.github.com/assets/1994838/1751603/ca03597c-65f3-11e3-82a8-0fa293f69d84.png)
 ![screen shot 2013-12-15 at 8 42 43 pm](https://f.cloud.github.com/assets/1994838/1751604/ca044274-65f3-11e3-9b60-4a912959c19b.png)
+
+##### Code Commit Comment:
+![screen shot 2013-12-16 at 10 20 22 am](https://f.cloud.github.com/assets/1994838/1757115/00735ccc-667c-11e3-8656-57caaae42e04.png)
+
+##### Code Commit Line Comment:
+![screen shot 2013-12-16 at 10 19 55 am](https://f.cloud.github.com/assets/1994838/1757116/00741680-667c-11e3-9a2f-ba9128a60515.png)
 
 
 ### Logging Budgets for an Issue
@@ -146,4 +153,4 @@ Logging a budget for a milestone should be done at the beginning of the mileston
 
 ## Process Overview
 
-![github time tracking process overview](https://f.cloud.github.com/assets/1994838/1751833/25da1c7e-6601-11e3-9d63-40f205b4f0dc.png)
+![github time tracking process overview](https://f.cloud.github.com/assets/1994838/1757137/409bf8e0-667c-11e3-9576-14400457c2c1.png)
