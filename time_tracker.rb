@@ -12,15 +12,15 @@ class GitHubTimeTracking
 
 		@collTimeTrackingCommits.remove
 
-		# issues = self.get_Issues(repo)
+		issues = self.get_Issues(repo)
 
-		# issues.each do |i|
-		# 	issueNumber = i.attrs[:number]
-		# 	self.get_issue_time(repo, issueNumber)
-		# 	self.get_issue_budget(repo,issueNumber)
-		# end
+		issues.each do |i|
+			issueNumber = i.attrs[:number]
+			self.get_issue_time(repo, issueNumber)
+			self.get_issue_budget(repo,issueNumber)
+		end
 
-		# self.get_milestone_budget(repo)
+		self.get_milestone_budget(repo)
 
 		self.get_commits_comments(repo)
 
