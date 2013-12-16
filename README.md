@@ -40,7 +40,7 @@ Logging time for a specific issue should be done in its own comment.  The commen
 
 - Dates and times can be provided in various formats, but the above formats are recommended for plain text readability.
 
-- Any GitHub.com support `clock` Emoji is supported:
+- Any GitHub.com supported `clock` Emoji is supported:
 ":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", ":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", ":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", ":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", ":clock4:", ":clock530:", ":clock7:", ":clock830:"
 
 #### Sample
@@ -81,7 +81,7 @@ When logging time in a Code Commit, the code commit message should follow the us
 
 - Dates and times can be provided in various formats, but the above formats are recommended for plain text readability.
 
-- Any GitHub.com support `clock` Emoji is supported:
+- Any GitHub.com supported `clock` Emoji is supported:
 ":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", ":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", ":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", ":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", ":clock4:", ":clock530:", ":clock7:", ":clock830:"
 
 #### Sample
