@@ -9,7 +9,7 @@ Ruby Sinatra app that analyzes GitHub Comments for special emoji that indicate t
 
 ### Logging Time for an Issue
 
-Logging time should be done in its own comment.
+Logging time for a specific issue should be done in its own comment.  The comment should not include any data other than the time tracking information.
 
 
 #### Examples
@@ -51,6 +51,7 @@ Logging time should be done in its own comment.
 
 ### Logging Time for a Code Commit
 
+When logging time in a Code Commit, the code commit message should follow the usage pattern.  The commit message that you would normally submit as part of the code commit comes after the time tracking information.  See example 7 below for a typical usage pattern.
 
 #### Examples
 
@@ -91,6 +92,7 @@ Logging time should be done in its own comment.
 
 ### Logging Budgets for an Issue
 
+Logging a budget for a specific issue should be done in its own comment.  The comment should not include any data other than the budget tracking information.
 
 #### Examples
 
@@ -104,6 +106,7 @@ Logging time should be done in its own comment.
 
 ### Logging Budgets for a Milestone
 
+Logging a budget for a milestone should be done at the beginning of the milestone description.  The typical milestone description information comes after the budget information.  See example 2 below for a typical usage pattern.
 
 #### Examples
 
