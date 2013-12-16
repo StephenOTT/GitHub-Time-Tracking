@@ -142,3 +142,8 @@ Logging a budget for a milestone should be done at the beginning of the mileston
 7. Export to CSV
 8. ~~Budget Tracking (What is the allocated budget of a issue, milestone, label, etc)~~ Done
 9. ~~Code Commit Time Tracking~~ Done
+
+
+## Process Overview
+
+![github time tracking process overview](https://f.cloud.github.com/assets/1994838/1751833/25da1c7e-6601-11e3-9d63-40f205b4f0dc.png)
