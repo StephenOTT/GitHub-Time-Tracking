@@ -54,7 +54,7 @@ class GitHubTimeTracking
 		# uri = "mongodb://USERNAME:PASSWORD@ds061268.mongolab.com:61268/time_commits"
 		# @client = MongoClient.from_uri(uri)
 
-		@db = @client["time_commits"]
+		@db = @client["GitHub-TimeTracking"]
 
 		@collTimeTrackingCommits = @db["TimeTrackingCommits"]
 	end
@@ -128,7 +128,7 @@ class GitHubTimeTracking
 				end
 				
 				timeCommitHash = {"type" => type,
-									"druration" => duration,
+									"duration" => duration,
 									"work_date" => workDate,
 									"time_description" => timeComment,
 									"comment_id" => commentId,
@@ -183,7 +183,7 @@ class GitHubTimeTracking
 				end
 				
 				budgetCommitHash = {"type" => type,
-									"budget_druration" => budgetDuration,
+									"duration" => budgetDuration,
 									"budget_description" => budgetComment,
 									"comment_id" => commentId,
 									"comment_created_date" => createdAtDate,
@@ -239,7 +239,7 @@ class GitHubTimeTracking
 				end
 				
 				milestoneBudgetHash = {"type" => type,
-									"druration" => duration,
+									"duration" => duration,
 									"milestone_due_date" => milestoneDueDate,
 									"budget_description" => budgetComment,
 									"milestone_number" => milestoneNumber,
@@ -316,7 +316,7 @@ class GitHubTimeTracking
 				end
 				
 				timeCommitHash = {"type" => type,
-									"druration" => duration,
+									"duration" => duration,
 									"work_date" => workDate,
 									"time_description" => timeComment,
 									"comment_id" => commentId,
@@ -404,7 +404,8 @@ class GitHubTimeTracking
 			end
 				
 			timeCommitHash = {"type" => type,
-								"druration" => duration,
+								"repo_name" => repo,
+								"duration" => duration,
 								"work_date" => workDate,
 								"commit_message" => timeComment,
 								"commit_author_username" => commitAuthorUsername,
@@ -417,7 +418,9 @@ class GitHubTimeTracking
 								"commit_comments" => commitComments
 							}
 
-			self.putIntoMongoCollTimeTrackingCommits(timeCommitHash)
+			unless timeCommitHash["duration"] == nil and timeCommitHash["commit_comments"].empty? == true
+				self.putIntoMongoCollTimeTrackingCommits(timeCommitHash)
+			end
 		end
 	end
 end
