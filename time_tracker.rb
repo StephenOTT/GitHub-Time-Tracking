@@ -68,7 +68,7 @@ class GitHubTimeTracking
 	end
 
 	def get_issue_time(repo, issueNumber)
-
+		output = []
 		acceptedClockEmoji = [":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", 
 								":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", 
 								":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", 
@@ -141,12 +141,15 @@ class GitHubTimeTracking
 									"record_creation_date" => recordCreationDate
 								}
 				self.putIntoMongoCollTimeTrackingCommits(timeCommitHash)
+				output << timeCommitHash
 			end
 		end
+		return output
 	end
 
 	def get_issue_budget(repo, issueNumber)
 
+		output = []
 		acceptedClockEmoji = [":dart:"]
 		issueComments = @ghClient.issue_comments(repo, issueNumber)
 		issueDetails = @ghClient.issue(repo, issueNumber)
@@ -195,12 +198,14 @@ class GitHubTimeTracking
 									"record_creation_date" => recordCreationDate
 								}
 				self.putIntoMongoCollTimeTrackingCommits(budgetCommitHash)
+				output << budgetCommitHash
 			end
 		end
 	end
 
 	def get_milestone_budget (repo, milestones = nil)
 		
+		output = []
 		if milestones == nil
 			milestones = self.get_Milestones(repo)
 		end
@@ -250,8 +255,10 @@ class GitHubTimeTracking
 									"record_creation_date" => recordCreationDate
 								}
 				self.putIntoMongoCollTimeTrackingCommits(milestoneBudgetHash)
+				output << milestoneBudgetHash
 			end
 		end
+		return output
 	end 
 
 	def get_commit_comments(repo, sha)
@@ -335,6 +342,7 @@ class GitHubTimeTracking
 
 	def get_commits_messages(repo, *ghOptions)
 
+		output = []
 		repoCommits = @ghClient.commits(repo, ghOptions)
 
 		repoCommits.each do |c|
@@ -363,7 +371,6 @@ class GitHubTimeTracking
 			commitAuthorDate =  c.attrs[:commit].attrs[:author].attrs[:date]
 			commitCommitterUsername =  c.attrs[:committer].attrs[:login]
 			commitCommitterDate = c.attrs[:commit].attrs[:committer].attrs[:date]
-			
 			commitTreeSha = c.attrs[:commit].attrs[:tree].attrs[:sha]
 			if c.attrs[:parents] != nil
 				c.attrs[:parents].each do |x|
@@ -420,10 +427,16 @@ class GitHubTimeTracking
 
 			unless timeCommitHash["duration"] == nil and timeCommitHash["commit_comments"].empty? == true
 				self.putIntoMongoCollTimeTrackingCommits(timeCommitHash)
+				output << timeCommitHash
 			end
 		end
+		return output
 	end
 end
 
 start = GitHubTimeTracking.new
 start.controller("StephenOTT/Test1", "USERNAME", "PASSWORD")
+
+
+
+
