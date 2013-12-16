@@ -1,7 +1,7 @@
 require 'octokit'
 require 'chronic_duration'
 require 'mongo'
-# require 'pp'
+require 'pp'
 
 class GitHubTimeTracking
 	include Mongo
@@ -22,7 +22,7 @@ class GitHubTimeTracking
 
 		self.get_milestone_budget(repo)
 
-		self.get_commits_comments(repo)
+		self.get_commits_messages(repo)
 
 	end
 
@@ -76,8 +76,8 @@ class GitHubTimeTracking
 		
 		# Cycle through each comment in the issue
 		issueComments.each do |c|
-			parsedComment = ""
-			timeComment = ""
+			parsedComment = nil
+			timeComment = nil
 
 			commentBody = c.attrs[:body]
 
@@ -104,7 +104,7 @@ class GitHubTimeTracking
 				
 				# Is there anything more than a duration value?
 				if parsedComment[1].nil?
-					workDate = ""
+					workDate = nil
 				else
 					begin
 						# Determine if the second item is a Date.
@@ -150,8 +150,8 @@ class GitHubTimeTracking
 		
 		# Cycle through each comment in the issue
 		issueComments.each do |c|
-			parsedComment = ""
-			budgetComment = ""
+			parsedComment = nil
+			budgetComment = nil
 
 			commentBody = c.attrs[:body]
 
@@ -207,7 +207,7 @@ class GitHubTimeTracking
 		# Cycle through each milestone
 		milestones.each do |c|
 			parsedDescription = []
-			budgetComment = ""
+			budgetComment = nil
 
 			commentBody = c.attrs[:description]
 
@@ -253,53 +253,48 @@ class GitHubTimeTracking
 		end
 	end 
 
-	def get_commits_comments(repo, *ghOptions)
+	def get_commit_comments(repo, sha)
 
-		repoCommits = @ghClient.commits(repo, ghOptions)
+		commitComments = @ghClient.commit_comments(repo, sha)
+		commitCommentsArray = []
 
-		repoCommits.each do |c|
+		acceptedClockEmoji = [":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", 
+								":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", 
+								":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", 
+								":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", 
+								":clock4:", ":clock530:", ":clock7:", ":clock830:"]
+		
+		# Cycle through each comment in the issue
+		commitComments.each do |c|
+			parsedComment = nil
+			timeComment = nil
 
-			acceptedClockEmoji = [":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", 
-									":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", 
-									":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", 
-									":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", 
-									":clock4:", ":clock530:", ":clock7:", ":clock830:"]
-
-			parsedComment = ""
-			timeComment = ""
-			commitParentsShas = []
-
-			commitMessage = c.attrs[:commit].attrs[:message]
+			commentBody = c.attrs[:body]
 
 			# Check if any of the accepted Clock emoji are in the comment
-			if acceptedClockEmoji.any? { |w| commitMessage =~ /#{w}/ }
+			if acceptedClockEmoji.any? { |w| commentBody =~ /#{w}/ }
 
-				type = "Code Commit Time"
+				commentId = c.attrs[:id]
+				userCreated = c.attrs[:user].attrs[:login]
+				createdAtDate = c.attrs[:created_at]
+				updatedAtDate = c.attrs[:updated_at]
+				type = "Code Commit Comment Time"
 				recordCreationDate = Time.now.utc
-
-				commitAuthorUsername = c.attrs[:author].attrs[:login]
-				commitAuthorDate =  c.attrs[:commit].attrs[:author].attrs[:date]
-				commitCommitterUsername =  c.attrs[:committer].attrs[:login]
-				commitCommitterDate = c.attrs[:commit].attrs[:committer].attrs[:date]
-				commitSha = c.attrs[:sha]
-				commitTreeSha = c.attrs[:commit].attrs[:tree].attrs[:sha]
-				if c.attrs[:parents] != nil
-					c.attrs[:parents].each do |x|
-						commitParentsShas << x.attrs[:sha]
-					end
-				end
+				commentForPath = c.attrs[:path]
+				commentForLine = c.attrs[:line]
 
 				acceptedClockEmoji.each do |x|
-					if commitMessage.gsub!("#{x} ","") != nil
-						parsedComment = commitMessage.gsub("#{x} ","").split(" | ")
+					if commentBody.gsub!("#{x} ","") != nil
+						parsedComment = commentBody.gsub("#{x} ","").split(" | ")
 					end
 				end
-
+				# Parse first value as a duration
+				# TODO add support for duration not be parsed correctly. (use case is that the clock emoji is used in a regular comment that is not part of a time commit)
 				duration = ChronicDuration.parse(parsedComment[0])
 				
 				# Is there anything more than a duration value?
 				if parsedComment[1].nil?
-					workDate = ""
+					workDate = nil
 				else
 					begin
 						# Determine if the second item is a Date.
@@ -322,18 +317,112 @@ class GitHubTimeTracking
 				timeCommitHash = {"type" => type,
 									"druration" => duration,
 									"work_date" => workDate,
-									"commit_message" => timeComment,
-									"commit_author_username" => commitAuthorUsername,
-									"commit_author_date" => commitAuthorDate,
-									"commit_committer_username" => commitCommitterUsername,
-									"commit_committer_date" => commitCommitterDate,
-									"commit_sha" => commitSha,
-									"commit_tree_sha" => commitTreeSha,
-									"commit_parents_shas" => commitParentsShas
+									"time_description" => timeComment,
+									"comment_id" => commentId,
+									"comment_created_date" => createdAtDate,
+									"work_logged_by" => userCreated,
+									"path" => commentForPath,
+									"line" => commentForLine,
+									"record_creation_date" => recordCreationDate
 								}
 
-				self.putIntoMongoCollTimeTrackingCommits(timeCommitHash)
+				commitCommentsArray << timeCommitHash
 			end
+		end
+		return commitCommentsArray
+	end
+
+	def get_commits_messages(repo, *ghOptions)
+
+		repoCommits = @ghClient.commits(repo, ghOptions)
+
+		repoCommits.each do |c|
+
+			acceptedClockEmoji = [":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", 
+									":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", 
+									":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", 
+									":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", 
+									":clock4:", ":clock530:", ":clock7:", ":clock830:"]
+
+			parsedComment = nil
+			timeComment = nil
+			commitParentsShas = []
+
+			commitSha = c.attrs[:sha]
+			commitComments = self.get_commit_comments(repo, commitSha)
+
+			
+			commitMessage = c.attrs[:commit].attrs[:message]
+
+
+
+
+			timeInCommitMessageYN = acceptedClockEmoji.any? { |w| commitMessage =~ /#{w}/ }
+			# Check if any of the accepted Clock emoji are in the comment
+			
+
+			type = "Code Commit Time"
+			recordCreationDate = Time.now.utc
+
+			commitAuthorUsername = c.attrs[:author].attrs[:login]
+			commitAuthorDate =  c.attrs[:commit].attrs[:author].attrs[:date]
+			commitCommitterUsername =  c.attrs[:committer].attrs[:login]
+			commitCommitterDate = c.attrs[:commit].attrs[:committer].attrs[:date]
+			
+			commitTreeSha = c.attrs[:commit].attrs[:tree].attrs[:sha]
+			if c.attrs[:parents] != nil
+				c.attrs[:parents].each do |x|
+					commitParentsShas << x.attrs[:sha]
+				end
+			end
+				
+			if timeInCommitMessageYN == true
+				acceptedClockEmoji.each do |x|
+					if commitMessage.gsub!("#{x} ","") != nil
+						parsedComment = commitMessage.gsub("#{x} ","").split(" | ")
+					end
+				end
+
+				duration = ChronicDuration.parse(parsedComment[0])
+				
+				# Is there anything more than a duration value?
+				if parsedComment[1].nil?
+					workDate = nil
+				else
+					begin
+						# Determine if the second item is a Date.
+						# Try to parse the item as a Date
+						workDate = Time.parse(parsedComment[1]).utc
+					rescue
+						# If date parse is invalid then we assume second item is not a date
+						# We assume it is not a date then it is treated as a comment
+						if parsedComment[1].nil? == false
+							timeComment = parsedComment[1].lstrip.gsub("\r\n", " ")
+						end
+					end
+					# if there is a Druation and a Date then there will be a third item in the array
+					# If there is a third item then we treat it as a comment
+					if parsedComment[2].nil? == false
+						timeComment = parsedComment[2].lstrip.gsub("\r\n", " ")
+					end
+				end
+			end
+				
+			timeCommitHash = {"type" => type,
+								"druration" => duration,
+								"work_date" => workDate,
+								"commit_message" => timeComment,
+								"commit_author_username" => commitAuthorUsername,
+								"commit_author_date" => commitAuthorDate,
+								"commit_committer_username" => commitCommitterUsername,
+								"commit_committer_date" => commitCommitterDate,
+								"commit_sha" => commitSha,
+								"commit_tree_sha" => commitTreeSha,
+								"commit_parents_shas" => commitParentsShas,
+								"commit_comments" => commitComments
+							}
+
+			self.putIntoMongoCollTimeTrackingCommits(timeCommitHash)
 		end
 	end
 end
