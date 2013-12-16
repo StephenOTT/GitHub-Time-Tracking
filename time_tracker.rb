@@ -1,9 +1,7 @@
 require 'octokit'
-# require 'sinatra'
-require 'pp'
 require 'chronic_duration'
-# require 'chronic'
 require 'mongo'
+# require 'pp'
 
 class GitHubTimeTracking
 	include Mongo
@@ -12,18 +10,19 @@ class GitHubTimeTracking
 		self.gh_Authenticate(username, password)
 		self.mongo_Connect
 
-		@collTimeCommits.remove
-		@collBudgetCommits.remove
+		@collTimeTrackingCommits.remove
 
-		issues = self.get_Issues(repo)
+		# issues = self.get_Issues(repo)
 
-		issues.each do |i|
-			issueNumber = i.attrs[:number]
-			self.get_issue_time(repo, issueNumber)
-			self.get_issue_budget(repo,issueNumber)
-		end
+		# issues.each do |i|
+		# 	issueNumber = i.attrs[:number]
+		# 	self.get_issue_time(repo, issueNumber)
+		# 	self.get_issue_budget(repo,issueNumber)
+		# end
 
-		self.get_milestone_budget(repo)
+		# self.get_milestone_budget(repo)
+
+		self.get_commits_comments(repo)
 
 	end
 
@@ -49,91 +48,16 @@ class GitHubTimeTracking
 		return mergedMilestones = milestonesResultsOpen + milestonesResultsClosed
 	end
 
-	def get_milestone_budget (repo, milestones = nil)
-		
-		if milestones == nil
-			milestones = self.get_Milestones(repo)
-		end
-
-		acceptedBudgetEmoji = [":dart:"]
-		
-		# Cycle through each milestone
-		milestones.each do |c|
-			parsedDescription = []
-			budgetComment = ""
-
-			commentBody = c.attrs[:description]
-
-			# Check if any of the accepted emoji are in the comment
-			if acceptedBudgetEmoji.any? { |w| commentBody =~ /#{w}/ }
-
-				milestoneTitle = c.attrs[:title]
-				milestoneNumber = c.attrs[:number]
-				createdAtDate = c.attrs[:created_at]
-				milestoneState = c.attrs[:state]
-				milestoneDueDate = c.attrs[:due_on]
-				type = "Milestone Budget"
-				recordCreationDate = Time.now.utc
-
-
-
-				acceptedBudgetEmoji.each do |x|
-					if commentBody.gsub!("#{x} ","") != nil
-						parsedDescription = commentBody.gsub("#{x} ","").split(" | ")
-					end
-				end
-				# Parse first value as a duration
-				# TODO add error catching for improper duration format.
-				duration = ChronicDuration.parse(parsedDescription[0])
-				
-				if parsedDescription[1].nil? == false
-					budgetComment = parsedDescription[1].lstrip.gsub("\r\n", " ")
-				end
-				
-				timeCommitHash = {"type" => type,
-									"druration" => duration,
-									"milestone_due_date" => milestoneDueDate,
-									"time_description" => budgetComment,
-									"milestone_number" => milestoneNumber,
-									"milestone_created_date" => createdAtDate,
-									"repo_name" => repo,
-									"milestone_state" => milestoneState,
-									"milestone_title" => milestoneTitle,
-									"record_creation_date" => recordCreationDate
-								}
-				self.putIntoMongoCollTimeCommits(timeCommitHash)
-				puts "******"
-				puts "Type: #{type}"
-				puts "Milestone Title: #{milestoneTitle}"
-				puts "Duration: #{duration}"
-				puts "Milestone Due Date: #{milestoneDueDate}"
-				puts "Description: #{budgetComment}"
-				puts "Milestone Number: #{milestoneNumber}"
-				puts "Milestone Created Date: #{createdAtDate}"
-				puts "Repo Name: #{repo}"
-				puts "Milestone State: #{milestoneState}"
-				puts "Record Creation Date: #{recordCreationDate}"
-			end
-		end
-	end 
-
-
-
 	def mongo_Connect
 		# MongoDB Database Connect
 		@client = MongoClient.new("localhost", 27017)
-		@db = @client["GitHub-TimeCommits"]
+		@db = @client["GitHub-TimeTracking"]
 
-		@collTimeCommits = @db["TimeCommits"]
-		@collBudgetCommits = @db["BudgetCommits"]
+		@collTimeTrackingCommits = @db["TimeTrackingCommits"]
 	end
 
-	def putIntoMongoCollTimeCommits(mongoPayload)
-		@collTimeCommits.insert(mongoPayload)
-	end
-
-	def putIntoMongoCollBudgetCommits(mongoPayload)
-		@collBudgetCommits.insert(mongoPayload)
+	def putIntoMongoCollTimeTrackingCommits(mongoPayload)
+		@collTimeTrackingCommits.insert(mongoPayload)
 	end
 
 	def gh_Authenticate(username, password)
@@ -213,20 +137,7 @@ class GitHubTimeTracking
 									"issue_state" => issueState,
 									"record_creation_date" => recordCreationDate
 								}
-				self.putIntoMongoCollTimeCommits(timeCommitHash)
-				puts "******"
-				puts "Type: #{type}"
-				puts "Issue Title: #{issueTitle}"
-				puts "Duration: #{duration}"
-				puts "Work Date: #{workDate}"
-				puts "Description: #{timeComment}"
-				puts "Comment ID: #{commentId}"
-				puts "Comment Created Date: #{createdAtDate}"
-				puts "Work Logged By: #{userCreated}"
-				puts "Issue Number: #{issueNumber}"
-				puts "Repo Name: #{repo}"
-				puts "Issue State: #{issueState}"
-				puts "Record Creation Date: #{recordCreationDate}"
+				self.putIntoMongoCollTimeTrackingCommits(timeCommitHash)
 			end
 		end
 	end
@@ -280,19 +191,68 @@ class GitHubTimeTracking
 									"issue_title" => issueTitle,
 									"record_creation_date" => recordCreationDate
 								}
-				self.putIntoMongoCollBudgetCommits(budgetCommitHash)
-				puts "******"
-				puts "Type: #{type}"
-				puts "Issue Title: #{issueTitle}"
-				puts "Budget Duration: #{budgetDuration}"
-				puts "Budget Description: #{budgetComment}"
-				puts "Comment ID: #{commentId}"
-				puts "Comment Created Date: #{createdAtDate}"
-				puts "Work Logged By: #{userCreated}"
-				puts "Issue Number: #{issueNumber}"
-				puts "Repo Name: #{repo}"
-				puts "Issue State: #{issueState}"
-				puts "Record Creation Date: #{recordCreationDate}"
+				self.putIntoMongoCollTimeTrackingCommits(budgetCommitHash)
+			end
+		end
+	end
+
+	def get_milestone_budget (repo, milestones = nil)
+		
+		if milestones == nil
+			milestones = self.get_Milestones(repo)
+		end
+
+		acceptedBudgetEmoji = [":dart:"]
+		
+		# Cycle through each milestone
+		milestones.each do |c|
+			parsedDescription = []
+			budgetComment = ""
+
+			commentBody = c.attrs[:description]
+
+			# Check if any of the accepted emoji are in the comment
+			if acceptedBudgetEmoji.any? { |w| commentBody =~ /#{w}/ }
+
+				milestoneTitle = c.attrs[:title]
+				milestoneNumber = c.attrs[:number]
+				createdAtDate = c.attrs[:created_at]
+				milestoneState = c.attrs[:state]
+				milestoneDueDate = c.attrs[:due_on]
+				type = "Milestone Budget"
+				recordCreationDate = Time.now.utc
+
+
+
+				acceptedBudgetEmoji.each do |x|
+					if commentBody.gsub!("#{x} ","") != nil
+						parsedDescription = commentBody.gsub("#{x} ","").split(" | ")
+					end
+				end
+				# Parse first value as a duration
+				# TODO add error catching for improper duration format.
+				duration = ChronicDuration.parse(parsedDescription[0])
+				
+				if parsedDescription[1].nil? == false
+					budgetComment = parsedDescription[1].lstrip.gsub("\r\n", " ")
+				end
+				
+				milestoneBudgetHash = {"type" => type,
+									"druration" => duration,
+									"milestone_due_date" => milestoneDueDate,
+									"budget_description" => budgetComment,
+									"milestone_number" => milestoneNumber,
+									"milestone_created_date" => createdAtDate,
+									"repo_name" => repo,
+									"milestone_state" => milestoneState,
+									"milestone_title" => milestoneTitle,
+									"record_creation_date" => recordCreationDate
+								}
+				self.putIntoMongoCollTimeTrackingCommits(milestoneBudgetHash)
+			end
+		end
+	end 
+
 	def get_commits_comments(repo, *ghOptions)
 
 		repoCommits = @ghClient.commits(repo, ghOptions)
