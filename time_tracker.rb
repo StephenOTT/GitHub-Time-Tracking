@@ -73,6 +73,7 @@ class GitHubTimeTracking
 								":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", 
 								":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", 
 								":clock4:", ":clock530:", ":clock7:", ":clock830:"]
+		acceptedNonBilliableEmoji = [":free:"]
 		issueComments = @ghClient.issue_comments(repo, issueNumber)
 		issueDetails = @ghClient.issue(repo, issueNumber)
 		
@@ -87,6 +88,7 @@ class GitHubTimeTracking
 			# Check if any of the accepted Clock emoji are in the comment
 			if acceptedClockEmoji.any? { |w| commentBody =~ /#{w}/ }
 
+				isNonBilliableTime = acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
 				commentId = c.attrs[:id]
 				userCreated = c.attrs[:user].attrs[:login]
 				createdAtDate = c.attrs[:created_at]
@@ -102,7 +104,13 @@ class GitHubTimeTracking
 
 				acceptedClockEmoji.each do |x|
 					if commentBody.gsub!("#{x} ","") != nil
-						parsedComment = commentBody.gsub("#{x} ","").split(" | ")
+						if isNonBilliableTime == true
+							acceptedNonBilliableEmoji.each do |b|
+								parsedComment = commentBody.gsub("#{x} #{b}","").split(" | ")
+							end
+						else
+							parsedComment = commentBody.gsub("#{x} ","").split(" | ")
+						end
 					end
 				end
 				# Parse first value as a duration
@@ -133,6 +141,7 @@ class GitHubTimeTracking
 				
 				timeCommitHash = {"type" => type,
 									"duration" => duration,
+									"non_billable" => isNonBilliableTime,
 									"work_date" => workDate,
 									"time_description" => timeComment,
 									"comment_id" => commentId,
@@ -155,7 +164,8 @@ class GitHubTimeTracking
 	def get_issue_budget(repo, issueNumber)
 
 		output = []
-		acceptedClockEmoji = [":dart:"]
+		acceptedBudgetEmoji = [":dart:"]
+		acceptedNonBilliableEmoji = [":free:"]
 		issueComments = @ghClient.issue_comments(repo, issueNumber)
 		issueDetails = @ghClient.issue(repo, issueNumber)
 		
@@ -168,8 +178,9 @@ class GitHubTimeTracking
 			commentBody = c.attrs[:body]
 
 			# Check if any of the accepted emoji are in the comment
-			if acceptedClockEmoji.any? { |w| commentBody =~ /#{w}/ }
+			if acceptedBudgetEmoji.any? { |w| commentBody =~ /#{w}/ }
 
+				isNonBilliableTime = acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
 				commentId = c.attrs[:id]
 				userCreated = c.attrs[:user].attrs[:login]
 				createdAtDate = c.attrs[:created_at]
@@ -183,9 +194,15 @@ class GitHubTimeTracking
 					assignedMilestoneNumber = issueDetails[:milestone].attrs[:number]
 				end
 
-				acceptedClockEmoji.each do |x|
+				acceptedBudgetEmoji.each do |x|
 					if commentBody.gsub!("#{x} ","") != nil
-						parsedComment = commentBody.gsub("#{x} ","").split(" | ")
+						if isNonBilliableTime == true
+							acceptedNonBilliableEmoji.each do |b|
+								parsedComment = commentBody.gsub("#{x} #{b}","").split(" | ")
+							end
+						else
+							parsedComment = commentBody.gsub("#{x} ","").split(" | ")
+						end
 					end
 				end
 
@@ -197,6 +214,7 @@ class GitHubTimeTracking
 				
 				budgetCommitHash = {"type" => type,
 									"duration" => budgetDuration,
+									"non_billable" => isNonBilliableTime,
 									"budget_description" => budgetComment,
 									"comment_id" => commentId,
 									"comment_created_date" => createdAtDate,
@@ -212,6 +230,7 @@ class GitHubTimeTracking
 				output << budgetCommitHash
 			end
 		end
+		return output
 	end
 
 	def get_milestone_budget (repo, milestones = nil)
@@ -222,6 +241,7 @@ class GitHubTimeTracking
 		end
 
 		acceptedBudgetEmoji = [":dart:"]
+		acceptedNonBilliableEmoji = [":free:"]
 		
 		# Cycle through each milestone
 		milestones.each do |c|
@@ -233,6 +253,7 @@ class GitHubTimeTracking
 			# Check if any of the accepted emoji are in the comment
 			if acceptedBudgetEmoji.any? { |w| commentBody =~ /#{w}/ }
 
+				isNonBilliableTime = acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
 				milestoneTitle = c.attrs[:title]
 				milestoneNumber = c.attrs[:number]
 				createdAtDate = c.attrs[:created_at]
@@ -243,9 +264,16 @@ class GitHubTimeTracking
 
 				acceptedBudgetEmoji.each do |x|
 					if commentBody.gsub!("#{x} ","") != nil
-						parsedDescription = commentBody.gsub("#{x} ","").split(" | ")
+						if isNonBilliableTime == true
+							acceptedNonBilliableEmoji.each do |b|
+								parsedDescription = commentBody.gsub("#{x} #{b}","").split(" | ")
+							end
+						else
+							parsedDescription = commentBody.gsub("#{x} ","").split(" | ")
+						end
 					end
 				end
+
 				# Parse first value as a duration
 				# TODO add error catching for improper duration format.
 				duration = ChronicDuration.parse(parsedDescription[0])
@@ -256,6 +284,7 @@ class GitHubTimeTracking
 				
 				milestoneBudgetHash = {"type" => type,
 									"duration" => duration,
+									"non_billable" => isNonBilliableTime,
 									"milestone_due_date" => milestoneDueDate,
 									"budget_description" => budgetComment,
 									"milestone_number" => milestoneNumber,
@@ -282,6 +311,7 @@ class GitHubTimeTracking
 								":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", 
 								":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", 
 								":clock4:", ":clock530:", ":clock7:", ":clock830:"]
+		acceptedNonBilliableEmoji = [":free:"]
 		
 		# Cycle through each comment in the issue
 		commitComments.each do |c|
@@ -293,6 +323,7 @@ class GitHubTimeTracking
 			# Check if any of the accepted Clock emoji are in the comment
 			if acceptedClockEmoji.any? { |w| commentBody =~ /#{w}/ }
 
+				isNonBilliableTime = acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
 				commentId = c.attrs[:id]
 				userCreated = c.attrs[:user].attrs[:login]
 				createdAtDate = c.attrs[:created_at]
@@ -304,9 +335,16 @@ class GitHubTimeTracking
 
 				acceptedClockEmoji.each do |x|
 					if commentBody.gsub!("#{x} ","") != nil
-						parsedComment = commentBody.gsub("#{x} ","").split(" | ")
+						if isNonBilliableTime == true
+							acceptedNonBilliableEmoji.each do |b|
+								parsedComment = commentBody.gsub("#{x} #{b}","").split(" | ")
+							end
+						else
+							parsedComment = commentBody.gsub("#{x} ","").split(" | ")
+						end
 					end
 				end
+
 				# Parse first value as a duration
 				# TODO add support for duration not be parsed correctly. (use case is that the clock emoji is used in a regular comment that is not part of a time commit)
 				duration = ChronicDuration.parse(parsedComment[0])
@@ -335,6 +373,7 @@ class GitHubTimeTracking
 				
 				timeCommitHash = {"type" => type,
 									"duration" => duration,
+									"non_billable" => isNonBilliableTime,
 									"work_date" => workDate,
 									"time_description" => timeComment,
 									"comment_id" => commentId,
@@ -363,6 +402,7 @@ class GitHubTimeTracking
 									":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", 
 									":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", 
 									":clock4:", ":clock530:", ":clock7:", ":clock830:"]
+			acceptedNonBilliableEmoji = [":free:"]
 
 			parsedComment = nil
 			timeComment = nil
@@ -388,11 +428,18 @@ class GitHubTimeTracking
 					commitParentsShas << x.attrs[:sha]
 				end
 			end
+			isNonBilliableTime = acceptedNonBilliableEmoji.any? { |b| commitMessage =~ /#{b}/ }
 				
 			if timeInCommitMessageYN == true
 				acceptedClockEmoji.each do |x|
 					if commitMessage.gsub!("#{x} ","") != nil
-						parsedComment = commitMessage.gsub("#{x} ","").split(" | ")
+						if isNonBilliableTime == true
+							acceptedNonBilliableEmoji.each do |b|
+								parsedComment = commitMessage.gsub("#{x} #{b}","").split(" | ")
+							end
+						else
+							parsedComment = commitMessage.gsub("#{x} ","").split(" | ")
+						end
 					end
 				end
 
@@ -424,6 +471,7 @@ class GitHubTimeTracking
 			timeCommitHash = {"type" => type,
 								"repo_name" => repo,
 								"duration" => duration,
+								"non_billable" => isNonBilliableTime,
 								"work_date" => workDate,
 								"commit_message" => timeComment,
 								"commit_author_username" => commitAuthorUsername,
