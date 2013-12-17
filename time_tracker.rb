@@ -81,6 +81,7 @@ class GitHubTimeTracking
 		issueComments.each do |c|
 			parsedComment = nil
 			timeComment = nil
+			assignedMilestoneNumber = nil
 
 			commentBody = c.attrs[:body]
 
@@ -95,6 +96,10 @@ class GitHubTimeTracking
 				issueTitle = issueDetails[:title]
 				type = "Issue Time"
 				recordCreationDate = Time.now.utc
+
+				if issueDetails[:milestone] != nil
+					assignedMilestoneNumber = issueDetails[:milestone].attrs[:number]
+				end
 
 				acceptedClockEmoji.each do |x|
 					if commentBody.gsub!("#{x} ","") != nil
@@ -138,6 +143,7 @@ class GitHubTimeTracking
 									"repo_name" => repo,
 									"issue_title" => issueTitle,
 									"issue_state" => issueState,
+									"assigned_milestone_number" => assignedMilestoneNumber,
 									"record_creation_date" => recordCreationDate
 								}
 				self.putIntoMongoCollTimeTrackingCommits(timeCommitHash)
@@ -158,6 +164,7 @@ class GitHubTimeTracking
 		issueComments.each do |c|
 			parsedComment = nil
 			budgetComment = nil
+			assignedMilestoneNumber = nil
 
 			commentBody = c.attrs[:body]
 
@@ -172,6 +179,10 @@ class GitHubTimeTracking
 				issueTitle = issueDetails[:title]
 				type = "Issue Budget"
 				recordCreationDate = Time.now.utc
+
+				if issueDetails[:milestone] != nil
+					assignedMilestoneNumber = issueDetails[:milestone].attrs[:number]
+				end
 
 				acceptedClockEmoji.each do |x|
 					if commentBody.gsub!("#{x} ","") != nil
@@ -195,6 +206,7 @@ class GitHubTimeTracking
 									"repo_name" => repo,
 									"issue_state" => issueState,
 									"issue_title" => issueTitle,
+									"assigned_milestone_number" => assignedMilestoneNumber,
 									"record_creation_date" => recordCreationDate
 								}
 				self.putIntoMongoCollTimeTrackingCommits(budgetCommitHash)
@@ -436,7 +448,5 @@ end
 
 start = GitHubTimeTracking.new
 start.controller("StephenOTT/Test1", "USERNAME", "PASSWORD")
-
-
 
 
