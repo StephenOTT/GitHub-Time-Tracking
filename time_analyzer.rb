@@ -10,9 +10,9 @@ class GitHubTimeTrackingAnalyzer
 
 		self.mongo_Connect
 
-		self.analyze_issue_spent_hours
-		self.analyze_issue_budget_hours
-		self.analyze_milestone_budget_hours
+		puts self.analyze_issue_spent_hours
+		puts self.analyze_issue_budget_hours
+		puts self.analyze_milestone_budget_hours
 
 	end
 
@@ -29,7 +29,6 @@ class GitHubTimeTrackingAnalyzer
 		@collTimeTrackingCommits = @db["TimeTrackingCommits"]
 	end
 
-
 	def analyze_issue_spent_hours
 		totalIssueSpentHoursBreakdown = @collTimeTrackingCommits.aggregate([
 			{ "$match" => {type: "Issue Time"}},
@@ -40,12 +39,13 @@ class GitHubTimeTrackingAnalyzer
 								duration_sum: { "$sum" => "$duration" }, 
 								issue_count:{"$sum" =>1}}}
 								])
-
+		output = []
 		totalIssueSpentHoursBreakdown.each do |x|
 			x["_id"]["duration_sum"] = x["duration_sum"]
 			x["_id"]["issue_count"] = x["issue_count"]
-			puts x["_id"]
+			output << x["_id"]
 		end
+		return output
 	end
 
 	def analyze_issue_budget_hours
@@ -58,12 +58,13 @@ class GitHubTimeTrackingAnalyzer
 								duration_sum: { "$sum" => "$duration" }, 
 								issue_count:{"$sum" =>1}}}
 								])
-
+		output = []
 		totalIssueBudgetHoursBreakdown.each do |x|
 			x["_id"]["duration_sum"] = x["duration_sum"]
 			x["_id"]["issue_count"] = x["issue_count"]
-			puts x["_id"]
+			output << x["_id"]
 		end
+		return output
 	end
 
 	def analyze_milestone_budget_hours
@@ -76,12 +77,13 @@ class GitHubTimeTrackingAnalyzer
 								duration_sum: { "$sum" => "$duration" }, 
 								milestone_count:{"$sum" =>1}}}
 								])
-
+		output = []
 		totalMilestoneBudgetHoursBreakdown.each do |x|
 			x["_id"]["duration_sum"] = x["duration_sum"]
 			x["_id"]["milestone_count"] = x["milestone_count"]
-			puts x["_id"]
+			output << x["_id"]
 		end
+		return output
 	end
 
 end
