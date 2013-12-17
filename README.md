@@ -125,13 +125,13 @@ Logging a budget for a milestone should be done at the beginning of the mileston
 ![screen shot 2013-12-15 at 8 41 55 pm](https://f.cloud.github.com/assets/1994838/1751602/bb757d9a-65f3-11e3-9ac5-86dba26bc037.png)
 
 
-### Tracking Billable and Non-Billable Time and Budgets
+### Tracking Non-Billable Time and Budgets
 
-The ability to indicate where a Time Log and Budget is considered Non-Billable.  This is typically used when staff are doing work that will not be billed to the client, but you want to track their time and indicate how much non-billable/free time has been allocated.
+The ability to indicate where a Time Log and Budget is considered Non-Billable has been provided.  This is typically used when staff are doing work that will not be billed to the client, but you want to track their time and indicate how much non-billable/free time has been allocated.  The assumption is that all time logs and budgets are billable unless indicated to be Non-Billable.
 
 You may indicate when a time log or budget is non-billable time in any Issue Time Log, Issue Budget, Milestone Budget, Code Commit Message, and Code Commit Comment.
 
-To indicate if time or budgets are non-billable, you add the `:free` :free: emoji right after your chosen `clock` emoji (like `:clock1:` :clock1:) or for budget you would place the `:free:` :free: emoji right have the `:dart:` :dart: emoji.
+To indicate if time or budgets are non-billable, you add the `:free:` :free: emoji right after your chosen `clock` emoji (like `:clock1:` :clock1:) or for budget you would place the `:free:` :free: emoji right have the `:dart:` :dart: emoji.
 
 #### Non-Billable Time and Budget Tracking Indicator Usage Example
 
