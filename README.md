@@ -131,7 +131,7 @@ The ability to indicate where a Time Log and Budget is considered Non-Billable h
 
 You may indicate when a time log or budget is non-billable time in any Issue Time Log, Issue Budget, Milestone Budget, Code Commit Message, and Code Commit Comment.
 
-To indicate if time or budgets are non-billable, you add the `:free:` :free: emoji right after your chosen `clock` emoji (like `:clock1:` :clock1:) or for budget you would place the `:free:` :free: emoji right have the `:dart:` :dart: emoji.
+To indicate if time or budgets are non-billable, you add the `:free:` :free: emoji right after your chosen `clock` emoji (like `:clock1:` :clock1:) or for budget you would place the `:free:` :free: emoji right after the `:dart:` :dart: emoji.
 
 #### Non-Billable Time and Budget Tracking Indicator Usage Example
 
