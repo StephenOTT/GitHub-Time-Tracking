@@ -7,9 +7,9 @@ class GitHubTimeTrackingAnalyzer
 
 		self.mongo_Connect
 
-		puts self.analyze_issue_spent_hours
-		puts self.analyze_issue_budget_hours
-		puts self.analyze_milestone_budget_hours
+		puts self.analyze_issue_spent_hours.to_s
+		puts self.analyze_issue_budget_hours.to_s
+		puts self.analyze_milestone_budget_hours.to_s
 
 	end
 
@@ -30,11 +30,12 @@ class GitHubTimeTrackingAnalyzer
 		totalIssueSpentHoursBreakdown = @collTimeTrackingCommits.aggregate([
 			{ "$match" => {type: "Issue Time"}},
 			{ "$group" => {_id:{repo_name: "$repo_name", 
-								type:"$type", 
-								issue_number:"$issue_number", 
-								issue_state: "$issue_state"}, 
+								type: "$type", 
+								assigned_milestone_number: "$assigned_milestone_number",
+								issue_number: "$issue_number", 
+								issue_state: "$issue_state" }, 
 								duration_sum: { "$sum" => "$duration" }, 
-								issue_count:{"$sum" =>1}}}
+								issue_count:{ "$sum" => 1 }}}
 								])
 		output = []
 		totalIssueSpentHoursBreakdown.each do |x|
@@ -49,11 +50,12 @@ class GitHubTimeTrackingAnalyzer
 		totalIssueBudgetHoursBreakdown = @collTimeTrackingCommits.aggregate([
 			{ "$match" => {type: "Issue Budget"}},
 			{ "$group" => {_id:{repo_name: "$repo_name", 
-								type:"$type", 
+								type: "$type", 
 								issue_number:"$issue_number", 
-								issue_state: "$issue_state"}, 
+								assigned_milestone_number: "$assigned_milestone_number", 
+								issue_state: "$issue_state" }, 
 								duration_sum: { "$sum" => "$duration" }, 
-								issue_count:{"$sum" =>1}}}
+								issue_count:{ "$sum" => 1 }}}
 								])
 		output = []
 		totalIssueBudgetHoursBreakdown.each do |x|
@@ -70,9 +72,9 @@ class GitHubTimeTrackingAnalyzer
 			{ "$group" => {_id:{repo_name: "$repo_name", 
 								type: "$type", 
 								milestone_number: "$milestone_number", 
-								milestone_state: "$milestone_state"}, 
+								milestone_state: "$milestone_state" }, 
 								duration_sum: { "$sum" => "$duration" }, 
-								milestone_count:{"$sum" =>1}}}
+								milestone_count:{ "$sum" => 1 }}}
 								])
 		output = []
 		totalMilestoneBudgetHoursBreakdown.each do |x|
