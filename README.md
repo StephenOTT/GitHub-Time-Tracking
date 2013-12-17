@@ -160,3 +160,69 @@ Notice the parent `Duration` field is empty.  This is due to time being logged i
 ## Process Overview
 
 ![github time tracking process overview](https://f.cloud.github.com/assets/1994838/1757137/409bf8e0-667c-11e3-9576-14400457c2c1.png)
+
+
+## Data Analysis
+
+This section will grow as the data analysis / UI is developed for the application
+
+
+### Data output from Data Analyzer and MongoDB
+
+Using the MongoDB Aggregation Framework a series of high level aggregations are preformed to provide the required data for the front-end to display needed Time Tracking information.
+
+#### Issue Time Output
+
+```
+[
+    {
+        "repo_name"=>"StephenOTT/Test1", 
+        "type"=>"Issue Time", 
+        "assigned_milestone_number"=>1, 
+        "issue_number"=>6, 
+        "issue_state"=>"open", 
+        "duration_sum"=>43200, 
+        "issue_count"=>3
+    }, 
+    {
+        "repo_name"=>"StephenOTT/Test1", 
+        "type"=>"Issue Time", 
+        "assigned_milestone_number"=>1, 
+        "issue_number"=>7, 
+        "issue_state"=>"open", 
+        "duration_sum"=>14400, 
+        "issue_count"=>1
+    }
+]
+```
+
+#### Issue Budget Output
+
+```
+[
+    {
+        "repo_name"=>"StephenOTT/Test1", 
+        "type"=>"Issue Budget", 
+        "issue_number"=>7, 
+        "assigned_milestone_number"=>1, 
+        "issue_state"=>"open", 
+        "duration_sum"=>57600, 
+        "issue_count"=>1
+    }
+]
+```
+
+#### Milestone Budget Output
+
+```
+[
+    {
+        "repo_name"=>"StephenOTT/Test1", 
+        "type"=>"Milestone Budget", 
+        "milestone_number"=>1, 
+        "milestone_state"=>"open", 
+        "duration_sum"=>604800, 
+        "milestone_count"=>1
+    }
+]
+```
