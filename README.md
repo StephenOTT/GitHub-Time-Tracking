@@ -1,7 +1,11 @@
 GitHub-Time-Tracking
 ===========================
 
-Ruby app that analyzes GitHub Issue Comments, Milestones, and Code Commit Messages for Time Tracking and Budget Tracking information 
+Ruby app that analyzes GitHub Issue Comments, Milestones, and Code Commit Messages for Time Tracking and Budget Tracking information.
+
+GitHub-Time-Tracking is designed to offer maximum flexibility in the way you use GitHub to track your time and budgets, but provide a time and budget syntax that is intuitive to use and read.  Any emoji that is used was specifically chosen to be intuitive to its purpose.  Of course you can choose your own set of Emoji if you do not like the predefined ones.
+
+**If you like GitHub-Time-Tracking, but sure to check out GitHub-Analytics: https://github.com/StephenOTT/GitHub-Analytics**
 
 
 ## Usage Patterns
@@ -175,18 +179,17 @@ To indicate if time or budgets are non-billable, you add the `:free:` :free: emo
 
 ## Sample Data Structure for Reporting
 
-### Time Logging
-![screen shot 2013-12-13 at 1 38 58 am](https://f.cloud.github.com/assets/1994838/1740302/e4281c18-63c1-11e3-8674-fda74e89f628.png)
+### Time Logging in a Issue
+![screen shot 2013-12-17 at 2 10 36 pm](https://f.cloud.github.com/assets/1994838/1767347/81179704-6752-11e3-8783-e3e083f5cc30.png)
 
+### Budget Logging in a Issue
+![screen shot 2013-12-17 at 2 10 58 pm](https://f.cloud.github.com/assets/1994838/1767348/8117dcc8-6752-11e3-9a69-578f11cdf21b.png)
 
-### Budget Logging
-![screen shot 2013-12-13 at 5 48 52 pm](https://f.cloud.github.com/assets/1994838/1746777/c65ec7d6-6448-11e3-9e66-161bb3b05739.png)
+### Budget Logging in a Milestone
+![screen shot 2013-12-17 at 2 16 30 pm](https://f.cloud.github.com/assets/1994838/1767346/811700dc-6752-11e3-924f-1340642b19bf.png)
 
-### Code Commit Time Logging
-![screen shot 2013-12-15 at 7 23 19 pm](https://f.cloud.github.com/assets/1994838/1751625/3e967ac0-65f5-11e3-9ade-00f9358b967b.png)
-
-### Code Commit Time Logging with Time in Commit Comments rather than Commit Message
-![screen shot 2013-12-16 at 1 10 41 pm](https://f.cloud.github.com/assets/1994838/1757211/8239f490-667d-11e3-8ec1-d60d7c443da5.png)
+### Code Commit Time Logging - Supports Time Logging in Commit Message and Commit Comments
+![screen shot 2013-12-17 at 2 17 08 pm](https://f.cloud.github.com/assets/1994838/1767349/81191ae8-6752-11e3-9a06-236006fef16c.png)
 
 Notice the parent `Duration` field is empty.  This is due to time being logged in the commit comments rather than the the Git Commit Message.  A use case for this would be if the developer forgot to add the Time tracking information in their Git Commit Message, they can just add it to the Commit Comments after the commit has been pushed to GitHub without any issues or errors.
 
