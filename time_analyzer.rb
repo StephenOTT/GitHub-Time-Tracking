@@ -10,6 +10,10 @@ class GitHubTimeTrackingAnalyzer
 
 		self.mongo_Connect
 
+		self.analyze_issue_spent_hours
+		self.analyze_issue_budget_hours
+		self.analyze_milestone_budget_hours
+
 	end
 
 	def mongo_Connect
@@ -20,24 +24,67 @@ class GitHubTimeTrackingAnalyzer
 		# uri = "mongodb://USERNAME:PASSWORD@ds061268.mongolab.com:61268/time_commits"
 		# @client = MongoClient.from_uri(uri)
 
-		@db = @client["time_commits"]
+		@db = @client["GitHub-TimeTracking"]
 
 		@collTimeTrackingCommits = @db["TimeTrackingCommits"]
 	end
 
 
-	def analyze_issue_total_hours
-		# totalHoursBreakdown = @collIssues.aggregate([
-		# 	{ "$match" => {type: "Issue Comment"}},
-		#     { "$unwind" => "$comments_Text" },		
-		# 	{ "$match" => {created_year: yearSpan}},
-		# 	{ "$group" => {_id:{"created_week" => "$created_week", "created_year" => "$created_year"}, number: { "$sum" => 1 }}},
-		# ])
+	def analyze_issue_spent_hours
+		totalIssueSpentHoursBreakdown = @collTimeTrackingCommits.aggregate([
+			{ "$match" => {type: "Issue Time"}},
+			{ "$group" => {_id:{repo_name: "$repo_name", 
+								type:"$type", 
+								issue_number:"$issue_number", 
+								issue_state: "$issue_state"}, 
+								duration_sum: { "$sum" => "$duration" }, 
+								issue_count:{"$sum" =>1}}}
+								])
 
-
+		totalIssueSpentHoursBreakdown.each do |x|
+			x["_id"]["duration_sum"] = x["duration_sum"]
+			x["_id"]["issue_count"] = x["issue_count"]
+			puts x["_id"]
+		end
 	end
 
+	def analyze_issue_budget_hours
+		totalIssueBudgetHoursBreakdown = @collTimeTrackingCommits.aggregate([
+			{ "$match" => {type: "Issue Budget"}},
+			{ "$group" => {_id:{repo_name: "$repo_name", 
+								type:"$type", 
+								issue_number:"$issue_number", 
+								issue_state: "$issue_state"}, 
+								duration_sum: { "$sum" => "$duration" }, 
+								issue_count:{"$sum" =>1}}}
+								])
 
+		totalIssueBudgetHoursBreakdown.each do |x|
+			x["_id"]["duration_sum"] = x["duration_sum"]
+			x["_id"]["issue_count"] = x["issue_count"]
+			puts x["_id"]
+		end
+	end
 
+	def analyze_milestone_budget_hours
+		totalMilestoneBudgetHoursBreakdown = @collTimeTrackingCommits.aggregate([
+			{ "$match" => {type: "Milestone Budget"}},
+			{ "$group" => {_id:{repo_name: "$repo_name", 
+								type: "$type", 
+								milestone_number: "$milestone_number", 
+								milestone_state: "$milestone_state"}, 
+								duration_sum: { "$sum" => "$duration" }, 
+								milestone_count:{"$sum" =>1}}}
+								])
+
+		totalMilestoneBudgetHoursBreakdown.each do |x|
+			x["_id"]["duration_sum"] = x["duration_sum"]
+			x["_id"]["milestone_count"] = x["milestone_count"]
+			puts x["_id"]
+		end
+	end
 
 end
+
+start = GitHubTimeTrackingAnalyzer.new
+start.controller
