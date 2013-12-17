@@ -1,7 +1,6 @@
 require 'octokit'
 require 'chronic_duration'
 require 'mongo'
-# require 'pp'
 
 class GitHubTimeTracking
 	include Mongo

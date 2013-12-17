@@ -1,10 +1,7 @@
 require 'mongo'
-require 'pp'
-
 
 class GitHubTimeTrackingAnalyzer
 	include Mongo
-
 
 	def controller
 
@@ -85,7 +82,6 @@ class GitHubTimeTrackingAnalyzer
 		end
 		return output
 	end
-
 end
 
 start = GitHubTimeTrackingAnalyzer.new
