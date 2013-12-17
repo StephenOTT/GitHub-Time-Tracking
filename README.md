@@ -125,6 +125,54 @@ Logging a budget for a milestone should be done at the beginning of the mileston
 ![screen shot 2013-12-15 at 8 41 55 pm](https://f.cloud.github.com/assets/1994838/1751602/bb757d9a-65f3-11e3-9ac5-86dba26bc037.png)
 
 
+### Tracking Billable and Non-Billable Time and Budgets
+
+The ability to indicate where a Time Log and Budget is considered Non-Billable.  This is typically used when staff are doing work that will not be billed to the client, but you want to track their time and indicate how much non-billable/free time has been allocated.
+
+You may indicate when a time log or budget is non-billable time in any Issue Time Log, Issue Budget, Milestone Budget, Code Commit Message, and Code Commit Comment.
+
+To indicate if time or budgets are non-billable, you add the `:free` :free: emoji right after your chosen `clock` emoji (like `:clock1:` :clock1:) or for budget you would place the `:free:` :free: emoji right have the `:dart:` :dart: emoji.
+
+#### Non-Billable Time and Budget Tracking Indicator Usage Example
+
+
+##### Logging Non-Billable Time for an Issue
+
+###### Examples
+
+1. `:clock1: :free: 2h` # => :clock1: :free: 2h
+
+
+##### Logging Non-Billable Time for a Code Commit Message
+
+###### Examples
+
+1. `:clock1: :free:  2h` # => :clock1: :free: 2h
+
+
+##### Logging Non-Billable Time for a Code Commit Comment
+
+###### Examples
+
+1. `:clock1: :free: 2h` # => :clock1: :free: 2h
+
+
+##### Logging Non-Billable Budgets for an Issue
+
+###### Examples
+
+1. `:dart: :free: 5d` # => :dart: :free: 5d
+
+
+##### Logging Non-Billable Budgets for a Milestone
+
+###### Examples
+
+1. `:dart: :free: 5d` # => :dart: :free: 5d
+
+
+
+
 ## Sample Data Structure for Reporting
 
 ### Time Logging
@@ -145,7 +193,7 @@ Notice the parent `Duration` field is empty.  This is due to time being logged i
 
 ## Future Features
 
-1. Tracking of Billable and non-billable hours
+1. ~~Tracking of Billable and non-billable hours~~ Done
 2. Breakdown by Milestones
 3. Breakdown by User
 4. Breakdown by Labels
