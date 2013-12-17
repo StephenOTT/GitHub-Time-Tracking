@@ -1,7 +1,7 @@
 require 'octokit'
 require 'chronic_duration'
 require 'mongo'
-require 'pp'
+# require 'pp'
 
 class GitHubTimeTracking
 	include Mongo
@@ -51,7 +51,7 @@ class GitHubTimeTracking
 		@client = MongoClient.new("localhost", 27017)
 
 		# code for working with MongoLab
-		# uri = "mongodb://USERNAME:PASSWORD@ds061268.mongolab.com:61268/time_commits"
+		# uri = "mongodb://USERNAME:PASSWORD@ds061268.mongolab.com:61268/TimeTrackingCommits"
 		# @client = MongoClient.from_uri(uri)
 
 		@db = @client["GitHub-TimeTracking"]
