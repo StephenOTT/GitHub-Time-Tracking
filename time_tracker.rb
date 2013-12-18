@@ -14,13 +14,25 @@ class GitHubTimeTracking
 		issues = self.get_Issues(repo)
 		issues.each do |i|
 			issueNumber = i.attrs[:number]
-			self.get_issue_time(repo, issueNumber)
-			self.get_issue_budget(repo,issueNumber)
+
+			issueTime = self.get_issue_time(repo, issueNumber)
+			issueBudget = self.get_issue_budget(repo, issueNumber)
+			if issueTime.empty? == false
+				self.putIntoMongoCollTimeTrackingCommits(issueTime)
+			end
+			if issueBudget.empty? == false
+				self.putIntoMongoCollTimeTrackingCommits(issueBudget)
+			end	
 		end
 
-		self.get_milestone_budget(repo)
-
-		self.get_commits_messages(repo)
+		milestoneBudgets = self.get_milestone_budget(repo)
+		repoCommits = self.get_commits_messages(repo)
+		if milestoneBudgets.empty? == false
+			self.putIntoMongoCollTimeTrackingCommits(milestoneBudgets)
+		end
+		if repoCommits.empty? == false
+			self.putIntoMongoCollTimeTrackingCommits(repoCommits)
+		end
 	end
 
 	def get_Issues(repo)
@@ -98,6 +110,14 @@ class GitHubTimeTracking
 				type = "Issue Time"
 				recordCreationDate = Time.now.utc
 
+				issueLabels = []
+				if issueDetails[:labels] !=nil
+					issueDetails[:labels].each do |x|
+						issueLabels << x["name"]
+					end
+				end
+
+
 				if issueDetails[:milestone] != nil
 					assignedMilestoneNumber = issueDetails[:milestone].attrs[:number]
 				end
@@ -152,9 +172,9 @@ class GitHubTimeTracking
 									"issue_title" => issueTitle,
 									"issue_state" => issueState,
 									"assigned_milestone_number" => assignedMilestoneNumber,
+									"issue_labels" => issueLabels,
 									"record_creation_date" => recordCreationDate
 								}
-				self.putIntoMongoCollTimeTrackingCommits(timeCommitHash)
 				output << timeCommitHash
 			end
 		end
@@ -190,6 +210,13 @@ class GitHubTimeTracking
 				type = "Issue Budget"
 				recordCreationDate = Time.now.utc
 
+				issueLabels = []
+				if issueDetails[:labels] !=nil
+					issueDetails[:labels].each do |x|
+						issueLabels << x["name"]
+					end
+				end
+
 				if issueDetails[:milestone] != nil
 					assignedMilestoneNumber = issueDetails[:milestone].attrs[:number]
 				end
@@ -224,9 +251,9 @@ class GitHubTimeTracking
 									"issue_state" => issueState,
 									"issue_title" => issueTitle,
 									"assigned_milestone_number" => assignedMilestoneNumber,
+									"issue_labels" => issueLabels,
 									"record_creation_date" => recordCreationDate
 								}
-				self.putIntoMongoCollTimeTrackingCommits(budgetCommitHash)
 				output << budgetCommitHash
 			end
 		end
@@ -294,7 +321,6 @@ class GitHubTimeTracking
 									"milestone_title" => milestoneTitle,
 									"record_creation_date" => recordCreationDate
 								}
-				self.putIntoMongoCollTimeTrackingCommits(milestoneBudgetHash)
 				output << milestoneBudgetHash
 			end
 		end
@@ -383,7 +409,6 @@ class GitHubTimeTracking
 									"line" => commentForLine,
 									"record_creation_date" => recordCreationDate
 								}
-
 				commitCommentsArray << timeCommitHash
 			end
 		end
@@ -485,7 +510,6 @@ class GitHubTimeTracking
 							}
 
 			unless timeCommitHash["duration"] == nil and timeCommitHash["commit_comments"].empty? == true
-				self.putIntoMongoCollTimeTrackingCommits(timeCommitHash)
 				output << timeCommitHash
 			end
 		end
