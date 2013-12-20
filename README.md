@@ -206,6 +206,7 @@ Notice the parent `Duration` field is empty.  This is due to time being logged i
 8. ~~Budget Tracking (What is the allocated budget of a issue, milestone, label, etc)~~ Done
 9. ~~Code Commit Time Tracking~~ Done
 10. Support Business Hours Time and Budget Logging. Example: 1 week will equal 5 days (1 Business Week) rather than 1 week equalling 7 days (1 Calendar Week).  Most popular use case would be able to say 1 Day would equal 8 hours rather than 24 hours.
+11. ~~Add Ability to parse Label grouping words out of labels.  This will allow Web app to categorize beyond milestones and to categorize within a label.  Example: Label = Project Management: Project Oversight.  Label = Business Analysis: Requirements Definition.~~  Done
 
 
 ## Process Overview

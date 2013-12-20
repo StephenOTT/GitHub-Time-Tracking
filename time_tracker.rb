@@ -115,8 +115,9 @@ class GitHubTimeTracking
 					issueDetails[:labels].each do |x|
 						issueLabels << x["name"]
 					end
+					issueLabels = self.process_issue_labels(issueLabels)
 				end
-
+				
 
 				if issueDetails[:milestone] != nil
 					assignedMilestoneNumber = issueDetails[:milestone].attrs[:number]
@@ -215,7 +216,9 @@ class GitHubTimeTracking
 					issueDetails[:labels].each do |x|
 						issueLabels << x["name"]
 					end
+					issueLabels = self.process_issue_labels(issueLabels)
 				end
+
 
 				if issueDetails[:milestone] != nil
 					assignedMilestoneNumber = issueDetails[:milestone].attrs[:number]
@@ -515,6 +518,44 @@ class GitHubTimeTracking
 		end
 		return output
 	end
+
+	def process_issue_labels(ghLabels, options = {})
+			output = []
+			outputHash = {}
+			
+			if options[:acceptedLabels] == nil
+				# Exaple/Default labels.
+				acceptedLabels = [
+									{:category => "PM:", :label => "Project Oversight Design"},
+									{:category => "Priority:", :label => "High"},
+									{:category => "Priority:", :label => "Medium"},
+									{:category => "Priority:", :label => "Low"},
+									{:category => "BA:", :label => "Requirements Testing"},
+									{:category => "BA:", :label => "Requirements Definition"}
+									{:category => "Infrastructure:", :label => "Security Reviewed"}
+								]
+			end
+
+			ghLabels.each do |x|
+				if acceptedLabels.any? { |b| [b[:category],b[:label]].join(" ") == x } == true
+					acceptedLabels.each do |y|
+						if [y[:category], y[:label]].join(" ") == x
+							outputHash["Category"] = y[:category][0..-2]
+							outputHash["Label"] = y[:label]
+							output << outputHash
+						end
+					end
+				else
+					outputHash["Category"] = nil
+					outputHash["Label"] = x
+					output << outputHash
+				end
+			end
+		return output
+	end
+
+
+
 end
 
 start = GitHubTimeTracking.new
