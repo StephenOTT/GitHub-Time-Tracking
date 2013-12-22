@@ -589,6 +589,77 @@ class GitHubTimeTracking
 		end
 		return tasks
 	end
+
+	def get_time_from_commment_tasks (tasksText, taskState)
+		output = []
+		acceptedClockEmoji = [":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", 
+						":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", 
+						":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", 
+						":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", 
+						":clock4:", ":clock530:", ":clock7:", ":clock830:"]
+		acceptedNonBilliableEmoji = [":free:"]
+
+
+		tasksText.each do |commentBody|
+
+			if acceptedClockEmoji.any? { |w| commentBody =~ /\A#{w}/ } == true
+				workDate = nil
+				parsedComment = nil
+				type = "Task Time"
+				recordCreationDate = Time.now.utc
+
+				isNonBilliableTime = acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
+
+				acceptedClockEmoji.each do |x|
+					if commentBody.gsub!("#{x} ","") != nil
+						if isNonBilliableTime == true
+							acceptedNonBilliableEmoji.each do |b|
+								parsedComment = commentBody.gsub("#{x} #{b}","").split(" | ")
+								break
+							end
+						else
+							parsedComment = commentBody.gsub("#{x} ","").split(" | ")
+							break
+						end
+					end
+				end
+				# Parse first value as a duration
+				duration = ChronicDuration.parse(parsedComment[0])
+				
+				# Is there anything more than a duration value?
+				if parsedComment[1].nil?
+					workDate = nil
+				else
+					begin
+						# Determine if the second item is a Date.
+						# Try to parse the item as a Date
+						workDate = Time.parse(parsedComment[1]).utc
+					rescue
+						# If date parse is invalid then we assume second item is not a date
+						# We assume it is not a date then it is treated as a comment
+						if parsedComment[1].nil? == false
+							timeComment = parsedComment[1].lstrip.gsub("\r\n", " ")
+						end
+					end
+					# if there is a Druation and a Date then there will be a third item in the array
+					# If there is a third item then we treat it as a comment
+					if parsedComment[2].nil? == false
+						timeComment = parsedComment[2].lstrip.gsub("\r\n", " ")
+					end
+				end
+				taskTimeCommitHash = {"type" => type,
+									"duration" => duration,
+									"non_billable" => isNonBilliableTime,
+									"work_date" => workDate,
+									"time_description" => timeComment,
+									"tasks_state" => taskState.to_s,
+									"record_creation_date" => recordCreationDate
+								}
+				output << taskTimeCommitHash
+			end
+		end
+		return output
+	end
 end
 
 start = GitHubTimeTracking.new
