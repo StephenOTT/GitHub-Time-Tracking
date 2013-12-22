@@ -568,8 +568,27 @@ class GitHubTimeTracking
 		return output
 	end
 
+	def get_comment_tasks (commentBody, taskState = :incomplete)
 
+		tasks = []
+		startStringOpen = /\-\s\[\s\]\s/
+		startStringClosed = /\-\s\[x\]\s/
 
+		endString = /[\r\n]|\z/
+
+		if taskState == :incomplete
+			tasksInBody = commentBody.scan(/#{startStringOpen}(.*?)#{endString}/)
+			tasksInBody.each do |x|
+				tasks << x[0]
+			end
+		elsif taskState == :complete
+			tasksInBody = commentBody.scan(/#{startStringClosed}(.*?)#{endString}/)
+			tasksInBody.each do |x|
+				tasks << x[0]
+			end
+		end
+		return tasks
+	end
 end
 
 start = GitHubTimeTracking.new
