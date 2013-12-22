@@ -98,7 +98,7 @@ class GitHubTimeTracking
 			commentBody = c.attrs[:body]
 
 			# Check if any of the accepted Clock emoji are in the comment
-			if acceptedClockEmoji.any? { |w| commentBody =~ /#{w}/ }
+			if acceptedClockEmoji.any? { |w| commentBody =~ /\A#{w}/ }
 
 				isNonBilliableTime = acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
 				commentId = c.attrs[:id]
@@ -199,7 +199,7 @@ class GitHubTimeTracking
 			commentBody = c.attrs[:body]
 
 			# Check if any of the accepted emoji are in the comment
-			if acceptedBudgetEmoji.any? { |w| commentBody =~ /#{w}/ }
+			if acceptedBudgetEmoji.any? { |w| commentBody =~ /\A#{w}/ }
 
 				isNonBilliableTime = acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
 				commentId = c.attrs[:id]
@@ -281,7 +281,7 @@ class GitHubTimeTracking
 			commentBody = c.attrs[:description]
 
 			# Check if any of the accepted emoji are in the comment
-			if acceptedBudgetEmoji.any? { |w| commentBody =~ /#{w}/ }
+			if acceptedBudgetEmoji.any? { |w| commentBody =~ /\A#{w}/ }
 
 				isNonBilliableTime = acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
 				milestoneTitle = c.attrs[:title]
@@ -350,7 +350,7 @@ class GitHubTimeTracking
 			commentBody = c.attrs[:body]
 
 			# Check if any of the accepted Clock emoji are in the comment
-			if acceptedClockEmoji.any? { |w| commentBody =~ /#{w}/ }
+			if acceptedClockEmoji.any? { |w| commentBody =~ /\A#{w}/ }
 
 				isNonBilliableTime = acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
 				commentId = c.attrs[:id]
@@ -441,7 +441,7 @@ class GitHubTimeTracking
 			commitMessage = c.attrs[:commit].attrs[:message]
 
 			# Check if any of the accepted Clock emoji are in the comment
-			timeInCommitMessageYN = acceptedClockEmoji.any? { |w| commitMessage =~ /#{w}/ }
+			timeInCommitMessageYN = acceptedClockEmoji.any? { |w| commitMessage =~ /\A#{w}/ }
 
 			type = "Code Commit Time"
 			recordCreationDate = Time.now.utc
