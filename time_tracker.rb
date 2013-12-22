@@ -33,6 +33,16 @@ class GitHubTimeTracking
 		if repoCommits.empty? == false
 			self.putIntoMongoCollTimeTrackingCommits(repoCommits)
 		end
+
+
+		# Tasks Processing BETA code:
+
+		commentBody1 = "Cat\r\n\r\nDog\r\n\r\n- [ ] :clock1: :free: 1h | Task Name 1\r\n- [ ] Task Name 2\r\n\r\n- [ ] Task Name 3\r\n- [x] Tast Complete 1\r\n\r\ncats \r\n\r\n- [x] Task name Complete 1\r\n\r\n\r\n- [ ] Task Name 4"
+		dog = self.get_comment_tasks(commentBody1, :incomplete)
+		puts dog
+		puts self.get_time_from_commment_tasks(dog, :incomplete)
+
+
 	end
 
 	def get_Issues(repo)
