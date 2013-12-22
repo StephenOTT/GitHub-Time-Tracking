@@ -536,13 +536,17 @@ class GitHubTimeTracking
 			if options[:acceptedLabels] == nil
 				# Exaple/Default labels.
 				acceptedLabels = [
-									{:category => "PM:", :label => "Project Oversight Design"},
-									{:category => "Priority:", :label => "High"},
-									{:category => "Priority:", :label => "Medium"},
 									{:category => "Priority:", :label => "Low"},
-									{:category => "BA:", :label => "Requirements Testing"},
-									{:category => "BA:", :label => "Requirements Definition"}
-									{:category => "Infrastructure:", :label => "Security Reviewed"}
+									{:category => "Priority:", :label => "Medium"},
+									{:category => "Priority:", :label => "High"},
+									{:category => "Size:", :label => "Small"},
+									{:category => "Size:", :label => "Medium"},
+									{:category => "Size:", :label => "Large"},
+									{:category => "Version:", :label => "1.0"},
+									{:category => "Version:", :label => "1.5"},
+									{:category => "Version:", :label => "2.0"},
+									{:category => "Task:", :label => "Medium"},
+									{:category => "Size:", :label => "Medium"},
 								]
 			end
 
