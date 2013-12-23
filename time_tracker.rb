@@ -13,6 +13,11 @@ class GitHubTimeTracking
 
 		issues = self.get_Issues(repo)
 		issues.each do |i|
+
+			self.process_issue(repo, i)
+
+
+
 			issueNumber = i.attrs[:number]
 
 			issueTime = self.get_issue_time(repo, issueNumber)
@@ -44,6 +49,42 @@ class GitHubTimeTracking
 
 
 	end
+
+
+	def process_issue(repo, issueDetails)
+		# output = {}
+		
+		type = "Issue Time"
+		issueState = issueDetails.attrs[:state]
+		issueTitle = issueDetails.attrs[:title]
+		issueNumber = issueDetails.attrs[:number]
+
+		milestoneNumber = get_issue_milestone_number(issueDetails.attrs[:milestone])
+		
+		labelNames = self.get_label_names(issueDetails.attrs[:labels])
+		labels = self.process_issue_labels(labelNames)
+		
+
+		issueComments = @ghClient.issue_comments(repo, issueDetails.attrs[:number])
+
+		commentsTime = []
+		issueComments.each do |x|
+			commentsTime << self.process_issue_comment_for_time(x)
+		end
+		output = {"type" => type,
+				"issue_state" => issueState,
+				"issue_title" => issueTitle,
+				"issue_number" => issueNumber,
+				"milestone_number" => milestoneNumber,
+				"labels" => labels,
+				"time_commits" => commentsTime}
+
+	end
+
+
+
+
+
 
 	def get_Issues(repo)
 		issueResultsOpen = @ghClient.list_issues(repo, {
@@ -88,6 +129,124 @@ class GitHubTimeTracking
 		@ghClient = Octokit::Client.new(:login => username.to_s, :password => password.to_s, :auto_paginate => true)
 	end
 
+
+
+
+
+	def time_comment?(commentBody)
+		acceptedClockEmoji = [":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", 
+								":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", 
+								":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", 
+								":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", 
+								":clock4:", ":clock530:", ":clock7:", ":clock830:"]
+
+		return acceptedClockEmoji.any? { |w| commentBody =~ /\A#{w}/ }
+	end
+
+	def time_comment_non_billable?(commentBody)
+		acceptedNonBilliableEmoji = [":free:"]
+
+		return acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
+	end
+
+	def get_label_names(labels)
+		issueLabels = []
+		if labels != nil
+			labels.each do |x|
+				issueLabels << x["name"]
+			end
+		end
+		return issueLabels
+	end
+
+	def get_issue_milestone_number(milestoneDetails)
+		if milestoneDetails != nil
+			return milestoneDetails.attrs[:number]
+		end
+	end
+
+	def get_time_duration(durationText)
+		return ChronicDuration.parse(durationText)
+	end
+
+	def parse_time_commit(timeComment, nonBillableTime)
+		acceptedClockEmoji = [":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", 
+								":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", 
+								":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", 
+								":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", 
+								":clock4:", ":clock530:", ":clock7:", ":clock830:"]
+
+		acceptedNonBilliableEmoji = [":free:"]
+		parsedCommentHash = {}
+		parsedComment = []
+		acceptedClockEmoji.each do |x|
+			if nonBillableTime == true
+				acceptedNonBilliableEmoji.each do |b|
+					if timeComment =~ /\A#{x} #{b}/
+						parsedComment = self.parse_non_billable_time_comment(timeComment,x,b)
+						parsedCommentHash["non_billable"] = true
+						break
+					end
+				end
+			elsif nonBillableTime == false
+				if timeComment =~ /\A#{x}/
+					parsedComment = self.parse_billable_time_comment(timeComment,x)
+					parsedCommentHash["non_billable"] = false
+					break
+				end
+			end
+		end
+
+		if parsedComment[0] != nil
+			parsedCommentHash["duration"] = self.get_time_duration(parsedComment[0])
+		end
+		if parsedComment[1] != nil
+			parsedCommentHash["work_date"] = self.get_time_work_date(parsedComment[1])
+		end
+		if parsedComment[2] != nil
+			parsedCommentHash["time_comment"] = self.get_time_commit_comment(parsedComment[2])
+		end
+
+		return parsedCommentHash
+	end
+
+	def parse_billable_time_comment(timeComment, timeEmoji)
+		return commentBody.gsub("#{timeEmoji} ","").split(" | ")
+	end
+
+	def parse_non_billable_time_comment(timeComment, timeEmoji, nonBillableEmoji)
+		return commentBody.gsub("#{timeEmoji} #{nonBillableEmoji} ","").split(" | ")
+	end
+
+	def get_time_work_date(parsedTimeComment)
+		begin
+			return Time.parse(parsedTimeComment).utc
+		rescue
+			return nil
+		end
+	end
+
+	def get_time_commit_comment(parsedTimeComment)
+		return parsedTimeComment.lstrip.gsub("\r\n", " ")
+	end
+
+
+	def process_issue_comment_for_time(issueComment)
+		output = {}
+		nonBillable = self.time_comment_non_billable?(issueComment)
+		parsedTimeDetails = self.parse_time_commit(issueComment, nonBillable)
+
+		overviewDetails = {"comment_id" => issueComment.attrs[:id],
+							"work_logged_by" => issueComment.attrs[:user].attrs[:login],
+							"comment_created_date" => issueComment.attrs[:created_at],
+							"comment_last_updated_date" =>issueComment.attrs[:updated_at],
+							"record_creation_date" => Time.now.utc}
+
+		parsedTimeDetails.merge(overviewDetails)
+		return parsedTimeDetails
+	end
+
+
 	def get_issue_time(repo, issueNumber)
 		output = []
 		acceptedClockEmoji = [":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", 
@@ -107,7 +266,7 @@ class GitHubTimeTracking
 
 			commentBody = c.attrs[:body]
 
-			# Check if any of the accepted Clock emoji are in the comment
+			# Check if any of the accepted Clock emoji are in the begining of the comment
 			if acceptedClockEmoji.any? { |w| commentBody =~ /\A#{w}/ }
 
 				isNonBilliableTime = acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
@@ -530,59 +689,59 @@ class GitHubTimeTracking
 	end
 
 	def process_issue_labels(ghLabels, options = {})
-			output = []
-			outputHash = {}
-			
-			if options[:acceptedLabels] == nil
-				# Exaple/Default labels.
-				acceptedLabels = [
-									{:category => "Priority:", :label => "Low"},
-									{:category => "Priority:", :label => "Medium"},
-									{:category => "Priority:", :label => "High"},
-									{:category => "Size:", :label => "Small"},
-									{:category => "Size:", :label => "Medium"},
-									{:category => "Size:", :label => "Large"},
-									{:category => "Version:", :label => "1.0"},
-									{:category => "Version:", :label => "1.5"},
-									{:category => "Version:", :label => "2.0"},
-									{:category => "Task:", :label => "Medium"},
-									{:category => "Size:", :label => "Medium"},
-								]
-			end
+		output = []
+		outputHash = {}
+		
+		if options[:acceptedLabels] == nil
+			# Exaple/Default labels.
+			acceptedLabels = [
+								{:category => "Priority:", :label => "Low"},
+								{:category => "Priority:", :label => "Medium"},
+								{:category => "Priority:", :label => "High"},
+								{:category => "Size:", :label => "Small"},
+								{:category => "Size:", :label => "Medium"},
+								{:category => "Size:", :label => "Large"},
+								{:category => "Version:", :label => "1.0"},
+								{:category => "Version:", :label => "1.5"},
+								{:category => "Version:", :label => "2.0"},
+								{:category => "Task:", :label => "Medium"},
+								{:category => "Size:", :label => "Medium"},
+							]
+		end
 
-			ghLabels.each do |x|
-				if acceptedLabels.any? { |b| [b[:category],b[:label]].join(" ") == x } == true
-					acceptedLabels.each do |y|
-						if [y[:category], y[:label]].join(" ") == x
-							outputHash["Category"] = y[:category][0..-2]
-							outputHash["Label"] = y[:label]
-							output << outputHash
-						end
+		ghLabels.each do |x|
+			if acceptedLabels.any? { |b| [b[:category],b[:label]].join(" ") == x } == true
+				acceptedLabels.each do |y|
+					if [y[:category], y[:label]].join(" ") == x
+						outputHash["Category"] = y[:category][0..-2]
+						outputHash["Label"] = y[:label]
+						output << outputHash
 					end
-				else
-					outputHash["Category"] = nil
-					outputHash["Label"] = x
-					output << outputHash
 				end
+			else
+				outputHash["Category"] = nil
+				outputHash["Label"] = x
+				output << outputHash
 			end
+		end
 		return output
 	end
 
 	def get_comment_tasks (commentBody, taskState = :incomplete)
 
 		tasks = []
-		startStringOpen = /\-\s\[\s\]\s/
-		startStringClosed = /\-\s\[x\]\s/
+		startStringIncomplete = /\-\s\[\s\]\s/
+		startStringComplete = /\-\s\[x\]\s/
 
 		endString = /[\r\n]|\z/
 
 		if taskState == :incomplete
-			tasksInBody = commentBody.scan(/#{startStringOpen}(.*?)#{endString}/)
+			tasksInBody = commentBody.scan(/#{startStringIncomplete}(.*?)#{endString}/)
 			tasksInBody.each do |x|
 				tasks << x[0]
 			end
 		elsif taskState == :complete
-			tasksInBody = commentBody.scan(/#{startStringClosed}(.*?)#{endString}/)
+			tasksInBody = commentBody.scan(/#{startStringComplete}(.*?)#{endString}/)
 			tasksInBody.each do |x|
 				tasks << x[0]
 			end
@@ -659,6 +818,22 @@ class GitHubTimeTracking
 			end
 		end
 		return output
+	end
+
+	def time_task_non_billable?(taskBody)
+		acceptedNonBilliableEmoji = [":free:"]
+		
+		return acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
+	end
+
+	def time_task?(taskBody)
+		acceptedClockEmoji = [":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", 
+								":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", 
+								":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", 
+								":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", 
+								":clock4:", ":clock530:", ":clock7:", ":clock830:"]
+
+		return acceptedClockEmoji.any? { |w| taskBody =~ /\A#{w}/ }
 	end
 end
 

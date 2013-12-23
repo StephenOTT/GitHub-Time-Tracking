@@ -5,7 +5,7 @@ Ruby app that analyzes GitHub Issue Comments, Milestones, and Code Commit Messag
 
 GitHub-Time-Tracking is designed to offer maximum flexibility in the way you use GitHub to track your time and budgets, but provide a time and budget syntax that is intuitive to use and read.  Any emoji that is used was specifically chosen to be intuitive to its purpose.  Of course you can choose your own set of Emoji if you do not like the predefined ones.
 
-**If you like GitHub-Time-Tracking, but sure to check out GitHub-Analytics: https://github.com/StephenOTT/GitHub-Analytics**
+**If you like GitHub-Time-Tracking, be sure to check out GitHub-Analytics: https://github.com/StephenOTT/GitHub-Analytics**
 
 
 ## Usage Patterns
