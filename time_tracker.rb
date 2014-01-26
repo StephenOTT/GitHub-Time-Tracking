@@ -1,6 +1,7 @@
 require 'octokit'
 require 'chronic_duration'
 require 'mongo'
+require 'pp'
 
 class GitHubTimeTracking
 	include Mongo
@@ -18,38 +19,35 @@ class GitHubTimeTracking
 
 
 
-			issueNumber = i.attrs[:number]
+		# 	issueNumber = i.attrs[:number]
 
-			issueTime = self.get_issue_time(repo, issueNumber)
-			issueBudget = self.get_issue_budget(repo, issueNumber)
-			if issueTime.empty? == false
-				self.putIntoMongoCollTimeTrackingCommits(issueTime)
-			end
-			if issueBudget.empty? == false
-				self.putIntoMongoCollTimeTrackingCommits(issueBudget)
-			end	
+		# 	issueTime = self.get_issue_time(repo, issueNumber)
+		# 	issueBudget = self.get_issue_budget(repo, issueNumber)
+		# 	if issueTime.empty? == false
+		# 		self.putIntoMongoCollTimeTrackingCommits(issueTime)
+		# 	end
+		# 	if issueBudget.empty? == false
+		# 		self.putIntoMongoCollTimeTrackingCommits(issueBudget)
+		# 	end	
 		end
 
-		milestoneBudgets = self.get_milestone_budget(repo)
-		repoCommits = self.get_commits_messages(repo)
-		if milestoneBudgets.empty? == false
-			self.putIntoMongoCollTimeTrackingCommits(milestoneBudgets)
-		end
-		if repoCommits.empty? == false
-			self.putIntoMongoCollTimeTrackingCommits(repoCommits)
-		end
+		# milestoneBudgets = self.get_milestone_budget(repo)
+		# repoCommits = self.get_commits_messages(repo)
+		# if milestoneBudgets.empty? == false
+		# 	self.putIntoMongoCollTimeTrackingCommits(milestoneBudgets)
+		# end
+		# if repoCommits.empty? == false
+		# 	self.putIntoMongoCollTimeTrackingCommits(repoCommits)
+		# end
 
 
-		# Tasks Processing BETA code:
+		# # Tasks Processing BETA code:
 
-		commentBody1 = "Cat\r\n\r\nDog\r\n\r\n- [ ] :clock1: :free: 1h | Task Name 1\r\n- [ ] Task Name 2\r\n\r\n- [ ] Task Name 3\r\n- [x] Tast Complete 1\r\n\r\ncats \r\n\r\n- [x] Task name Complete 1\r\n\r\n\r\n- [ ] Task Name 4"
-		dog = self.get_comment_tasks(commentBody1, :incomplete)
-		puts dog
-		puts self.get_time_from_commment_tasks(dog, :incomplete)
-
-
+		# commentBody1 = "Cat\r\n\r\nDog\r\n\r\n- [ ] :clock1: :free: 1h | Task Name 1\r\n- [ ] Task Name 2\r\n\r\n- [ ] Task Name 3\r\n- [x] Tast Complete 1\r\n\r\ncats \r\n\r\n- [x] Task name Complete 1\r\n\r\n\r\n- [ ] Task Name 4"
+		# dog = self.get_comment_tasks(commentBody1, :incomplete)
+		# puts dog
+		# puts self.get_time_from_commment_tasks(dog, :incomplete)
 	end
-
 
 	def process_issue(repo, issueDetails)
 		# output = {}
@@ -58,7 +56,11 @@ class GitHubTimeTracking
 		issueState = issueDetails.attrs[:state]
 		issueTitle = issueDetails.attrs[:title]
 		issueNumber = issueDetails.attrs[:number]
-
+		issueCreatedAt = issueDetails.attrs[:created_at]
+		issueClosedAt = issueDetails.attrs[:closed_at]
+		issueLastUpdatedAt = issueDetails.attrs[:updated_at]
+		recordCreationDate = Time.now.utc
+		
 		milestoneNumber = get_issue_milestone_number(issueDetails.attrs[:milestone])
 		
 		labelNames = self.get_label_names(issueDetails.attrs[:labels])
@@ -69,19 +71,49 @@ class GitHubTimeTracking
 
 		commentsTime = []
 		issueComments.each do |x|
-			commentsTime << self.process_issue_comment_for_time(x)
+			dog = self.process_issue_comment_for_time(x)
+			if dog != nil
+				commentsTime << dog
+			end
 		end
-		output = {"type" => type,
-				"issue_state" => issueState,
-				"issue_title" => issueTitle,
-				"issue_number" => issueNumber,
-				"milestone_number" => milestoneNumber,
-				"labels" => labels,
-				"time_commits" => commentsTime}
 
+			puts output = { "type" => type,
+					"issue_state" => issueState,
+					"issue_title" => issueTitle,
+					"issue_number" => issueNumber,
+					"milestone_number" => milestoneNumber,
+					"labels" => labels,
+					"issue_created_at" => issueCreatedAt,
+					"issue_closed_at" => issueClosedAt,
+					"issue_last_updated_at" => issueLastUpdatedAt,
+					"record_creation_date" => recordCreationDate,
+					"time_commits" => commentsTime }	
 	end
 
+	def mongo_Connect
+		# MongoDB Database Connect
+		@client = MongoClient.new("localhost", 27017)
 
+		# code for working with MongoLab
+		# uri = "mongodb://USERNAME:PASSWORD@ds061268.mongolab.com:61268/TimeTrackingCommits"
+		# @client = MongoClient.from_uri(uri)
+
+		@db = @client["GitHub-TimeTracking"]
+
+		@collTimeTrackingCommits = @db["TimeTrackingCommits"]
+	end
+
+	def putIntoMongoCollTimeTrackingCommits(mongoPayload)
+		@collTimeTrackingCommits.insert(mongoPayload)
+	end
+
+	def gh_Authenticate(username, password)
+		@ghClient = Octokit::Client.new(
+										:login => username.to_s, 
+										:password => password.to_s, 
+										:auto_paginate => true
+										)
+	end
 
 
 
@@ -108,143 +140,146 @@ class GitHubTimeTracking
 		return mergedMilestones = milestonesResultsOpen + milestonesResultsClosed
 	end
 
-	def mongo_Connect
-		# MongoDB Database Connect
-		@client = MongoClient.new("localhost", 27017)
-
-		# code for working with MongoLab
-		# uri = "mongodb://USERNAME:PASSWORD@ds061268.mongolab.com:61268/TimeTrackingCommits"
-		# @client = MongoClient.from_uri(uri)
-
-		@db = @client["GitHub-TimeTracking"]
-
-		@collTimeTrackingCommits = @db["TimeTrackingCommits"]
-	end
-
-	def putIntoMongoCollTimeTrackingCommits(mongoPayload)
-		@collTimeTrackingCommits.insert(mongoPayload)
-	end
-
-	def gh_Authenticate(username, password)
-		@ghClient = Octokit::Client.new(:login => username.to_s, :password => password.to_s, :auto_paginate => true)
-	end
 
 
 
 
+	# def time_comment?(commentBody)
+	# 	acceptedClockEmoji = [":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", 
+	# 							":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", 
+	# 							":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", 
+	# 							":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", 
+	# 							":clock4:", ":clock530:", ":clock7:", ":clock830:"]
 
-	def time_comment?(commentBody)
-		acceptedClockEmoji = [":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", 
-								":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", 
-								":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", 
-								":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", 
-								":clock4:", ":clock530:", ":clock7:", ":clock830:"]
+	# 	acceptedClockEmoji.any? { |w| commentBody.attrs[:body] =~ /\A#{w}/ }
+	# end
 
-		return acceptedClockEmoji.any? { |w| commentBody =~ /\A#{w}/ }
-	end
+	# def budget_comment?(commentBody)
+	# 	acceptedBudgetEmoji = [":dart:"]
 
-	def time_comment_non_billable?(commentBody)
-		acceptedNonBilliableEmoji = [":free:"]
+	# 	return acceptedClockEmoji.any? { |w| commentBody.attrs[:body] =~ /\A#{w}/ }
+	# end
 
-		return acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
-	end
+	# def non_billable?(commentBody)
+	# 	acceptedNonBilliableEmoji = [":free:"]
+	# 	# TODO come up with better regex for checking to see if it is a valud billable
+	# 	return acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
+	# end
 
-	def get_label_names(labels)
-		issueLabels = []
-		if labels != nil
-			labels.each do |x|
-				issueLabels << x["name"]
-			end
-		end
-		return issueLabels
-	end
+	# def get_label_names(labels)
+	# 	issueLabels = []
+	# 	if labels != nil
+	# 		labels.each do |x|
+	# 			issueLabels << x["name"]
+	# 		end
+	# 	end
+	# 	return issueLabels
+	# end
 
-	def get_issue_milestone_number(milestoneDetails)
-		if milestoneDetails != nil
-			return milestoneDetails.attrs[:number]
-		end
-	end
+	# def get_issue_milestone_number(milestoneDetails)
+	# 	if milestoneDetails != nil
+	# 		return milestoneDetails.attrs[:number]
+	# 	end
+	# end
 
-	def get_time_duration(durationText)
-		return ChronicDuration.parse(durationText)
-	end
+	# def get_duration(durationText)
+	# 	return ChronicDuration.parse(durationText)
+	# end
 
-	def parse_time_commit(timeComment, nonBillableTime)
-		acceptedClockEmoji = [":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", 
-								":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", 
-								":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", 
-								":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", 
-								":clock4:", ":clock530:", ":clock7:", ":clock830:"]
+	# def parse_time_commit(timeComment, nonBillableTime)
+	# 	acceptedClockEmoji = [":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", 
+	# 							":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", 
+	# 							":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", 
+	# 							":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", 
+	# 							":clock4:", ":clock530:", ":clock7:", ":clock830:"]
+	# 	acceptedNonBilliableEmoji = [":free:"]
+	# 	parsedCommentHash = { "duration" => nil, "non_billable" => nil, "work_date" => nil, "time_comment" => nil}
+	# 	parsedComment = []
+	# 	acceptedClockEmoji.each do |x|
+	# 		if nonBillableTime == true
+	# 			acceptedNonBilliableEmoji.each do |b|
+	# 				if timeComment =~ /\A#{x}\s#{b}/
+	# 					parsedComment = self.parse_non_billable_time_comment(timeComment,x,b)
+	# 					parsedCommentHash["non_billable"] = true
+	# 					break
+	# 				end
+	# 			end
+	# 		elsif nonBillableTime == false
+	# 			if timeComment =~ /\A#{x}/
+	# 				parsedComment = self.parse_billable_time_comment(timeComment,x)
+	# 				parsedCommentHash["non_billable"] = false
+	# 				break
+	# 			end
+	# 		end
+	# 	end
+	# 	if parsedComment.empty? == true
+	# 		return nil
+	# 	end
 
-		acceptedNonBilliableEmoji = [":free:"]
-		parsedCommentHash = {}
-		parsedComment = []
-		acceptedClockEmoji.each do |x|
-			if nonBillableTime == true
-				acceptedNonBilliableEmoji.each do |b|
-					if timeComment =~ /\A#{x} #{b}/
-						parsedComment = self.parse_non_billable_time_comment(timeComment,x,b)
-						parsedCommentHash["non_billable"] = true
-						break
-					end
-				end
-			elsif nonBillableTime == false
-				if timeComment =~ /\A#{x}/
-					parsedComment = self.parse_billable_time_comment(timeComment,x)
-					parsedCommentHash["non_billable"] = false
-					break
-				end
-			end
-		end
+	# 	if parsedComment[0] != nil
+	# 		parsedCommentHash["duration"] = self.get_duration(parsedComment[0])
+	# 	end
+	# 	if parsedComment[1] != nil
+	# 		workDate = self.get_time_work_date(parsedComment[1])
+	# 			if workDate != nil
+	# 				parsedCommentHash["work_date"] = workDate
+	# 			elsif workDate == nil
+	# 				parsedCommentHash["time_comment"] = self.get_time_commit_comment(parsedComment[1])
+	# 			end
+	# 	end
+	# 	if parsedComment[2] != nil
+	# 		parsedCommentHash["time_comment"] = self.get_time_commit_comment(parsedComment[2])
+	# 	end
 
-		if parsedComment[0] != nil
-			parsedCommentHash["duration"] = self.get_time_duration(parsedComment[0])
-		end
-		if parsedComment[1] != nil
-			parsedCommentHash["work_date"] = self.get_time_work_date(parsedComment[1])
-		end
-		if parsedComment[2] != nil
-			parsedCommentHash["time_comment"] = self.get_time_commit_comment(parsedComment[2])
-		end
+	# 	return parsedCommentHash
+	# end
 
-		return parsedCommentHash
-	end
+	# def parse_billable_time_comment(timeComment, timeEmoji)
+	# 	return timeComment.gsub("#{timeEmoji} ","").split(" | ")
+	# end
 
-	def parse_billable_time_comment(timeComment, timeEmoji)
-		return commentBody.gsub("#{timeEmoji} ","").split(" | ")
-	end
+	# def parse_non_billable_time_comment(timeComment, timeEmoji, nonBillableEmoji)
+	# 	return timeComment.gsub("#{timeEmoji} #{nonBillableEmoji} ","").split(" | ")
+	# end
 
-	def parse_non_billable_time_comment(timeComment, timeEmoji, nonBillableEmoji)
-		return commentBody.gsub("#{timeEmoji} #{nonBillableEmoji} ","").split(" | ")
-	end
+	# def get_time_work_date(parsedTimeComment)
+	# 	begin
+	# 		return Time.parse(parsedTimeComment).utc
+	# 	rescue
+	# 		return nil
+	# 	end
+	# end
 
-	def get_time_work_date(parsedTimeComment)
-		begin
-			return Time.parse(parsedTimeComment).utc
-		rescue
-			return nil
-		end
-	end
-
-	def get_time_commit_comment(parsedTimeComment)
-		return parsedTimeComment.lstrip.gsub("\r\n", " ")
-	end
+	# def get_time_commit_comment(parsedTimeComment)
+	# 	return parsedTimeComment.lstrip.gsub("\r\n", " ")
+	# end
 
 
-	def process_issue_comment_for_time(issueComment)
-		output = {}
-		nonBillable = self.time_comment_non_billable?(issueComment)
-		parsedTimeDetails = self.parse_time_commit(issueComment, nonBillable)
+	# def process_issue_comment_for_time(issueComment)
 
-		overviewDetails = {"comment_id" => issueComment.attrs[:id],
-							"work_logged_by" => issueComment.attrs[:user].attrs[:login],
-							"comment_created_date" => issueComment.attrs[:created_at],
-							"comment_last_updated_date" =>issueComment.attrs[:updated_at],
-							"record_creation_date" => Time.now.utc}
+	# 	isTimeComment = self.time_comment?(issueComment.attrs[:body])
+	# 	issueCommentBody = issueComment.attrs[:body]
+	# 	nonBillable = self.non_billable?(issueCommentBody)
+	# 	parsedTimeDetails = self.parse_time_commit(issueCommentBody, nonBillable)
+	# 	if parsedTimeDetails == nil
+	# 		return nil
+	# 	else
+	# 		overviewDetails = {"comment_id" => issueComment.attrs[:id],
+	# 							"work_logged_by" => issueComment.attrs[:user].attrs[:login],
+	# 							"comment_created_date" => issueComment.attrs[:created_at],
+	# 							"comment_last_updated_date" =>issueComment.attrs[:updated_at],
+	# 							"record_creation_date" => Time.now.utc}
+	# 		mergedHash = parsedTimeDetails.merge(overviewDetails)
+	# 		return mergedHash
+	# 	end
+	# end
 
-		parsedTimeDetails.merge(overviewDetails)
-		return parsedTimeDetails
-	end
+
+
+
+
+
+
 
 
 	def get_issue_time(repo, issueNumber)
@@ -709,20 +744,24 @@ class GitHubTimeTracking
 							]
 		end
 
-		ghLabels.each do |x|
-			if acceptedLabels.any? { |b| [b[:category],b[:label]].join(" ") == x } == true
-				acceptedLabels.each do |y|
-					if [y[:category], y[:label]].join(" ") == x
-						outputHash["Category"] = y[:category][0..-2]
-						outputHash["Label"] = y[:label]
-						output << outputHash
+		if ghLabels != nil
+			ghLabels.each do |x|
+				if acceptedLabels.any? { |b| [b[:category],b[:label]].join(" ") == x } == true
+					acceptedLabels.each do |y|
+						if [y[:category], y[:label]].join(" ") == x
+							outputHash["Category"] = y[:category][0..-2]
+							outputHash["Label"] = y[:label]
+							output << outputHash
+						end
 					end
+				else
+					outputHash["Category"] = nil
+					outputHash["Label"] = x
+					output << outputHash
 				end
-			else
-				outputHash["Category"] = nil
-				outputHash["Label"] = x
-				output << outputHash
 			end
+		else
+			output = []
 		end
 		return output
 	end
