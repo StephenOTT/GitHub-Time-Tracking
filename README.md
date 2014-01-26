@@ -219,6 +219,9 @@ Notice the parent `Duration` field is empty.  This is due to time being logged i
 
 ![github time tracking process overview](https://f.cloud.github.com/assets/1994838/1757137/409bf8e0-667c-11e3-9576-14400457c2c1.png)
 
+### Future Process rebuilt around Object Based design:
+![object based process overview](https://f.cloud.github.com/assets/1994838/2003533/3eae6152-865d-11e3-96af-9380e3c77715.png)
+
 
 ## Data Analysis
 
