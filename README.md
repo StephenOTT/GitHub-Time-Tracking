@@ -211,8 +211,9 @@ Notice the parent `Duration` field is empty.  This is due to time being logged i
 11. ~~Add Ability to parse Label grouping words out of labels.  This will allow Web app to categorize beyond milestones and to categorize within a label.  Example: Label = Project Management: Project Oversight.  Label = Business Analysis: Requirements Definition.~~  Done
 12. Add ability to track Size of Issues - Likely will use Labels as Size (something like Small, Med, Large)
 13. Add ability to track estimated effort for an issue.  Estimated effort and Budget are different.  Budget is something that has been determined by the Project Management-like user.  Estimated Effort is a duration that has been determined by the developer.  Who this is submitted in the syntax still needs to be determined.  Thinking maybe :8ball: or maybe Playing Cards emoji that is a relation to Agile Poker.  **Labels support is already provided.  So you can currently use labels to categorize level of effort estimates.**
-
 14. Explore the use of Natural Language Processing Libraries such as OpenNPL for better text processing.
+
+15. Add GitLab support.
 
 ## Process Overview
 
