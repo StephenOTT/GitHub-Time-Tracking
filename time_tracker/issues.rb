@@ -68,60 +68,6 @@ module Gh_Issue
 		end
 	end
 
-		# parse through GitHub labels and return label names in an array
-	def self.get_label_names(labels)
-		issueLabels = []
-		if labels != nil
-			labels.each do |x|
-				issueLabels << x["name"]
-			end
-		end
-		return issueLabels
-	end
-
-	def self.process_issue_labels(ghLabels, options = {})
-		output = []
-		outputHash = {}
-		
-		if options[:acceptedLabels] == nil
-			# Exaple/Default labels.
-			acceptedLabels = [
-								{:category => "Priority:", :label => "Low"},
-								{:category => "Priority:", :label => "Medium"},
-								{:category => "Priority:", :label => "High"},
-								{:category => "Size:", :label => "Small"},
-								{:category => "Size:", :label => "Medium"},
-								{:category => "Size:", :label => "Large"},
-								{:category => "Version:", :label => "1.0"},
-								{:category => "Version:", :label => "1.5"},
-								{:category => "Version:", :label => "2.0"},
-								{:category => "Task:", :label => "Medium"},
-								{:category => "Size:", :label => "Medium"},
-							]
-		end
-
-		if ghLabels != nil
-			ghLabels.each do |x|
-				if acceptedLabels.any? { |b| [b[:category],b[:label]].join(" ") == x } == true
-					acceptedLabels.each do |y|
-						if [y[:category], y[:label]].join(" ") == x
-							outputHash["Category"] = y[:category][0..-2]
-							outputHash["Label"] = y[:label]
-							output << outputHash
-						end
-					end
-				else
-					outputHash["Category"] = nil
-					outputHash["Label"] = x
-					output << outputHash
-				end
-			end
-		else
-			output = []
-		end
-		return output
-	end
-
 	# Is it a time comment?  Returns True or False
 	def self.time_comment?(commentBody)
 		acceptedClockEmoji = Accepted_Time_Tracking_Emoji.accepted_time_comment_emoji
