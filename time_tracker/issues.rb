@@ -61,7 +61,7 @@ module Gh_Issue
 							"time_tracking_commits" => commentsTime, }	
 	end
 
-		# Gets the milestone ID number assigned to the issue
+	# Gets the milestone ID number assigned to the issue
 	def self.get_issue_milestone_number(milestoneDetails)
 		if milestoneDetails != nil
 			return milestoneDetails.attrs[:number]
@@ -82,7 +82,7 @@ module Gh_Issue
 		return acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
 	end
 
-		# processes a comment for time comment information
+	# processes a comment for time comment information
 	def self.process_issue_comment_for_time(issueComment)
 
 		type = "Issue Time"
