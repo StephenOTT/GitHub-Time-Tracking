@@ -508,72 +508,72 @@ class GitHubTimeTracking
 		return output
 	end
 
-	def get_milestone_budget (repo, milestones = nil)
+	# def get_milestone_budget (repo, milestones = nil)
 		
-		output = []
-		if milestones == nil
-			milestones = self.get_Milestones(repo)
-		end
+	# 	output = []
+	# 	if milestones == nil
+	# 		milestones = self.get_Milestones(repo)
+	# 	end
 
-		acceptedBudgetEmoji = [":dart:"]
-		acceptedNonBilliableEmoji = [":free:"]
+	# 	acceptedBudgetEmoji = [":dart:"]
+	# 	acceptedNonBilliableEmoji = [":free:"]
 		
-		# Cycle through each milestone
-		milestones.each do |c|
-			parsedDescription = []
-			budgetComment = nil
+	# 	# Cycle through each milestone
+	# 	milestones.each do |c|
+	# 		parsedDescription = []
+	# 		budgetComment = nil
 
-			commentBody = c.attrs[:description]
+	# 		commentBody = c.attrs[:description]
 
-			# Check if any of the accepted emoji are in the comment
-			if acceptedBudgetEmoji.any? { |w| commentBody =~ /\A#{w}/ }
+	# 		# Check if any of the accepted emoji are in the comment
+	# 		if acceptedBudgetEmoji.any? { |w| commentBody =~ /\A#{w}/ }
 
-				isNonBilliableTime = acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
-				milestoneTitle = c.attrs[:title]
-				milestoneNumber = c.attrs[:number]
-				createdAtDate = c.attrs[:created_at]
-				milestoneState = c.attrs[:state]
-				milestoneDueDate = c.attrs[:due_on]
-				type = "Milestone Budget"
-				recordCreationDate = Time.now.utc
+	# 			isNonBilliableTime = acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
+	# 			milestoneTitle = c.attrs[:title]
+	# 			milestoneNumber = c.attrs[:number]
+	# 			createdAtDate = c.attrs[:created_at]
+	# 			milestoneState = c.attrs[:state]
+	# 			milestoneDueDate = c.attrs[:due_on]
+	# 			type = "Milestone Budget"
+	# 			recordCreationDate = Time.now.utc
 
-				acceptedBudgetEmoji.each do |x|
-					if commentBody.gsub!("#{x} ","") != nil
-						if isNonBilliableTime == true
-							acceptedNonBilliableEmoji.each do |b|
-								parsedDescription = commentBody.gsub("#{x} #{b}","").split(" | ")
-							end
-						else
-							parsedDescription = commentBody.gsub("#{x} ","").split(" | ")
-						end
-					end
-				end
+	# 			acceptedBudgetEmoji.each do |x|
+	# 				if commentBody.gsub!("#{x} ","") != nil
+	# 					if isNonBilliableTime == true
+	# 						acceptedNonBilliableEmoji.each do |b|
+	# 							parsedDescription = commentBody.gsub("#{x} #{b}","").split(" | ")
+	# 						end
+	# 					else
+	# 						parsedDescription = commentBody.gsub("#{x} ","").split(" | ")
+	# 					end
+	# 				end
+	# 			end
 
-				# Parse first value as a duration
-				# TODO add error catching for improper duration format.
-				duration = ChronicDuration.parse(parsedDescription[0])
+	# 			# Parse first value as a duration
+	# 			# TODO add error catching for improper duration format.
+	# 			duration = ChronicDuration.parse(parsedDescription[0])
 				
-				if parsedDescription[1].nil? == false
-					budgetComment = parsedDescription[1].lstrip.gsub("\r\n", " ")
-				end
+	# 			if parsedDescription[1].nil? == false
+	# 				budgetComment = parsedDescription[1].lstrip.gsub("\r\n", " ")
+	# 			end
 				
-				milestoneBudgetHash = {"type" => type,
-									"duration" => duration,
-									"non_billable" => isNonBilliableTime,
-									"milestone_due_date" => milestoneDueDate,
-									"budget_description" => budgetComment,
-									"milestone_number" => milestoneNumber,
-									"milestone_created_date" => createdAtDate,
-									"repo_name" => repo,
-									"milestone_state" => milestoneState,
-									"milestone_title" => milestoneTitle,
-									"record_creation_date" => recordCreationDate
-								}
-				output << milestoneBudgetHash
-			end
-		end
-		return output
-	end 
+	# 			milestoneBudgetHash = {"type" => type,
+	# 								"duration" => duration,
+	# 								"non_billable" => isNonBilliableTime,
+	# 								"milestone_due_date" => milestoneDueDate,
+	# 								"budget_description" => budgetComment,
+	# 								"milestone_number" => milestoneNumber,
+	# 								"milestone_created_date" => createdAtDate,
+	# 								"repo_name" => repo,
+	# 								"milestone_state" => milestoneState,
+	# 								"milestone_title" => milestoneTitle,
+	# 								"record_creation_date" => recordCreationDate
+	# 							}
+	# 			output << milestoneBudgetHash
+	# 		end
+	# 	end
+	# 	return output
+	# end 
 
 	def get_commit_comments(repo, sha)
 
