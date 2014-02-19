@@ -1,6 +1,6 @@
-require './time_tracker/issues'
-require './time_tracker/github_data'
-require './time_tracker/mongo'
+require_relative 'time_tracker/issues'
+require_relative 'time_tracker/github_data'
+require_relative 'time_tracker/mongo'
 
 class Time_Tracking_Controller
 
