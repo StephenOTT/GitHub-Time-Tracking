@@ -25,8 +25,8 @@ module Gh_Issue
 		
 		# runs the label names through a parser to create Label categories.  
 		# used for advanced label grouping
-		labels = process_issue_labels(labelNames)
-		
+		# labels = process_issue_labels(labelNames)
+		labels = Labels_Processor.process_issue_labels(labelNames)
 		# gets the comments of the specific issue being processed---ADDED INTO METHOD PARAMETERS
 		# issueComments = get_Issue_Comments(repo, issueDetails.attrs[:number])
 
