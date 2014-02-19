@@ -1,5 +1,6 @@
 require 'chronic_duration'
 require_relative 'accepted_emoji'
+require_relative 'labels_processor'
 
 module Gh_Issue
 	# include Accepted_Time_Tracking_Emoji
