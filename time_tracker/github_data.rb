@@ -1,8 +1,6 @@
 require 'octokit'
 
-
 module GitHub_Data
-
 
 	def self.gh_authenticate(username, password)
 		@ghClient = Octokit::Client.new(
