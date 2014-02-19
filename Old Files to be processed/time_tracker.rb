@@ -13,10 +13,14 @@ class GitHubTimeTracking
 		@collTimeTrackingCommits.remove
 
 		issues = self.get_Issues(repo)
+		
+		# goes through each issue returned from get_Issues method
 		issues.each do |i|
 
-			self.process_issue(repo, i)
-
+			dog = self.process_issue(repo, i)
+			if dog.empty? == false
+				self.putIntoMongoCollTimeTrackingCommits(dog)
+			end
 
 
 		# 	issueNumber = i.attrs[:number]
@@ -61,33 +65,49 @@ class GitHubTimeTracking
 		issueLastUpdatedAt = issueDetails.attrs[:updated_at]
 		recordCreationDate = Time.now.utc
 		
+		# gets the milestone number assigned to a issue.  Is not milestone assigned then returns nil
 		milestoneNumber = get_issue_milestone_number(issueDetails.attrs[:milestone])
 		
-		labelNames = self.get_label_names(issueDetails.attrs[:labels])
-		labels = self.process_issue_labels(labelNames)
+		#gets labels data for issue and returns array of label strings
+		labelNames = get_label_names(issueDetails.attrs[:labels])
 		
-
-		issueComments = @ghClient.issue_comments(repo, issueDetails.attrs[:number])
+		# runs the label names through a parser to create Label categories.  
+		# used for advanced label grouping
+		labels = process_issue_labels(labelNames)
+		
+		# gets the comments of the specific issue being processed
+		issueComments = get_Issue_Comments(repo, issueDetails.attrs[:number])
 
 		commentsTime = []
+
+		# cycles through each comment and returns time tracking 
 		issueComments.each do |x|
-			dog = self.process_issue_comment_for_time(x)
-			if dog != nil
-				commentsTime << dog
+			# checks to see if there is a time comment in the body field
+			isTimeComment = self.time_comment?(x.attrs[:body])
+			if isTimeComment == true
+				# if true, the body field is parsed for time comment details
+				parsedTime = self.process_issue_comment_for_time(x)
+				if parsedTime != nil
+					# assuming results are returned from the parse (aka the parse was preceived 
+					# by the code to be sucessful, the parsed time comment details array is put into
+					# the commentsTime array)
+					commentsTime << parsedTime
+				end
 			end
 		end
 
-			puts output = { "type" => type,
-					"issue_state" => issueState,
-					"issue_title" => issueTitle,
-					"issue_number" => issueNumber,
-					"milestone_number" => milestoneNumber,
-					"labels" => labels,
-					"issue_created_at" => issueCreatedAt,
-					"issue_closed_at" => issueClosedAt,
-					"issue_last_updated_at" => issueLastUpdatedAt,
-					"record_creation_date" => recordCreationDate,
-					"time_commits" => commentsTime }	
+		return output = { "type" => type,
+							"repo" => repo,
+							"issue_state" => issueState,
+							"issue_title" => issueTitle,
+							"issue_number" => issueNumber,
+							"milestone_number" => milestoneNumber,
+							"labels" => labels,
+							"issue_created_at" => issueCreatedAt,
+							"issue_closed_at" => issueClosedAt,
+							"issue_last_updated_at" => issueLastUpdatedAt,
+							"record_creation_date" => recordCreationDate,
+							"time_commits" => commentsTime, }	
 	end
 
 	def mongo_Connect
@@ -140,139 +160,160 @@ class GitHubTimeTracking
 		return mergedMilestones = milestonesResultsOpen + milestonesResultsClosed
 	end
 
+	def get_Issue_Comments(repo, issueNumber)
+		return @ghClient.issue_comments(repo, issueNumber)
+	end
 
 
 
 
-	# def time_comment?(commentBody)
-	# 	acceptedClockEmoji = [":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", 
-	# 							":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", 
-	# 							":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", 
-	# 							":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", 
-	# 							":clock4:", ":clock530:", ":clock7:", ":clock830:"]
 
-	# 	acceptedClockEmoji.any? { |w| commentBody.attrs[:body] =~ /\A#{w}/ }
-	# end
+	def accepted_time_comment_emoji(*acceptedTimeCommentEmoji)
+		acceptedTimeCommentEmoji = [":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", 
+								":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", 
+								":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", 
+								":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", 
+								":clock4:", ":clock530:", ":clock7:", ":clock830:"]
+	end
 
-	# def budget_comment?(commentBody)
-	# 	acceptedBudgetEmoji = [":dart:"]
+	def accepted_nonBillable_emoji(*acceptedNonBilliableEmoji)
+		acceptedNonBilliableEmoji = [":free:"]
+	end
 
-	# 	return acceptedClockEmoji.any? { |w| commentBody.attrs[:body] =~ /\A#{w}/ }
-	# end
+	# Is it a time comment?  Returns True or False
+	def time_comment?(commentBody)
+		acceptedClockEmoji = self.accepted_time_comment_emoji
 
-	# def non_billable?(commentBody)
-	# 	acceptedNonBilliableEmoji = [":free:"]
-	# 	# TODO come up with better regex for checking to see if it is a valud billable
-	# 	return acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
-	# end
+		# acceptedClockEmoji.any? { |w| commentBody.attrs[:body] =~ /\A#{w}/ }
+		acceptedClockEmoji.any? { |w| commentBody =~ /\A#{w}/ }
+	end
 
-	# def get_label_names(labels)
-	# 	issueLabels = []
-	# 	if labels != nil
-	# 		labels.each do |x|
-	# 			issueLabels << x["name"]
-	# 		end
-	# 	end
-	# 	return issueLabels
-	# end
+	# Is it a budget comment?
+	def budget_comment?(commentBody)
+		acceptedBudgetEmoji = [":dart:"]
 
-	# def get_issue_milestone_number(milestoneDetails)
-	# 	if milestoneDetails != nil
-	# 		return milestoneDetails.attrs[:number]
-	# 	end
-	# end
+		return acceptedClockEmoji.any? { |w| commentBody.attrs[:body] =~ /\A#{w}/ }
+	end
 
-	# def get_duration(durationText)
-	# 	return ChronicDuration.parse(durationText)
-	# end
+	# does the comment contain the :free: emoji that indicates its non-billable
+	def non_billable?(commentBody)
+		acceptedNonBilliableEmoji = [":free:"]
+		# TODO come up with better regex for checking to see if it is a valud billable
+		return acceptedNonBilliableEmoji.any? { |b| commentBody =~ /#{b}/ }
+	end
 
-	# def parse_time_commit(timeComment, nonBillableTime)
-	# 	acceptedClockEmoji = [":clock130:", ":clock11:", ":clock1230:", ":clock3:", ":clock430:", 
-	# 							":clock6:", ":clock730:", ":clock9:", ":clock10:", ":clock1130:", 
-	# 							":clock2:", ":clock330:", ":clock5:", ":clock630:", ":clock8:", 
-	# 							":clock930:", ":clock1:", ":clock1030:", ":clock12:", ":clock230:", 
-	# 							":clock4:", ":clock530:", ":clock7:", ":clock830:"]
-	# 	acceptedNonBilliableEmoji = [":free:"]
-	# 	parsedCommentHash = { "duration" => nil, "non_billable" => nil, "work_date" => nil, "time_comment" => nil}
-	# 	parsedComment = []
-	# 	acceptedClockEmoji.each do |x|
-	# 		if nonBillableTime == true
-	# 			acceptedNonBilliableEmoji.each do |b|
-	# 				if timeComment =~ /\A#{x}\s#{b}/
-	# 					parsedComment = self.parse_non_billable_time_comment(timeComment,x,b)
-	# 					parsedCommentHash["non_billable"] = true
-	# 					break
-	# 				end
-	# 			end
-	# 		elsif nonBillableTime == false
-	# 			if timeComment =~ /\A#{x}/
-	# 				parsedComment = self.parse_billable_time_comment(timeComment,x)
-	# 				parsedCommentHash["non_billable"] = false
-	# 				break
-	# 			end
-	# 		end
-	# 	end
-	# 	if parsedComment.empty? == true
-	# 		return nil
-	# 	end
+	# parse through GitHub labels and return label names in an array
+	def get_label_names(labels)
+		issueLabels = []
+		if labels != nil
+			labels.each do |x|
+				issueLabels << x["name"]
+			end
+		end
+		return issueLabels
+	end
 
-	# 	if parsedComment[0] != nil
-	# 		parsedCommentHash["duration"] = self.get_duration(parsedComment[0])
-	# 	end
-	# 	if parsedComment[1] != nil
-	# 		workDate = self.get_time_work_date(parsedComment[1])
-	# 			if workDate != nil
-	# 				parsedCommentHash["work_date"] = workDate
-	# 			elsif workDate == nil
-	# 				parsedCommentHash["time_comment"] = self.get_time_commit_comment(parsedComment[1])
-	# 			end
-	# 	end
-	# 	if parsedComment[2] != nil
-	# 		parsedCommentHash["time_comment"] = self.get_time_commit_comment(parsedComment[2])
-	# 	end
+	# Gets the milestone ID number assigned to the issue
+	def get_issue_milestone_number(milestoneDetails)
+		if milestoneDetails != nil
+			return milestoneDetails.attrs[:number]
+		end
+	end
 
-	# 	return parsedCommentHash
-	# end
-
-	# def parse_billable_time_comment(timeComment, timeEmoji)
-	# 	return timeComment.gsub("#{timeEmoji} ","").split(" | ")
-	# end
-
-	# def parse_non_billable_time_comment(timeComment, timeEmoji, nonBillableEmoji)
-	# 	return timeComment.gsub("#{timeEmoji} #{nonBillableEmoji} ","").split(" | ")
-	# end
-
-	# def get_time_work_date(parsedTimeComment)
-	# 	begin
-	# 		return Time.parse(parsedTimeComment).utc
-	# 	rescue
-	# 		return nil
-	# 	end
-	# end
-
-	# def get_time_commit_comment(parsedTimeComment)
-	# 	return parsedTimeComment.lstrip.gsub("\r\n", " ")
-	# end
+	# parses the durationText variable through ChronicDuration
+	def get_duration(durationText)
+		return ChronicDuration.parse(durationText)
+	end
 
 
-	# def process_issue_comment_for_time(issueComment)
+	def parse_time_commit(timeComment, nonBillableTime)
+		acceptedClockEmoji = self.accepted_time_comment_emoji
+		acceptedNonBilliableEmoji = self.accepted_nonBillable_emoji
 
-	# 	isTimeComment = self.time_comment?(issueComment.attrs[:body])
-	# 	issueCommentBody = issueComment.attrs[:body]
-	# 	nonBillable = self.non_billable?(issueCommentBody)
-	# 	parsedTimeDetails = self.parse_time_commit(issueCommentBody, nonBillable)
-	# 	if parsedTimeDetails == nil
-	# 		return nil
-	# 	else
-	# 		overviewDetails = {"comment_id" => issueComment.attrs[:id],
-	# 							"work_logged_by" => issueComment.attrs[:user].attrs[:login],
-	# 							"comment_created_date" => issueComment.attrs[:created_at],
-	# 							"comment_last_updated_date" =>issueComment.attrs[:updated_at],
-	# 							"record_creation_date" => Time.now.utc}
-	# 		mergedHash = parsedTimeDetails.merge(overviewDetails)
-	# 		return mergedHash
-	# 	end
-	# end
+		parsedCommentHash = { "duration" => nil, "non_billable" => nil, "work_date" => nil, "time_comment" => nil}
+		parsedComment = []
+		acceptedClockEmoji.each do |x|
+			if nonBillableTime == true
+				acceptedNonBilliableEmoji.each do |b|
+					if timeComment =~ /\A#{x}\s#{b}/
+						parsedComment = self.parse_non_billable_time_comment(timeComment,x,b)
+						parsedCommentHash["non_billable"] = true
+						break
+					end
+				end
+			elsif nonBillableTime == false
+				if timeComment =~ /\A#{x}/
+					parsedComment = self.parse_billable_time_comment(timeComment,x)
+					parsedCommentHash["non_billable"] = false
+					break
+				end
+			end
+		end
+		if parsedComment.empty? == true
+			return nil
+		end
+
+		if parsedComment[0] != nil
+			parsedCommentHash["duration"] = self.get_duration(parsedComment[0])
+		end
+		if parsedComment[1] != nil
+			workDate = self.get_time_work_date(parsedComment[1])
+				if workDate != nil
+					parsedCommentHash["work_date"] = workDate
+				elsif workDate == nil
+					parsedCommentHash["time_comment"] = self.get_time_commit_comment(parsedComment[1])
+				end
+		end
+		if parsedComment[2] != nil
+			parsedCommentHash["time_comment"] = self.get_time_commit_comment(parsedComment[2])
+		end
+
+		return parsedCommentHash
+	end
+
+
+
+
+
+
+	def parse_billable_time_comment(timeComment, timeEmoji)
+		return timeComment.gsub("#{timeEmoji} ","").split(" | ")
+	end
+
+	def parse_non_billable_time_comment(timeComment, timeEmoji, nonBillableEmoji)
+		return timeComment.gsub("#{timeEmoji} #{nonBillableEmoji} ","").split(" | ")
+	end
+
+	def get_time_work_date(parsedTimeComment)
+		begin
+			return Time.parse(parsedTimeComment).utc
+		rescue
+			return nil
+		end
+	end
+
+	def get_time_commit_comment(parsedTimeComment)
+		return parsedTimeComment.lstrip.gsub("\r\n", " ")
+	end
+
+	# processes a comment for time comment information
+	def process_issue_comment_for_time(issueComment)
+
+		issueCommentBody = issueComment.attrs[:body]
+		nonBillable = self.non_billable?(issueCommentBody)
+		parsedTimeDetails = self.parse_time_commit(issueCommentBody, nonBillable)
+		if parsedTimeDetails == nil
+			return nil
+		else
+			overviewDetails = {"comment_id" => issueComment.attrs[:id],
+								"work_logged_by" => issueComment.attrs[:user].attrs[:login],
+								"comment_created_date" => issueComment.attrs[:created_at],
+								"comment_last_updated_date" =>issueComment.attrs[:updated_at],
+								"record_creation_date" => Time.now.utc}
+			mergedHash = parsedTimeDetails.merge(overviewDetails)
+			return mergedHash
+		end
+	end
 
 
 
