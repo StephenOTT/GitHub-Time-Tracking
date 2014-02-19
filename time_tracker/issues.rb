@@ -19,8 +19,9 @@ module Gh_Issue
 		# gets the milestone number assigned to a issue.  Is not milestone assigned then returns nil
 		milestoneNumber = get_issue_milestone_number(issueDetails.attrs[:milestone])
 		
-		#gets labels data for issue and returns array of label strings
-		labelNames = get_label_names(issueDetails.attrs[:labels])
+		# gets labels data for issue and returns array of label strings
+		# labelNames = get_label_names(issueDetails.attrs[:labels])
+		labelNames = Labels_Processor.get_label_names(issueDetails.attrs[:labels])
 		
 		# runs the label names through a parser to create Label categories.  
 		# used for advanced label grouping
