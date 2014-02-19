@@ -14,4 +14,12 @@ module Accepted_Time_Tracking_Emoji
 		acceptedNonBilliableEmoji = [":free:"]
 	end
 
+	def self.accepted_milestone_budget_emoji
+		acceptedNonBilliableEmoji = [":dart:"]
+	end
+
+	def self.accepted_issue_budget_emoji
+		acceptedNonBilliableEmoji = [":dart:"]
+	end
+
 end
