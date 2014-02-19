@@ -10,6 +10,16 @@ GitHub-Time-Tracking is designed to offer maximum flexibility in the way you use
 **If you like GitHub-Time-Tracking, be sure to check out GitHub-Analytics: https://github.com/StephenOTT/GitHub-Analytics**
 
 
+
+## News
+
+**Feb 19, 2014:** Large changes are occurring with Time Tracker to make it more modular.  All old code will be kept in the "Old Files to be Processed" folder until all functions have been transferred into the new modular structure.  This will be a multi-phase transition so changes will occur.  As of Feb 19, 2014, the Issue Time Tracking with NonBillable Hours support has been provided along with download into MongoDB.  Next will be to get Issue Budgets working followed by Milestone Budgets, followed by a rebuild of the Advanced Label support which covers creating multiple label levels/categories.  The Final stage will be the implementation of the Task level time and budget tracking.  If anyone has a need for a feature sooner rather than later, please post the request in the issue queue.  See the 0.5 Branch for the code changes
+
+<br>
+
+--
+
+
 ## Usage Patterns
 
 ### Logging Time for an Issue
