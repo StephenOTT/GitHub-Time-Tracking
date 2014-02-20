@@ -1,7 +1,7 @@
 require_relative 'time_tracker/issues'
 require_relative 'time_tracker/github_data'
 require_relative 'time_tracker/mongo'
-require_relative 'time_tracker/milestone_budget'
+require_relative 'time_tracker/milestones'
 
 class Time_Tracking_Controller
 
@@ -35,7 +35,6 @@ class Time_Tracking_Controller
 			end
 		end
 		#======End of Issues=======
-
 
 		#======Start of Milestone=======
 		milestones = GitHub_Data.get_Milestones(repo)
