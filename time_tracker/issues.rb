@@ -52,7 +52,7 @@ module Gh_Issue
 			end
 
 			parsedTasks = Gh_Issue_Comment_Tasks.process_issue_comment_for_task_time(x)
-			if parsedTasks != nil
+			if parsedTasks["tasks"].empty? == false
 				commentsTime << parsedTasks
 			end
 			
