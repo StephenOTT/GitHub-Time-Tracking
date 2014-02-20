@@ -16,7 +16,6 @@ module Helpers
 		return Accepted_Time_Tracking_Emoji.accepted_nonBillable_emoji
 	end
 
-
 	def self.get_duration(durationText)
 		return ChronicDuration.parse(durationText)
 	end
@@ -65,7 +64,4 @@ module Helpers
 			return milestoneDetails.attrs[:number]
 		end
 	end
-
-
-
 end
