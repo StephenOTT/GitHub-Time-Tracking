@@ -29,6 +29,7 @@ module Gh_Issue_Budget
 
 		parsedCommentHash = { "duration" => nil, "non_billable" => nil, "time_comment" => nil}
 		parsedComment = []
+		
 		acceptedBudgetEmoji.each do |x|
 			if nonBillableTime == true
 				acceptedNonBilliableEmoji.each do |b|
