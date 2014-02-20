@@ -9,6 +9,7 @@ module Gh_Issue_Time
 		issueCommentBody = issueComment.attrs[:body]
 		nonBillable = Helpers.non_billable?(issueCommentBody)
 		parsedTimeDetails = parse_time_commit(issueCommentBody, nonBillable)
+
 		if parsedTimeDetails == nil
 			return nil
 		else
@@ -29,6 +30,7 @@ module Gh_Issue_Time
 
 		parsedCommentHash = { "duration" => nil, "non_billable" => nil, "work_date" => nil, "time_comment" => nil}
 		parsedComment = []
+		
 		acceptedClockEmoji.each do |x|
 			if nonBillableTime == true
 				acceptedNonBilliableEmoji.each do |b|
