@@ -1,4 +1,4 @@
-require_relative 'accepted_emoji'
+# require_relative 'accepted_emoji'
 require_relative 'helpers'
 
 module Gh_Issue_Time
@@ -26,8 +26,8 @@ module Gh_Issue_Time
 
 
 	def self.parse_time_commit(timeComment, nonBillableTime)
-		acceptedClockEmoji = Accepted_Time_Tracking_Emoji.accepted_time_comment_emoji
-		acceptedNonBilliableEmoji = Accepted_Time_Tracking_Emoji.accepted_nonBillable_emoji
+		acceptedClockEmoji = Helpers.get_Issue_Time_Emoji
+		acceptedNonBilliableEmoji = Helpers.get_Non_Billable_Emoji
 
 		parsedCommentHash = { "duration" => nil, "non_billable" => nil, "work_date" => nil, "time_comment" => nil}
 		parsedComment = []

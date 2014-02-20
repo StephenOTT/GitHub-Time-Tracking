@@ -1,4 +1,4 @@
-require_relative 'accepted_emoji'
+# require_relative 'accepted_emoji'
 require_relative 'helpers'
 
 module Gh_Milestone_Budget
@@ -20,8 +20,8 @@ module Gh_Milestone_Budget
 	end
 
 	def self.parse_time_commit(timeComment, nonBillableTime)
-		acceptedBudgetEmoji = Accepted_Time_Tracking_Emoji.accepted_milestone_budget_emoji
-		acceptedNonBilliableEmoji = Accepted_Time_Tracking_Emoji.accepted_nonBillable_emoji
+		acceptedBudgetEmoji = Helpers.get_Milestone_Budget_Emoji
+		acceptedNonBilliableEmoji = Helpers.get_Non_Billable_Emoji
 
 		parsedCommentHash = { "duration" => nil, "non_billable" => nil, "time_comment" => nil}
 		parsedComment = []
