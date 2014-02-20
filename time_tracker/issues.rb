@@ -50,6 +50,12 @@ module Gh_Issue
 					commentsTime << parsedBudget
 				end
 			end
+
+			parsedTasks = Gh_Issue_Comment_Tasks.process_issue_comment_for_task_time(x)
+			if parsedTasks != nil
+				commentsTime << parsedTasks
+			end
+			
 		end
 
 		return output = {	"repo" => repo,
