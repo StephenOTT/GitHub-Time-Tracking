@@ -3,11 +3,23 @@ require_relative 'accepted_emoji'
 
 module Helpers
 
+	def self.get_Issue_Budget_Emoji
+		return Accepted_Time_Tracking_Emoji.accepted_issue_budget_emoji
+	end
+	def self.get_Issue_Time_Emoji
+		return Accepted_Time_Tracking_Emoji.accepted_time_comment_emoji
+	end
+	def self.get_Milestone_Budget_Emoji
+		return Accepted_Time_Tracking_Emoji.accepted_milestone_budget_emoji
+	end
+	def self.get_Non_Billable_Emoji
+		return Accepted_Time_Tracking_Emoji.accepted_nonBillable_emoji
+	end
+
 
 	def self.get_duration(durationText)
 		return ChronicDuration.parse(durationText)
 	end
-
 
 	def self.get_time_work_date(parsedTimeComment)
 		begin
