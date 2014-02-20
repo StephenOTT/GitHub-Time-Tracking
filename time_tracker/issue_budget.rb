@@ -46,6 +46,7 @@ module Gh_Issue_Budget
 				end
 			end
 		end
+		
 		if parsedComment.empty? == true
 			return nil
 		end

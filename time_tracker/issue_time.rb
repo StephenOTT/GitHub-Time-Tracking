@@ -46,6 +46,7 @@ module Gh_Issue_Time
 				end
 			end
 		end
+		
 		if parsedComment.empty? == true
 			return nil
 		end
@@ -53,6 +54,7 @@ module Gh_Issue_Time
 		if parsedComment[0] != nil
 			parsedCommentHash["duration"] = Helpers.get_duration(parsedComment[0])
 		end
+
 		if parsedComment[1] != nil
 			workDate = Helpers.get_time_work_date(parsedComment[1])
 				if workDate != nil
@@ -61,6 +63,7 @@ module Gh_Issue_Time
 					parsedCommentHash["time_comment"] = Helpers.get_time_commit_comment(parsedComment[1])
 				end
 		end
+
 		if parsedComment[2] != nil
 			parsedCommentHash["time_comment"] = Helpers.get_time_commit_comment(parsedComment[2])
 		end
