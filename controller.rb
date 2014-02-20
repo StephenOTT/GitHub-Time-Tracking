@@ -2,6 +2,7 @@ require_relative 'time_tracker/issues'
 require_relative 'time_tracker/github_data'
 require_relative 'time_tracker/mongo'
 require_relative 'time_tracker/milestones'
+require_relative 'time_tracker/issue_comment_tasks'
 
 class Time_Tracking_Controller
 
