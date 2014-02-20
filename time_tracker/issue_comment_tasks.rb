@@ -8,6 +8,11 @@ module Gh_Issue_Comment_Tasks
 		type = "Task Time"
 		commentBody = commentRaw.attrs[:body]
 		rawTasks = get_comment_tasks(commentBody)
+		
+		if rawTasks[:complete] == nil and rawTasks[:incomplete] == nil
+			return nil
+		end
+
 		processedTasks = process_comment_task_for_time(rawTasks)
 		
 		if processedTasks.empty? == false
