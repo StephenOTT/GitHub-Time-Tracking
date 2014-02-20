@@ -25,7 +25,6 @@ module Gh_Issue
 		# used for advanced label grouping
 		labels = Labels_Processor.process_issue_labels(labelNames)
 
-
 		commentsTime = []
 
 		# cycles through each comment and returns time tracking 
