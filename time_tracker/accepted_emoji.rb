@@ -1,5 +1,3 @@
-
-
 module Accepted_Time_Tracking_Emoji
 
 	def self.accepted_time_comment_emoji(*acceptedTimeCommentEmoji)
