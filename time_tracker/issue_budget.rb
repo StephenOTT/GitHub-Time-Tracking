@@ -1,4 +1,4 @@
-require_relative 'accepted_emoji'
+# require_relative 'accepted_emoji'
 require_relative 'helpers'
 
 module Gh_Issue_Budget
