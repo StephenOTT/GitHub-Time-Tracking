@@ -41,9 +41,7 @@ module Gh_Issue
 					# the commentsTime array)
 					commentsTime << parsedTime
 				end
-			end
-			
-			if isBudgetComment == true
+			elsif isBudgetComment == true
 				parsedBudget = Gh_Issue_Budget.process_issue_comment_for_budget(x)
 				if parsedBudget != nil
 					commentsTime << parsedBudget
