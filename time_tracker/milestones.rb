@@ -3,7 +3,6 @@ require_relative 'milestone_budget'
 
 module Gh_Milestone
 
-
 	def self.process_milestone(repo, milestoneDetail)
 		
 		milestoneState = milestoneDetail.attrs[:state]
@@ -45,7 +44,4 @@ module Gh_Milestone
 							"record_creation_date" => recordCreationDate,
 							"budget_tracking_commits" => budgetTime, }	
 	end
-	
 end
-
-

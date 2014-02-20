@@ -1,4 +1,3 @@
-# require_relative 'accepted_emoji'
 require_relative 'helpers'
 
 module Gh_Issue_Time
@@ -23,7 +22,6 @@ module Gh_Issue_Time
 			return mergedHash
 		end
 	end
-
 
 	def self.parse_time_commit(timeComment, nonBillableTime)
 		acceptedClockEmoji = Helpers.get_Issue_Time_Emoji
@@ -69,6 +67,4 @@ module Gh_Issue_Time
 
 		return parsedCommentHash
 	end
-
 end
-

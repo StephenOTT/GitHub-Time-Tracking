@@ -1,9 +1,8 @@
-# require_relative 'accepted_emoji'
 require_relative 'helpers'
 
 module Gh_Milestone_Budget
 
-		# processes a budget description for time comment information
+	# processes a budget description for time comment information
 	def self.process_budget_description_for_time(budgetComment)
 
 		type = "Milestone Budget"
@@ -56,5 +55,4 @@ module Gh_Milestone_Budget
 
 		return parsedCommentHash
 	end
-
 end

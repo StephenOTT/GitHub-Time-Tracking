@@ -1,4 +1,3 @@
-# require_relative 'accepted_emoji'
 require_relative 'helpers'
 
 module Gh_Issue_Budget
@@ -61,6 +60,4 @@ module Gh_Issue_Budget
 
 		return parsedCommentHash
 	end
-	
-
 end

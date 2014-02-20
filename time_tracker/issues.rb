@@ -19,15 +19,12 @@ module Gh_Issue
 		milestoneNumber = Helpers.get_issue_milestone_number(issueDetails.attrs[:milestone])
 		
 		# gets labels data for issue and returns array of label strings
-		# labelNames = get_label_names(issueDetails.attrs[:labels])
 		labelNames = Labels_Processor.get_label_names(issueDetails.attrs[:labels])
 		
 		# runs the label names through a parser to create Label categories.  
 		# used for advanced label grouping
-		# labels = process_issue_labels(labelNames)
 		labels = Labels_Processor.process_issue_labels(labelNames)
-		# gets the comments of the specific issue being processed---ADDED INTO METHOD PARAMETERS
-		# issueComments = get_Issue_Comments(repo, issueDetails.attrs[:number])
+
 
 		commentsTime = []
 

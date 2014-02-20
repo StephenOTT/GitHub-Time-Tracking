@@ -16,7 +16,6 @@ class Time_Tracking_Controller
 			Mongo_Connection.clear_mongo_collections
 		end
 
-
 		#======Start of Issues=======
 		issues = GitHub_Data.get_Issues(repo)
 		
