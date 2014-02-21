@@ -21,7 +21,13 @@ module GH_Task_Lists
 						 "issue_state" => issueState,
 						 }
 
-	def self.get_comment_details(commentRaw, repo, issueNumber, issueState, issueTitle)
+		return issueDetails
+
+	end
+
+
+
+	def self.get_comment_details(commentRaw)
 
 		# commentBody = commentRaw.attrs[:body]
 		# rawTasks = get_comment_tasks(commentBody)
