@@ -29,6 +29,11 @@ module Gh_Issue
 
 		commentsTime = []
 
+		# Part of the Task Listing code
+		gotIssueDetails = {}
+		commentsArray = []
+		# end of part of the task listing code
+
 		# cycles through each comment and returns time tracking 
 		issueComments.each do |x|
 			# checks to see if there is a time comment in the body field
@@ -59,16 +64,22 @@ module Gh_Issue
 			commentBody1 = GH_Task_Lists.get_comment_body(x)
 			commentHasTasksTF = GH_Task_Lists.comment_has_tasks?(commentBody1)
 			if commentHasTasksTF == true
-				gotTasks = GH_Task_Lists.get_tasks_from_Comment(commentBody1)
-				gotCommentDetails = GH_Task_Lists.get_comment_details(x, repo, issueNumber, issueState, issueTitle)
+				gotTasks = GH_Task_Lists.get_tasks_from_comment(commentBody1)
+				gotCommentDetails = GH_Task_Lists.get_comment_details(x)
+				
 				mergedDetails = GH_Task_Lists.merge_details_and_tasks(gotCommentDetails, gotTasks)
-				puts mergedDetails
+				commentsArray << mergedDetails
 			end
-			#====== End of Tests for Task Listings
-
-
-			
+				
+		end # do not delete this 'end'.  it is part of issueComments do block
+		
+		if commentsArray.empty? == false
+			gotIssueDetails = GH_Task_Lists.get_issue_details(repo, issueNumber, issueState, issueTitle)
+			gotIssueDetails["comments_with_tasks"] = commentsArray
+			pp gotIssueDetails
 		end
+		#====== End of Tests for Task Listings
+
 
 		return output = {	"repo" => repo,
 							"issue_state" => issueState,
