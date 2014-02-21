@@ -14,6 +14,12 @@ module GH_Task_Lists
 		end
 	end
 
+	def self.get_issue_details(repo, issueNumber, issueTitle, issueState)
+		issueDetails = { "repo" => repo,
+						 "issue_number" => issueNumber,
+						 "issue_title" => issueTitle,
+						 "issue_state" => issueState,
+						 }
 
 	def self.get_comment_details(commentRaw, repo, issueNumber, issueState, issueTitle)
 
