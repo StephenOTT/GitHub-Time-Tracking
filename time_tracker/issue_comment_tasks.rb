@@ -58,7 +58,6 @@ module Gh_Issue_Comment_Tasks
 	end
 
 	def self.process_comment_task_for_time(tasks)
-		processedTasks = {:complete => nil, :incomplete => nil}
 		finalTasks = []
 
 		tasks[:complete].each do |t|
