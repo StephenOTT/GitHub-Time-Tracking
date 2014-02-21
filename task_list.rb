@@ -39,12 +39,8 @@ module GH_Task_Lists
 		# processedTasks = process_comment_task_for_time(rawTasks)
 		
 		# if processedTasks.empty? == false
-			overviewDetails = {	"repo" => repo,
-								"issue_number" => issueNumber,
-								"issue_title" => issueTitle,
-								"issue_state" => issueState,
-								"comment_id" => commentRaw.attrs[:id],
-								"work_logged_by" => commentRaw.attrs[:user].attrs[:login],
+			overviewDetails = {	"comment_id" => commentRaw.attrs[:id],
+								"comment_created_by" => commentRaw.attrs[:user].attrs[:login],
 								"comment_created_date" => commentRaw.attrs[:created_at],
 								"comment_last_updated_date" =>commentRaw.attrs[:updated_at],
 								"record_creation_date" => Time.now.utc,
