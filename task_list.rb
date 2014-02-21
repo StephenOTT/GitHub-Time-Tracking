@@ -6,7 +6,7 @@ module GH_Task_Lists
 
 
 	def self.comment_has_tasks?(commentBody)
-		tasks = self.get_tasks_from_Comment(commentBody)
+		tasks = self.get_tasks_from_comment(commentBody)
 		if tasks[:incomplete].empty? == true and tasks[:complete].empty? == true
 			return false
 		else
@@ -61,7 +61,7 @@ module GH_Task_Lists
 
 
 
-	def self.get_tasks_from_Comment(commentBody)
+	def self.get_tasks_from_comment(commentBody)
 
 		tasks = {:complete => nil, :incomplete => nil }
 		completeTasks = []
