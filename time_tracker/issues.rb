@@ -2,6 +2,7 @@ require_relative 'labels_processor'
 require_relative 'helpers'
 require_relative 'issue_budget'
 require_relative 'issue_time'
+require_relative '../task_list'
 
 module Gh_Issue
 
@@ -52,6 +53,19 @@ module Gh_Issue
 			if parsedTasks["tasks"].empty? == false
 				commentsTime << parsedTasks
 			end
+
+			# Beta Code======== Tests for Tasks Listing - Provides a lists of tasks for each issue
+			commentBody1 = GH_Task_Lists.get_comment_body(x)
+			commentHasTasksTF = GH_Task_Lists.comment_has_tasks?(commentBody1)
+			if commentHasTasksTF == true
+				gotTasks = GH_Task_Lists.get_tasks_from_Comment(commentBody1)
+				gotCommentDetails = GH_Task_Lists.get_comment_details(x, repo, issueNumber, issueState, issueTitle)
+				mergedDetails = GH_Task_Lists.merge_details_and_tasks(gotCommentDetails, gotTasks)
+				puts mergedDetails
+			end
+			#====== End of Tests for Task Listings
+
+
 			
 		end
 
