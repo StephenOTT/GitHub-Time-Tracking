@@ -2,8 +2,7 @@
 
 # Beta code for getting lists of tasks in issues broken down by each comment
 
-module GH_Task_Lists
-
+module GitHub_Issue_Task_Aggregator
 
 	def self.comment_has_tasks?(commentBody)
 		tasks = self.get_tasks_from_comment(commentBody)
@@ -14,60 +13,31 @@ module GH_Task_Lists
 		end
 	end
 
-	def self.get_issue_details(repo, issueNumber, issueTitle, issueState)
+	def self.get_issue_details(repo, issueDetailsRaw)
 		issueDetails = { "repo" => repo,
-						 "issue_number" => issueNumber,
-						 "issue_title" => issueTitle,
-						 "issue_state" => issueState,
+						 "issue_number" => issueDetailsRaw.attrs[:number],
+						 "issue_title" => issueDetailsRaw.attrs[:title],
+						 "issue_state" => issueDetailsRaw.attrs[:state],
 						 }
-
-		return issueDetails
-
 	end
 
-
-
-	def self.get_comment_details(commentRaw)
-
-		# commentBody = commentRaw.attrs[:body]
-		# rawTasks = get_comment_tasks(commentBody)
-		
-		# if rawTasks[:complete] == nil and rawTasks[:incomplete] == nil
-		# 	return nil
-		# end
-
-		# processedTasks = process_comment_task_for_time(rawTasks)
-		
-		# if processedTasks.empty? == false
-			overviewDetails = {	"comment_id" => commentRaw.attrs[:id],
-								"comment_created_by" => commentRaw.attrs[:user].attrs[:login],
-								"comment_created_date" => commentRaw.attrs[:created_at],
-								"comment_last_updated_date" =>commentRaw.attrs[:updated_at],
-								"record_creation_date" => Time.now.utc,
-								}
-			return overviewDetails
-			
-			# mergedHash = processedTasks.merge(overviewDetails)
-			# return mergedHash
-		# else
-			# return nil
-		# end
+	def self.get_comment_details(commentDetailsRaw)
+		overviewDetails = {	"comment_id" => commentDetailsRaw.attrs[:id],
+							"comment_created_by" => commentDetailsRaw.attrs[:user].attrs[:login],
+							"comment_created_date" => commentDetailsRaw.attrs[:created_at],
+							"comment_last_updated_date" =>commentDetailsRaw.attrs[:updated_at],
+							"record_creation_date" => Time.now.utc,
+							}
 	end
 
-	def self.get_comment_body(commentRaw)
-		dog = commentRaw.attrs[:body]
-		return dog
+	def self.get_comment_body(commentDetailsRaw)
+		body = commentDetailsRaw.attrs[:body]
 	end
 
 
 	def self.merge_details_and_tasks(overviewDetails, tasks)
-
-		return mergedHash = overviewDetails.merge(tasks)
-
+		mergedHash = overviewDetails.merge(tasks)
 	end
-
-
-
 
 	def self.get_tasks_from_comment(commentBody)
 
