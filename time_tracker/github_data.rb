@@ -33,7 +33,7 @@ module GitHub_Data
 	end
 
 	def self.get_Issue_Comments(repo, issueNumber)
-		return @ghClient.issue_comments(repo, issueNumber)
+		issueComments = @ghClient.issue_comments(repo, issueNumber)
 	end
 
 	def self.get_code_commits(repo)
