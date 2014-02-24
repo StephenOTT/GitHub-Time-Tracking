@@ -3,7 +3,7 @@ require_relative 'time_tracker/github_data'
 require_relative 'time_tracker/mongo'
 require_relative 'time_tracker/milestones'
 require_relative 'time_tracker/issue_comment_tasks'
-
+require_relative 'time_tracker/code_commits'
 
 class Time_Tracking_Controller
 
@@ -49,6 +49,19 @@ class Time_Tracking_Controller
 			end
 		end
 		#======End of Milestone=======
+
+		#======Start of Code Commits=======
+		codeCommits = GitHub_Data.get_code_commits(repo)
+
+		codeCommits.each do |c|
+			commitComments = GitHub_Data.get_commit_comments(repo, c.attrs[:sha])
+
+			processedCodeCommits = GH_Commits.process_code_commit(repo, c, commitComments)
+			if processedCodeCommits.empty? == false
+				Mongo_Connection.putIntoMongoCollTimeTrackingCommits(processedCodeCommits)
+			end
+		end
+		#======End of Code Commits=======
 	end
 end
 
