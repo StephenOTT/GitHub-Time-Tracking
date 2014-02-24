@@ -2,7 +2,7 @@ require_relative 'labels_processor'
 require_relative 'helpers'
 require_relative 'issue_budget'
 require_relative 'issue_time'
-require_relative '../task_list'
+require_relative '../gh_issue_task_aggregator'
 require 'pp'
 
 module Gh_Issue
@@ -61,22 +61,22 @@ module Gh_Issue
 			end
 
 			# Beta Code======== Tests for Tasks Listing - Provides a lists of tasks for each issue
-			commentBody1 = GH_Task_Lists.get_comment_body(x)
-			commentHasTasksTF = GH_Task_Lists.comment_has_tasks?(commentBody1)
+			commentBody1 = GH_Issue_Task_Aggregator.get_comment_body(x)
+			commentHasTasksTF = GH_Issue_Task_Aggregator.comment_has_tasks?(commentBody1)
 			if commentHasTasksTF == true
-				gotTasks = GH_Task_Lists.get_tasks_from_comment(commentBody1)
-				gotCommentDetails = GH_Task_Lists.get_comment_details(x)
+				gotTasks = GH_Issue_Task_Aggregator.get_tasks_from_comment(commentBody1)
+				gotCommentDetails = GH_Issue_Task_Aggregator.get_comment_details(x)
 				
-				mergedDetails = GH_Task_Lists.merge_details_and_tasks(gotCommentDetails, gotTasks)
+				mergedDetails = GH_Issue_Task_Aggregator.merge_details_and_tasks(gotCommentDetails, gotTasks)
 				commentsArray << mergedDetails
 			end
 				
 		end # do not delete this 'end'.  it is part of issueComments do block
 		
 		if commentsArray.empty? == false
-			gotIssueDetails = GH_Task_Lists.get_issue_details(repo, issueNumber, issueState, issueTitle)
+			gotIssueDetails = GH_Issue_Task_Aggregator.get_issue_details(repo, issueDetails)
 			gotIssueDetails["comments_with_tasks"] = commentsArray
-			pp gotIssueDetails
+			# pp gotIssueDetails
 		end
 		#====== End of Tests for Task Listings
 
