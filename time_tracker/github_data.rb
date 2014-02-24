@@ -35,4 +35,15 @@ module GitHub_Data
 	def self.get_Issue_Comments(repo, issueNumber)
 		return @ghClient.issue_comments(repo, issueNumber)
 	end
+
+	def self.get_code_commits(repo)
+		repoCommits = @ghClient.commits(repo)
+	end
+
+	def self.get_commit_comments(repo, sha)
+		commitComments = @ghClient.commit_comments(repo, sha)
+	end
+
+
+
 end
