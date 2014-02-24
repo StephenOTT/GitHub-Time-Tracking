@@ -2,7 +2,7 @@
 
 # Beta code for getting lists of tasks in issues broken down by each comment
 
-module GitHub_Issue_Task_Aggregator
+module GH_Issue_Task_Aggregator
 
 	def self.comment_has_tasks?(commentBody)
 		tasks = self.get_tasks_from_comment(commentBody)
