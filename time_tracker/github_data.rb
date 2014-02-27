@@ -51,7 +51,4 @@ module GitHub_Data
 	def self.get_commit_comments(repo, sha)
 		commitComments = @ghClient.commit_comments(repo, sha)
 	end
-
-
-
 end
