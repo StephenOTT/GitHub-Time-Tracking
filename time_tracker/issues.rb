@@ -80,17 +80,21 @@ module Gh_Issue
 		end
 		#====== End of Tests for Task Listings
 
-
-		return output = {	"repo" => repo,
-							"issue_state" => issueState,
-							"issue_title" => issueTitle,
-							"issue_number" => issueNumber,
-							"milestone_number" => milestoneNumber,
-							"labels" => labels,
-							"issue_created_at" => issueCreatedAt,
-							"issue_closed_at" => issueClosedAt,
-							"issue_last_updated_at" => issueLastUpdatedAt,
-							"record_creation_date" => recordCreationDate,
-							"time_tracking_commits" => commentsTime, }	
+		if commentsTime.empty? == false
+			return output = {	"repo" => repo,
+								"type" => "Issue",
+								"issue_state" => issueState,
+								"issue_title" => issueTitle,
+								"issue_number" => issueNumber,
+								"milestone_number" => milestoneNumber,
+								"labels" => labels,
+								"issue_created_at" => issueCreatedAt,
+								"issue_closed_at" => issueClosedAt,
+								"issue_last_updated_at" => issueLastUpdatedAt,
+								"record_creation_date" => recordCreationDate,
+								"time_tracking_commits" => commentsTime, }
+		elsif commentsTime.empty? == true
+			return output = {}
+		end
 	end
 end
