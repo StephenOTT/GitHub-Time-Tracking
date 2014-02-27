@@ -34,14 +34,18 @@ module Gh_Milestone
 			end
 		end
 
-		return output = {	"repo" => repo,
-							"milestone_state" => milestoneState,
-							"milestone_title" => milestoneTitle,
-							"milestone_number" => milestoneNumber,
-							"milestone_due_date" => milestoneDueDate,
-							"milestone_created_at" => milestoneCreatedAt,
-							"milestone_closed_at" => milestoneClosedAt,
-							"record_creation_date" => recordCreationDate,
-							"budget_tracking_commits" => budgetTime, }	
+		if budgetTime.empty? == false
+			return output = {	"repo" => repo,
+								"milestone_state" => milestoneState,
+								"milestone_title" => milestoneTitle,
+								"milestone_number" => milestoneNumber,
+								"milestone_due_date" => milestoneDueDate,
+								"milestone_created_at" => milestoneCreatedAt,
+								"milestone_closed_at" => milestoneClosedAt,
+								"record_creation_date" => recordCreationDate,
+								"budget_tracking_commits" => budgetTime, }	
+		elsif commentsTime.empty? == true
+			return output = {}
+		end
 	end
 end
