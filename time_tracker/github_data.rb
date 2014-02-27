@@ -2,6 +2,14 @@ require 'octokit'
 
 module GitHub_Data
 
+	def self.gh_sinatra_auth(ghUser)
+
+		@ghClient = ghUser
+		Octokit.auto_paginate = true
+		return @ghClient
+
+	end
+
 	def self.gh_authenticate(username, password)
 		@ghClient = Octokit::Client.new(
 										:login => username.to_s, 
