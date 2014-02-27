@@ -29,4 +29,10 @@ include Mongo
 
 	end
 
+	def self.aggregate_test(input1)
+		
+		@collTimeTrackingCommits.aggregate(input1)
+
+	end
+
 end
