@@ -4,11 +4,14 @@ require_relative 'time_tracker/mongo'
 require_relative 'time_tracker/milestones'
 require_relative 'time_tracker/issue_comment_tasks'
 require_relative 'time_tracker/code_commits'
+# require_relative 'time_tracker/time_analyzer'
 
-class Time_Tracking_Controller
+module Time_Tracking_Controller
 
-	def controller(repo, username, password, clearCollections = false)
-		GitHub_Data.gh_authenticate(username, password)
+	# def controller(repo, username, password, clearCollections = false)
+	def self.controller(repo, object1, clearCollections = false)
+		# GitHub_Data.gh_authenticate(username, password)
+		GitHub_Data.gh_sinatra_auth(object1)
 
 		# MongoDb connection: DB URL, Port, DB Name, Collection Name
 		Mongo_Connection.mongo_Connect("localhost", 27017, "GitHub-TimeTracking", "TimeTrackingCommits")
@@ -65,8 +68,8 @@ class Time_Tracking_Controller
 	end
 end
 
-start = Time_Tracking_Controller.new
+# start = Time_Tracking_Controller.new
 
-# GitHubUsername/RepoName, GitHubUsername, GitHubPassword, ClearCollectionsTFValue
-start.controller("StephenOTT/Test1", "USERNAME", "PASSWORD", true)
+# # GitHubUsername/RepoName, GitHubUsername, GitHubPassword, ClearCollectionsTFValue
+# start.controller("StephenOTT/Test1", "USERNAME", "PASSWORD", true)
 
