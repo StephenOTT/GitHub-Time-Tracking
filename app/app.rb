@@ -59,6 +59,14 @@ module Example
 
     end
 
+    get '/analyze-issue-time/:user/:repo/:issueNumber' do
+      @issueTime = Sinatra_Helpers.analyze_issueTime(params['user'],params['repo'],params['issueNumber'])
+
+      erb :issue_time
+
+    end
+
+
     get '/logout' do
       logout!
       redirect 'https://github.com'
