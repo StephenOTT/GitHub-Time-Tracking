@@ -45,11 +45,17 @@ module Example
       "Download Complete"
     end
 
-    get '/analyze/:user/:repo' do
-      # analyzer = Sinatra_Helpers.analyzer
-      @dog = Sinatra_Helpers.analyze(params['user'],params['repo'])
+    get '/analyze-issues/:user/:repo' do
+      @issues = Sinatra_Helpers.analyze_issues(params['user'],params['repo'])
 
-      erb :index
+      erb :issues
+
+    end
+
+    get '/analyze-milestones/:user/:repo' do
+      @milestones = Sinatra_Helpers.analyze_milestones(params['user'],params['repo'])
+
+      erb :milestones
 
     end
 
