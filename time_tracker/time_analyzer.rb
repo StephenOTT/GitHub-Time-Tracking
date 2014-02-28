@@ -13,7 +13,6 @@ module Time_Analyzer
 
 
 	def self.analyze_issue_spent_hours
-		# totalIssueSpentHoursBreakdown = @collTimeTrackingCommits.aggregate([
 		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
 			{"$project" => {type: 1, 
 							issue_number: 1, 
@@ -174,14 +173,7 @@ module Time_Analyzer
 
 end
 
-# start = Time_Analyzer.new
+# Time_Analyzer.controller
 
-# start.mongo_Connect("localhost", 27017, "GitHub-TimeTracking", "TimeTrackingCommits")
-# issuesTime = start.analyze_issue_spent_hours
-# puts issuesTime
-# puts "======"
-# issuesBudget = start.analyze_issue_budget_hours
-# puts issuesBudget
-# puts "======"
-# puts start.merge_issue_time_and_budget(issuesTime,issuesBudget)
+# puts Time_Analyzer.analyze_issue_spent_hours_per_user
 
