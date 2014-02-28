@@ -9,7 +9,7 @@ module Sinatra_Helpers
     end
 
 
-    def self.analyze(user,repo)
+    def self.analyze_issues(user,repo)
       userRepo = "#{user}/#{repo}"
       Time_Analyzer.controller
       spentHours = Time_Analyzer.analyze_issue_spent_hours
