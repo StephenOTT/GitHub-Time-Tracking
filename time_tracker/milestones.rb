@@ -12,6 +12,8 @@ module Gh_Milestone
 		milestoneCreatedAt = milestoneDetail.attrs[:created_at]
 		milestoneClosedAt = milestoneDetail.attrs[:closed_at]
 		milestoneDueDate = milestoneDetail.attrs[:due_on]
+		milestoneOpenIssueCount = milestoneDetail.attrs[:open_issues]
+		milestoneClosedIssueCount = milestoneDetail.attrs[:closed_issues]
 
 		milestoneDescription = milestoneDetail.attrs[:description]
 
@@ -36,12 +38,15 @@ module Gh_Milestone
 
 		if budgetTime.empty? == false
 			return output = {	"repo" => repo,
+								"type" => "Milestone",
 								"milestone_state" => milestoneState,
 								"milestone_title" => milestoneTitle,
 								"milestone_number" => milestoneNumber,
 								"milestone_due_date" => milestoneDueDate,
 								"milestone_created_at" => milestoneCreatedAt,
 								"milestone_closed_at" => milestoneClosedAt,
+								"milestone_open_issue_count" => milestoneOpenIssueCount,
+								"milestone_closed_issue_count" => milestoneClosedIssueCount,
 								"record_creation_date" => recordCreationDate,
 								"budget_tracking_commits" => budgetTime, }	
 		elsif commentsTime.empty? == true
