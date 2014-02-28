@@ -36,7 +36,8 @@ module Time_Analyzer
 							issue_state: "$issue_state", },
 							time_duration_sum: { "$sum" => "$time_tracking_commits.duration" },
 							time_comment_count: { "$sum" => 1 }
-							}}])
+							}}
+							])
 		output = []
 		totalIssueSpentHoursBreakdown.each do |x|
 			x["_id"]["time_duration_sum"] = x["time_duration_sum"]
@@ -69,7 +70,8 @@ module Time_Analyzer
 							issue_title: "$issue_title",},
 							budget_duration_sum: { "$sum" => "$time_tracking_commits.duration" },
 							budget_comment_count: { "$sum" => 1 }
-							}}])
+							}}
+							])
 		output = []
 		totalIssueSpentHoursBreakdown.each do |x|
 			x["_id"]["budget_duration_sum"] = x["budget_duration_sum"]
