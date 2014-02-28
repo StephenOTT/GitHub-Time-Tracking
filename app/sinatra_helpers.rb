@@ -23,5 +23,11 @@ module Sinatra_Helpers
       Time_Analyzer.analyze_milestones
     end
 
+    def self.analyze_issueTime(user, repo, issueNumber)
+      userRepo = "#{user}/#{repo}"
+      Time_Analyzer.controller
+      Time_Analyzer.analyze_issue_spent_hours_per_user(userRepo, issueNumber.to_i)
+    end
+
 
 end
