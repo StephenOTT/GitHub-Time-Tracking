@@ -1,0 +1,13 @@
+
+<table>
+<% @milestones.each do |m| %>
+	<tr>
+		<td><%= m["repo_name"] %></td>
+		<td><%= m["milestone_number"] %></td>
+		<td><%= m["milestone_state"] %></td>
+		<td><%= m["milestone_title"] %></td>
+		<td><%= m["milestone_open_issue_count"] %> / <%= m["milestone_closed_issue_count"] %></td>
+		<td><%= m["milestone_duration_sum"] %></td>
+	</tr>
+<% end %>
+</table>
