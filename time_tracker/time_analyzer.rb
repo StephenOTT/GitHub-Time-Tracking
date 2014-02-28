@@ -138,6 +138,39 @@ module Time_Analyzer
 
 
 
+	def self.analyze_issue_spent_hours_per_user(repo, issueNumber)
+
+		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
+			{"$project" => {type: 1, 
+							issue_number: 1, 
+							_id: 1, 
+							repo: 1,
+							time_tracking_commits:{ duration: 1, 
+													type: 1,
+													work_logged_by: 1}}},			
+			{ "$match" => { type: "Issue", repo: repo, issue_number: issueNumber }},
+			{ "$unwind" => "$time_tracking_commits" },
+			{ "$match" => { "time_tracking_commits.type" => { "$in" => ["Issue Time"] }}},
+			{ "$group" => { _id: {
+							repo_name: "$repo",
+							issue_number: "$issue_number",
+							work_logged_by: "$time_tracking_commits.work_logged_by"},
+							time_duration_sum: { "$sum" => "$time_tracking_commits.duration" },
+							time_comment_count: { "$sum" => 1 }
+							}},
+							])
+		output = []
+		totalIssueSpentHoursBreakdown.each do |x|
+			x["_id"]["time_duration_sum"] = x["time_duration_sum"]
+			x["_id"]["time_comment_count"] = x["time_comment_count"]
+			output << x["_id"]
+		end
+		return output
+	end
+
+
+
+
 
 end
 
