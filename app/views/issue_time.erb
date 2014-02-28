@@ -1,0 +1,12 @@
+
+<table>
+<% @issueTime.each do |i| %>
+	<tr>
+		<td><%= i["repo_name"] %></td>
+		<td><%= i["issue_number"] %></td>
+		<td><%= i["work_logged_by"] %>
+		<td><%= i["time_duration_sum"] %></td>
+		<td><%= i["time_comment_count"] %></td>
+	</tr>
+<% end %>
+</table>
