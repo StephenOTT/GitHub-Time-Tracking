@@ -17,6 +17,11 @@ module Sinatra_Helpers
       Time_Analyzer.merge_issue_time_and_budget(spentHours, budgetHours)
     end
 
+    def self.analyze_milestones(user,repo)
+      userRepo = "#{user}/#{repo}"
+      Time_Analyzer.controller
+      Time_Analyzer.analyze_milestones
+    end
 
 
 end
