@@ -32,6 +32,7 @@ module Time_Analyzer
 							repo_name: "$repo",
 							milestone_number: "$milestone_number",
 							issue_number: "$issue_number",
+							issue_title: "$issue_title",
 							issue_state: "$issue_state", },
 							time_duration_sum: { "$sum" => "$time_tracking_commits.duration" },
 							time_comment_count: { "$sum" => 1 }
@@ -64,7 +65,8 @@ module Time_Analyzer
 							repo_name: "$repo",
 							milestone_number: "$milestone_number",
 							issue_number: "$issue_number",
-							issue_state: "$issue_state", },
+							issue_state: "$issue_state",
+							issue_title: "$issue_title",},
 							budget_duration_sum: { "$sum" => "$time_tracking_commits.duration" },
 							budget_comment_count: { "$sum" => 1 }
 							}}])
