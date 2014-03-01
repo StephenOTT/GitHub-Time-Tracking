@@ -1,0 +1,15 @@
+
+<table>
+<% @labelsTime.each do |l| %>
+	<tr>
+		<td><%= l["repo_name"] %></td>
+		<td><%= l["category"] %></td>
+		<td><%= l["label"] %></td>
+		<td><%= l["milestone_number"] %></td>
+		<td><%= l["issue_number"] %></td>
+		<td><%= l["issue_title"] %></td>
+		<td><%= l["issue_state"] %></td>
+		<td><%= l["time_duration_sum"] %> (<%= l["time_comment_count"] %>)</td>
+	</tr>
+<% end %>
+</table>
