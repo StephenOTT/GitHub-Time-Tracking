@@ -34,17 +34,17 @@ module Labels_Processor
 					acceptedLabels.each do |y|
 						if [y[:category], y[:label]].join(" ") == x
 							# Add the Category to the Cateogry field and Removes the colon character from category name
-							outputHash["Category"] = y[:category][0..-2]
+							outputHash["category"] = y[:category][0..-2]
 							
-							outputHash["Label"] = y[:label]
+							outputHash["label"] = y[:label]
 							output << outputHash
 						end
 					end
 
 				# If the label is not an accepted label then make the category field nil
 				elsif anyAcceptedLabelsTF == false
-					outputHash["Category"] = nil
-					outputHash["Label"] = x
+					outputHash["category"] = nil
+					outputHash["label"] = x
 					output << outputHash
 				end
 			end
