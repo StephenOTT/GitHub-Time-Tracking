@@ -15,9 +15,13 @@ GitHub-Time-Tracking is designed to offer maximum flexibility in the way you use
 
 ## News
 
-**Feb 19, 2014:** Large changes are occurring with Time Tracker to make it more modular.  All old code will be kept in the "Old Files to be Processed" folder until all functions have been transferred into the new modular structure.  This will be a multi-phase transition so changes will occur.  As of Feb 19, 2014, the Issue Time Tracking with NonBillable Hours support has been provided along with download into MongoDB.  Next will be to get Issue Budgets working followed by Milestone Budgets, followed by a rebuild of the Advanced Label support which covers creating multiple label levels/categories.  The Final stage will be the implementation of the Task level time and budget tracking.  If anyone has a need for a feature sooner rather than later, please post the request in the issue queue.  See the 0.5 Branch for the code changes
+**March 1, 2014**  Sinatra support has been added and mongo aggregation queries have started to be produced for MVP development.  Time Tracker will be turned into a gem and some code will be refactored to better support the gem.  The Sinatra App is currently part of this repo, but will be pushed into a separate repo sometime in the future.  The app will use basic bootstrap to provide a theme for the interface and base queries will be support to provide time and budget totals for issues, milestones, labels, and commit messages(+commit comments).  The Sinatra app is fully functioning with GitHub OAuth2 support and will download your repo issue, milestone, and commit data (that has time and budget information) into MongoDB.  Stay Tuned!
+
+
 
 **Feb 23, 2014:** Support has been re-added for tasks, milestones, and code commits, and code commit comments.  The code still needs some cleanup in term of OO based structure, but it is fully functioning.  All features listed below are supported.  I will be updating the diagrams and images of the improved data structure in the next few days as time permits.
+
+**Feb 19, 2014:** Large changes are occurring with Time Tracker to make it more modular.  All old code will be kept in the "Old Files to be Processed" folder until all functions have been transferred into the new modular structure.  This will be a multi-phase transition so changes will occur.  As of Feb 19, 2014, the Issue Time Tracking with NonBillable Hours support has been provided along with download into MongoDB.  Next will be to get Issue Budgets working followed by Milestone Budgets, followed by a rebuild of the Advanced Label support which covers creating multiple label levels/categories.  The Final stage will be the implementation of the Task level time and budget tracking.  If anyone has a need for a feature sooner rather than later, please post the request in the issue queue.  See the 0.5 Branch for the code changes
 
 <br>
 
