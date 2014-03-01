@@ -212,8 +212,13 @@ module Time_Analyzer
 
 end
 
+
+# DEBUG CODE for testing output of methods without the need of Sinatra.
+
 # Time_Analyzer.controller
 
 # puts Time_Analyzer.analyze_issue_spent_hours_per_user
 # puts Time_Analyzer.analyze_issue_spent_hours_per_milestone(1)
+# puts Time_Analyzer.analyze_issue_spent_hours_per_label(["Priority"], ["High", "Medium"])
+
 
