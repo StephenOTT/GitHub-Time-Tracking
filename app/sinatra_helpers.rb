@@ -30,6 +30,14 @@ module Sinatra_Helpers
       Time_Analyzer.analyze_issue_spent_hours_per_user(userRepo, issueNumber.to_i)
     end
 
+    def self.analyze_labelTime(user, repo, category, label)
+      userRepo = "#{user}/#{repo}"
+      Time_Analyzer.controller
+      Time_Analyzer.analyze_issue_spent_hours_per_label(category, label)
+    end
+
+
+
     # TODO Cleanup dog code.
     # TODO come up with better way to call chronic duration
     def self.analyze_issue_time_in_milestone(user, repo, milestoneNumber)
