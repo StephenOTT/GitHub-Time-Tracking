@@ -64,4 +64,10 @@ module Helpers
 			return milestoneDetails.attrs[:number]
 		end
 	end
+
+	def self.chronic_convert(timeInSeconds, outputFormat)
+		outputFormat = outputFormat.to_sym
+		return ChronicDuration.output(timeInSeconds, :format => outputFormat)
+	end
+
 end
