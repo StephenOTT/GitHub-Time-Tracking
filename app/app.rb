@@ -74,6 +74,20 @@ module Example
 
     end
 
+    # TODO: Write better code/route to support multiple categories and labels
+    get '/analyze-labels-time/:user/:repo/:category/:label' do
+      category = []
+      label = []
+      
+      category << params['category']
+      label << params['label']
+
+      @labelsTime = Sinatra_Helpers.analyze_labelTime(params['user'],params['repo'], category, label)
+
+      erb :labels
+
+    end
+
 
 
 
