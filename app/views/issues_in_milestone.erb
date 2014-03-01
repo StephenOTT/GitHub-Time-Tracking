@@ -1,0 +1,12 @@
+<table>
+<% @issuesInMilestone.each do |i| %>
+	<tr>
+		<td><%= i["repo_name"] %></td>
+		<td><%= i["milestone_number"] %></td>
+		<td><%= i["issue_number"] %></td>
+		<td><%= i["issue_title"] %></td>
+		<td><%= i["issue_state"] %></td>
+		<td><%= i["time_duration_sum"] %>(<%= i["time_comment_count"] %>)</td>
+	</tr>
+<% end %>
+</table>
