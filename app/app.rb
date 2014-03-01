@@ -67,6 +67,16 @@ module Example
     end
 
 
+    get '/analyze-milestone-time/:user/:repo/:milestoneNumber' do
+      @issuesInMilestone = Sinatra_Helpers.analyze_issue_time_in_milestone(params['user'],params['repo'],params['milestoneNumber'])
+
+      erb :issues_in_milestone
+
+    end
+
+
+
+
     get '/logout' do
       logout!
       redirect 'https://github.com'
