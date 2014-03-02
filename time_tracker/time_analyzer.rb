@@ -252,6 +252,33 @@ module Time_Analyzer
 
 
 
+	def self.analyze_code_commits_spent_hours
+		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
+			{"$project" => {type: 1, 
+							commit_author_username: 1, 
+							_id: 1, 
+							repo: 1,
+							commit_committer_username: 1, 
+							commit_sha: 1, 
+							commit_message_time:{ duration: 1, 
+													type: 1}}},			
+			{ "$match" => { type: "Code Commit" }},
+			{ "$match" => { commit_message_time: { "$ne" => nil } }},
+			{ "$group" => { _id: {
+							repo_name: "$repo",
+							commit_committer_username: "$commit_committer_username",
+							commit_author_username: "$commit_author_username",
+							commit_sha: "$commit_sha", },
+							time_duration_sum: { "$sum" => "$commit_message_time.duration" }
+							}}
+							])
+		output = []
+		totalIssueSpentHoursBreakdown.each do |x|
+			x["_id"]["time_duration_sum"] = x["time_duration_sum"]
+			output << x["_id"]
+		end
+		return output
+	end
 end
 
 
