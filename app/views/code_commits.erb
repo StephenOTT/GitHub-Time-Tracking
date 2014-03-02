@@ -1,0 +1,11 @@
+
+<table>
+<% @codeCommits.each do |c| %>
+	<tr>
+		<td><%= c["commit_committer_username"] %></td>
+		<td><%= c["commit_author_username"] %></td>
+		<td><%= c["commit_sha"] %>
+		<td><%= c["time_duration_sum"] %></td>
+	</tr>
+<% end %>
+</table>
