@@ -39,7 +39,7 @@ module GH_Commits
 		end
 		
 
-		if parsedCommitMessage.empty? == true and parsedCommitComments.empty? == true
+		if parsedCommitMessage == nil and parsedCommitComments.empty? == true
 			return []
 		else
 			timeCommitHash = {	"type" => type,
