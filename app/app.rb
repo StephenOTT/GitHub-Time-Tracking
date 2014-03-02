@@ -88,6 +88,13 @@ module Example
 
     end
 
+    get '/analyze-code-commits/:user/:repo' do
+      @codeCommits = Sinatra_Helpers.analyze_codeCommits(params['user'], params['repo'])
+
+      erb :code_commits
+
+    end
+
 
 
 
