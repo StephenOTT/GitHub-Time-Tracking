@@ -41,26 +41,26 @@ module Example
 
     get '/timetrack/:user/:repo' do
       authenticate!
-      Sinatra_Helpers.download_time_tracking_data(params['user'],params['repo'],github_api)
+      Sinatra_Helpers.download_time_tracking_data(params['user'], params['repo'], github_api)
       "Download Complete"
     end
 
     get '/analyze-issues/:user/:repo' do
-      @issues = Sinatra_Helpers.analyze_issues(params['user'],params['repo'])
+      @issues = Sinatra_Helpers.analyze_issues(params['user'], params['repo'])
 
       erb :issues
 
     end
 
     get '/analyze-milestones/:user/:repo' do
-      @milestones = Sinatra_Helpers.analyze_milestones(params['user'],params['repo'])
+      @milestones = Sinatra_Helpers.analyze_milestones(params['user'], params['repo'])
 
       erb :milestones
 
     end
 
     get '/analyze-issue-time/:user/:repo/:issueNumber' do
-      @issueTime = Sinatra_Helpers.analyze_issueTime(params['user'],params['repo'],params['issueNumber'])
+      @issueTime = Sinatra_Helpers.analyze_issueTime(params['user'], params['repo'], params['issueNumber'])
 
       erb :issue_time
 
@@ -68,7 +68,7 @@ module Example
 
 
     get '/analyze-milestone-time/:user/:repo/:milestoneNumber' do
-      @issuesInMilestone = Sinatra_Helpers.analyze_issue_time_in_milestone(params['user'],params['repo'],params['milestoneNumber'])
+      @issuesInMilestone = Sinatra_Helpers.analyze_issue_time_in_milestone(params['user'], params['repo'], params['milestoneNumber'])
 
       erb :issues_in_milestone
 
@@ -82,7 +82,7 @@ module Example
       category << params['category']
       label << params['label']
 
-      @labelsTime = Sinatra_Helpers.analyze_labelTime(params['user'],params['repo'], category, label)
+      @labelsTime = Sinatra_Helpers.analyze_labelTime(params['user'], params['repo'], category, label)
 
       erb :labels
 
