@@ -1,9 +1,6 @@
 require_relative './mongo'
-# require 'mongo'
 
 module Time_Analyzer
-	# include Mongo
-
 
 	def self.controller
 
