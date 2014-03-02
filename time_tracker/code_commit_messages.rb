@@ -8,7 +8,7 @@ module Commit_Messages
 		nonBillable = Helpers.non_billable?(commitMessageBody)
 		parsedTimeDetails = parse_time_commit(commitMessageBody, nonBillable)
 		if parsedTimeDetails == nil
-			return []
+			return nil
 		else
 			overviewDetails = {"type" => type,
 								"record_creation_date" => Time.now.utc}
