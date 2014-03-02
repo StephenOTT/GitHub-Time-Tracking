@@ -36,6 +36,12 @@ module Sinatra_Helpers
       Time_Analyzer.analyze_issue_spent_hours_per_label(category, label)
     end
 
+    def self.analyze_codeCommits(user, repo)
+      userRepo = "#{user}/#{repo}"
+      Time_Analyzer.controller
+      Time_Analyzer.analyze_code_commits_spent_hours
+    end
+
 
 
     # TODO Cleanup dog code.
