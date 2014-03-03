@@ -1,4 +1,13 @@
-<table>
+<table class="table">
+	<tbody>
+		<tr>
+		  <th>Repository</th>
+		  <th>Milestone #</th> 
+		  <th>Issue #</th>
+		  <th>Issue Title</th>
+		  <th>Issue State</th>
+		  <th>Time Duration Sum (Time Comment Count)</th>
+		</tr>
 <% @issuesInMilestone.each do |i| %>
 	<tr>
 		<td><%= i["repo_name"] %></td>
@@ -9,4 +18,5 @@
 		<td><%= i["time_duration_sum"] %>(<%= i["time_comment_count"] %>)</td>
 	</tr>
 <% end %>
-</table>
+  </tbody>
+</table>  
