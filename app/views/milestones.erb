@@ -1,5 +1,14 @@
 
-<table>
+<table class="table">
+	<tbody>
+		<tr>
+		  <th>Repository</th>
+		  <th>Milestone #</th> 
+		  <th>Milestone State</th>
+		  <th>Milestone Title</th>
+		  <th>Milestone Open Issues (closed issues)</th>
+		  <th>Milestone Duration Sum</th>
+		</tr>
 <% @milestones.each do |m| %>
 	<tr>
 		<td><%= m["repo_name"] %></td>
@@ -10,4 +19,5 @@
 		<td><%= m["milestone_duration_sum"] %></td>
 	</tr>
 <% end %>
+</tbody>
 </table>
