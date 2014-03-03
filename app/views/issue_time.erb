@@ -1,5 +1,13 @@
 
-<table>
+<table class="table">
+	<tbody>
+		<tr>
+		  <th>Repository</th>
+		  <th>Issue #</th> 
+		  <th>Work Logged By</th>
+		  <th>Time Duration Sum</th>
+		  <th>Time Comment Count</th>
+		</tr>
 <% @issueTime.each do |i| %>
 	<tr>
 		<td><%= i["repo_name"] %></td>
@@ -9,4 +17,5 @@
 		<td><%= i["time_comment_count"] %></td>
 	</tr>
 <% end %>
+</tbody>
 </table>
