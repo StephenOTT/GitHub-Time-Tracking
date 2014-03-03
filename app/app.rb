@@ -20,8 +20,13 @@ module Example
     end
 
     get '/' do
-      authenticate!
-      "Hello there, #{github_user.login}!"
+      # authenticate!
+      if authenticated?
+        @user = github_user.login
+      else
+        @user = "please log in"
+      end
+      erb :index
     end
 
     get '/orgs/:id' do
@@ -42,7 +47,10 @@ module Example
     get '/timetrack/:user/:repo' do
       authenticate!
       Sinatra_Helpers.download_time_tracking_data(params['user'], params['repo'], github_api)
-      "Download Complete"
+      
+      @downloadStatus = "Complete"
+
+      erb :download_data
     end
 
     get '/analyze-issues/:user/:repo' do
@@ -100,7 +108,13 @@ module Example
 
     get '/logout' do
       logout!
-      redirect 'https://github.com'
+      redirect '/'
     end
+    get '/login' do
+      authenticate!
+      redirect '/'
+    end
+
+
   end
 end
