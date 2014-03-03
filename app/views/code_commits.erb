@@ -1,5 +1,12 @@
 
-<table>
+<table class="table">
+	<tbody>
+		<tr>
+		  <th>Committer Username</th>
+		  <th>Author Username</th> 
+		  <th>Commit SHA</th>
+		  <th>Time Duration Sum</th>
+		</tr>
 <% @codeCommits.each do |c| %>
 	<tr>
 		<td><%= c["commit_committer_username"] %></td>
@@ -8,4 +15,5 @@
 		<td><%= c["time_duration_sum"] %></td>
 	</tr>
 <% end %>
+</tbody>
 </table>
