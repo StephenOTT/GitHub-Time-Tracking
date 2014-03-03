@@ -1,5 +1,16 @@
 
-<table>
+<table class="table">
+	<tbody>
+		<tr>
+		  <th>Repository</th>
+		  <th>Category</th> 
+		  <th>Label</th>
+		  <th>Milestone #</th>
+		  <th>Issue Number</th>
+		  <th>Issue Title</th>
+		  <th>Issue State</th>
+		  <th>Time Duration Sum (Time Comment Count)</th>
+		</tr>
 <% @labelsTime.each do |l| %>
 	<tr>
 		<td><%= l["repo_name"] %></td>
@@ -12,4 +23,5 @@
 		<td><%= l["time_duration_sum"] %> (<%= l["time_comment_count"] %>)</td>
 	</tr>
 <% end %>
+</tbody>
 </table>
