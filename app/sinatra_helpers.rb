@@ -56,4 +56,19 @@ module Sinatra_Helpers
       end
       return dog
     end
+
+
+    def self.process_issues_for_budget_left(issues)
+      issues.each do |i|
+        if i["budget_duration_sum"] != nil
+          budgetLeftRaw = Time_Analyzer_Calculations.budget_left?(i["budget_duration_sum"], i["time_duration_sum"])
+          budgetLeftHuman = Helpers.chronic_convert(budgetLeftRaw, "long")
+          i["budget_left_raw"] = budgetLeftRaw
+          i["budget_left_human"] = budgetLeftHuman
+        end
+      end
+      return issues
+    end
+
+
 end
