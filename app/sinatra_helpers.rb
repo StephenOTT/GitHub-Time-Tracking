@@ -1,6 +1,8 @@
 require_relative '../controller'
 require_relative '../time_tracker/time_analyzer'
 require_relative '../time_tracker/helpers'
+require_relative '../time_tracker/time_analyzer_calculations'
+
 
 module Sinatra_Helpers
 
