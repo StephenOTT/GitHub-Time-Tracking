@@ -88,8 +88,8 @@ module Sinatra_Helpers
       userRepo = "#{user}/#{repo}"
       puts milestoneNumber
       Time_Analyzer.controller
-      dog = Time_Analyzer.analyze_issue_spent_hours_per_milestone(milestoneNumber.to_i)
-      dog.each do |x|
+      issuesPerMilestone = Time_Analyzer.analyze_issue_spent_hours_per_milestone(milestoneNumber.to_i)
+      issuesPerMilestone.each do |x|
         x["time_duration_sum"] = Helpers.chronic_convert(x["time_duration_sum"], "long")
       end
       return dog
