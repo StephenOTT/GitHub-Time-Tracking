@@ -109,4 +109,19 @@ module Sinatra_Helpers
     end
 
 
+    def self.process_milestone_budget_left(milestones)
+      milestones.each do |m|
+        if m["milestone_duration_sum"] != nil
+          puts m
+          budgetLeftRaw = Time_Analyzer_Calculations.budget_left?(m["milestone_duration_sum"], m["issues_duration_sum_raw"])
+          puts budgetLeftRaw
+          budgetLeftHuman = Helpers.chronic_convert(budgetLeftRaw, "long")
+          m["budget_left_raw"] = budgetLeftRaw
+          m["budget_left_human"] = budgetLeftHuman
+        end
+      end
+      return milestones
+    end
+
+
 end
