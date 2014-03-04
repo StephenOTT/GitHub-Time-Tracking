@@ -52,7 +52,9 @@ module Example
     end
 
     get '/analyze-issues/:user/:repo' do
-      @issues = Sinatra_Helpers.analyze_issues(params['user'], params['repo'])
+      issuesRaw = Sinatra_Helpers.analyze_issues(params['user'], params['repo'])
+      issuesProcessed = Sinatra_Helpers.process_issues_for_budget_left(issuesRaw)
+     
 
       erb :issues
 
