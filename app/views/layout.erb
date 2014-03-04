@@ -48,6 +48,32 @@
         </div><!--/.nav-collapse -->
       </div>
 
+      <!--Messaging Code Start -->
+      <%if @dangerMessage then %>
+          <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <%=@dangerMessage%>
+          </div>
+      <% end %>
+      <%if @warningMessage then %>
+          <div class="alert alert-warning alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <%=@warningMessage%>
+          </div>
+      <% end %>
+      <%if @infoMessage then %>
+          <div class="alert alert-info alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <%=@infoMessage%>
+          </div>
+      <% end %>
+      <%if @successMessage then %>
+          <div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <%=@successMessage%>
+          </div>
+      <% end %>  
+      <!--Messaging Code End -->
       <div>
             <%= yield %>
       </div>
