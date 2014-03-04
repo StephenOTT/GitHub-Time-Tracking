@@ -36,6 +36,13 @@ module Example
       erb :index
     end
 
+    get '/timetrack' do
+      if authenticated? == true
+        erb :download_data
+      else
+        @warningMessage = "You must be logged in"
+        erb :unauthenticated
+      end     
     end
 
     get '/timetrack/:user/:repo' do
