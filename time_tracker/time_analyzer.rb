@@ -138,7 +138,9 @@ module Time_Analyzer
 
 		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
 			{"$project" => {type: 1, 
-							issue_number: 1, 
+							issue_number: 1,
+							issue_title: 1, 
+							milestone_number: 1,
 							_id: 1, 
 							repo: 1,
 							time_tracking_commits:{ duration: 1, 
@@ -149,7 +151,9 @@ module Time_Analyzer
 			{ "$match" => { "time_tracking_commits.type" => { "$in" => ["Issue Time"] }}},
 			{ "$group" => { _id: {
 							repo_name: "$repo",
+							milestone_number: "$milestone_number",
 							issue_number: "$issue_number",
+							issue_title: "$issue_title",
 							work_logged_by: "$time_tracking_commits.work_logged_by"},
 							time_duration_sum: { "$sum" => "$time_tracking_commits.duration" },
 							time_comment_count: { "$sum" => 1 }
