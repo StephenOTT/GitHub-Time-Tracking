@@ -62,8 +62,9 @@ module Example
     end
 
     get '/analyze-milestones/:user/:repo' do
-      @milestones = Sinatra_Helpers.analyze_milestones(params['user'], params['repo'])
-
+      milestones1 = Sinatra_Helpers.analyze_milestones(params['user'], params['repo'])
+      milestonesProcessed = Sinatra_Helpers.process_milestone_budget_left(milestones1)
+      @milestones = milestonesProcessed
       erb :milestones
 
     end
