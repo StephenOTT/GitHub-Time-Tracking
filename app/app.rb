@@ -56,6 +56,7 @@ module Example
       issuesProcessed = Sinatra_Helpers.process_issues_for_budget_left(issuesRaw)
      
 
+      @issues = issuesProcessed
       erb :issues
 
     end
