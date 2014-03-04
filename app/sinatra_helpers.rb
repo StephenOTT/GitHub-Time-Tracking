@@ -17,7 +17,17 @@ module Sinatra_Helpers
       Time_Analyzer.controller
       spentHours = Time_Analyzer.analyze_issue_spent_hours
       budgetHours = Time_Analyzer.analyze_issue_budget_hours
-      Time_Analyzer.merge_issue_time_and_budget(spentHours, budgetHours)
+      issues = Time_Analyzer.merge_issue_time_and_budget(spentHours, budgetHours)
+      issues.each do |x|
+        if x["time_duration_sum"] != nil
+          x["time_duration_sum_human"] = Helpers.chronic_convert(x["time_duration_sum"], "long")
+        end
+        if x["budget_duration_sum"] != nil
+          x["budget_duration_sum_human"] = Helpers.chronic_convert(x["budget_duration_sum"], "long")
+        end
+      end
+      return issues
+
     end
 
     def self.analyze_milestones(user, repo)
