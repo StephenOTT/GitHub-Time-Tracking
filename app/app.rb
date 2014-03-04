@@ -48,10 +48,7 @@ module Example
     get '/download/:user/:repo' do
       authenticate!
       Sinatra_Helpers.download_time_tracking_data(params['user'], params['repo'], github_api)
-      
-      @downloadStatus = "Complete"
-
-      erb :download_data
+      redirect '/timetrack'
     end
 
     get '/analyze-issues/:user/:repo' do
