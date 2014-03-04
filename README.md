@@ -25,10 +25,37 @@ GitHub-Time-Tracking is designed to offer maximum flexibility in the way you use
 
 <br>
 
+
+## How to run the Web App:
+
+1. Register/Create a Application at https://github.com/settings/applications/new.  Set your fields to the following:
+
+	1.1. Homepage URL: `http://localhost:9292`
+
+	1.2. Authorization callback URL: `http://localhost:9292/auth/github/callback`
+	
+	1.3. Application Name: `GitHub-Time-Tracking` or whatever you want to call your application.
+
+4. Install MongoDB (typically: `brew update`, followed by: `brew install mongodb`)
+
+5. `cd` into the `app` folder and run the following commands in the `app` folder:
+
+	5.1. Run `mongod` in terminal
+
+	5.2. Open a second terminal window and run: `bundle install`
+	
+	5.3.`GITHUB_CLIENT_ID="YOUR CLIENT ID" GITHUB_CLIENT_SECRET="YOUR CLIENT SECRET" bundle exec rackup`
+	Get the Client ID and Client Secret from the settings of your created/registered GitHub Application in Step 1.
+
+6. Go to `http://localhost:9292`
+
+
+NOTE: The web app is under development at the moment, so while the code will always be executable for demo purposes, there are many links that have hard coded variables at the moment.  So if you want to test out on your own repo you will have to make a few modifications.
+
 --
 
 
-## Usage Patterns
+## Time Tracking Usage Patterns
 
 ### Logging Time for an Issue
 
@@ -199,6 +226,8 @@ To indicate if time or budgets are non-billable, you add the `:free:` :free: emo
 
 ## Sample Data Structure for Reporting
 
+**NOTE: These images are out of date.  New data structures have been implemented and are in full use in the Time Tracker Gem and the Sinatra App.  Sample data structures will be updated shortly.**
+
 ### Time Logging in a Issue
 ![screen shot 2013-12-17 at 2 10 36 pm](https://f.cloud.github.com/assets/1994838/1767347/81179704-6752-11e3-8783-e3e083f5cc30.png)
 
@@ -217,21 +246,21 @@ Notice the parent `Duration` field is empty.  This is due to time being logged i
 ## Future Features
 
 1. ~~Tracking of Billable and non-billable hours~~ Done
-2. Breakdown by Milestones
+2. ~~Breakdown by Milestones~~
 3. Breakdown by User
-4. Breakdown by Labels
+4. ~~Breakdown by Labels~~
 5. Printable View
 6. Import from CSV
 7. Export to CSV
 8. ~~Budget Tracking (What is the allocated budget of a issue, milestone, label, etc)~~ Done
 9. ~~Code Commit Time Tracking~~ Done
-10. Support Business Hours Time and Budget Logging. Example: 1 week will equal 5 days (1 Business Week) rather than 1 week equalling 7 days (1 Calendar Week).  Most popular use case would be able to say 1 Day would equal 8 hours rather than 24 hours.
+10. Support Business Hours Time and Budget Logging. Example: 1 week will equal 5 days (1 Business Week) rather than 1 week equalling 7 days (1 Calendar Week).  Most popular use case would be able to say 1 Day would equal 8 hours rather than 24 hours. This is upcoming as the Chronic_Duration Gem has merged a pull request to support this feature.
 11. ~~Add Ability to parse Label grouping words out of labels.  This will allow Web app to categorize beyond milestones and to categorize within a label.  Example: Label = Project Management: Project Oversight.  Label = Business Analysis: Requirements Definition.~~  Done
 12. Add ability to track Size of Issues - Likely will use Labels as Size (something like Small, Med, Large)
 13. Add ability to track estimated effort for an issue.  Estimated effort and Budget are different.  Budget is something that has been determined by the Project Management-like user.  Estimated Effort is a duration that has been determined by the developer.  Who this is submitted in the syntax still needs to be determined.  Thinking maybe :8ball: or maybe Playing Cards emoji that is a relation to Agile Poker.  **Labels support is already provided.  So you can currently use labels to categorize level of effort estimates.**
 14. Explore the use of Natural Language Processing Libraries such as OpenNPL for better text processing.
 
-15. Add GitLab support.
+15. Add GitLab support.  This is upcoming.  Need to tweak data input structures and OmniOAuth support.  But it looks like its very possible.
 
 ## Process Overview
 
@@ -251,6 +280,8 @@ This section will grow as the data analysis / UI is developed for the applicatio
 Using the MongoDB Aggregation Framework a series of high level aggregations are preformed to provide the required data for the front-end to display needed Time Tracking information.
 
 #### Issue Time Output
+
+**NOTE: These images are out of date.  New data structures have been implemented and are in full use in the Time Tracker Gem and the Sinatra App.  Structures will be updated shortly.**
 
 ```
 [
