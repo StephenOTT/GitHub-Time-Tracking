@@ -67,7 +67,7 @@ module Helpers
 
 	def self.chronic_convert(timeInSeconds, outputFormat)
 		outputFormat = outputFormat.to_sym
-		return ChronicDuration.output(timeInSeconds, :format => outputFormat)
+		return ChronicDuration.output(timeInSeconds, :format => outputFormat, :keep_zero => true)
 	end
 
 end
