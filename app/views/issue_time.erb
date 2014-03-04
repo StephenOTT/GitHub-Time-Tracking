@@ -3,7 +3,9 @@
 	<tbody>
 		<tr>
 		  <th>Repository</th>
-		  <th>Issue #</th> 
+		  <th>Issue #</th>
+		  <th>Issue Title</th>
+		  <th>Milestone #</th>		  
 		  <th>Work Logged By</th>
 		  <th>Time Duration Sum</th>
 		  <th>Time Comment Count</th>
@@ -12,7 +14,9 @@
 	<tr>
 		<td><%= i["repo_name"] %></td>
 		<td><%= i["issue_number"] %></td>
-		<td><%= i["work_logged_by"] %>
+		<td><%= i["issue_title"] %></td>
+		<td><%= i["milestone_number"] %></td>
+		<td><%= i["work_logged_by"] %></td>
 		<td><%= i["time_duration_sum"] %></td>
 		<td><%= i["time_comment_count"] %></td>
 	</tr>
