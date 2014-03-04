@@ -5,8 +5,10 @@
       <th>Issue #</th> 
       <th>Issue State</th>
       <th>Issue Title</th>
-      <th>Milestone Number</th>
-      <th>Time Duration Sum (Time Commont Count) / Budget Duration Sum</th>
+      <th>Milestone #</th>
+      <th>Time Duration Sum (Comment Count)</th>
+      <th>Budget Duration Sum (Comment Count)</th>
+      <th>Budget Left</th>
     </tr>
     <% @issues.each do |i| %>
 			<tr>
@@ -15,8 +17,10 @@
 				<td><%= i["issue_state"] %></td>
 				<td><%= i["issue_title"] %></td>
 				<td><%= i["milestone_number"] %></td>
-				<td><%= i["time_duration_sum"] %>(<%= i["time_comment_count"] %>) / <%= i["budget_duration_sum"] %>(<%= i["budget_comment_count"] %>)</td>
-			</tr>
+				<td><%= i["time_duration_sum_human"] %> <span class="badge"><%= i["time_comment_count"] %></span></td>
+        <td><%= i["budget_duration_sum_human"] %> <span class="badge"><%= i["budget_comment_count"] %></span></td>
+        <td><%= i["budget_left_human"] %></td>
+      </tr>
 		<% end %>
   </tbody>
 </table>
