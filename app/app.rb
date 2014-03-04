@@ -45,7 +45,7 @@ module Example
       end     
     end
 
-    get '/timetrack/:user/:repo' do
+    get '/download/:user/:repo' do
       authenticate!
       Sinatra_Helpers.download_time_tracking_data(params['user'], params['repo'], github_api)
       
