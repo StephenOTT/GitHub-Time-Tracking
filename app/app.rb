@@ -13,11 +13,11 @@ module Example
 
     register Sinatra::Auth::Github
 
-    helpers do
-      def repos
-        github_request("user/repos")
-      end
-    end
+    # helpers do
+    #   def repos
+    #     github_request("user/repos")
+    #   end
+    # end
 
     get '/' do
       # authenticate!
