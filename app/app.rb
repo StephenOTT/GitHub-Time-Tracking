@@ -21,10 +21,17 @@ module Example
 
     get '/' do
       # authenticate!
-      if authenticated?
-        @user = github_user.login
+      if authenticated? == true
+        @username = github_user.login
+        @gravatar_id = github_user.gravatar_id
+        @fullName = github_user.name
+
+
       else
-        @user = "please log in"
+        # @dangerMessage = "Danger... Warning!  Warning"
+        @warningMessage = "Please login to continue"
+        # @infoMessage = "Info 123"
+        # @successMessage = "Success"
       end
       erb :index
     end
