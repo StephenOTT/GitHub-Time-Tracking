@@ -294,4 +294,5 @@ end
 # puts Time_Analyzer.analyze_issue_spent_hours_per_milestone(1)
 # puts Time_Analyzer.analyze_issue_spent_hours_per_label(["Priority"], ["High", "Medium"])
 # puts Time_Analyzer.analyze_code_commits_spent_hours
+# puts Time_Analyzer.analyze_issue_spent_hours_for_milestone([1])
 
