@@ -160,6 +160,11 @@ module Time_Analyzer
 		end
 		return output
 	end
+
+
+
+
+
 	# gets time per user for each issue
 	def self.analyze_issue_spent_hours_per_user(repo, issueNumber)
 
