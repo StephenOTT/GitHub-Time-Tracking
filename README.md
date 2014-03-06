@@ -60,12 +60,17 @@ NOTE: The web app is under development at the moment, so while the code will alw
 Some Initial same images for first iteration of development
 
 ![screen shot 2014-03-06 at 1 17 38 am](https://f.cloud.github.com/assets/1994838/2342453/294b23b4-a4f7-11e3-8d5a-44f532e5392e.png)
+-
 ![screen shot 2014-03-06 at 1 17 50 am](https://f.cloud.github.com/assets/1994838/2342455/2b732736-a4f7-11e3-98fc-cff944644e1e.png)
+-
 ![screen shot 2014-03-06 at 1 17 54 am](https://f.cloud.github.com/assets/1994838/2342457/3239fa9a-a4f7-11e3-9feb-19825d49e798.png)
+-
 ![screen shot 2014-03-06 at 1 17 29 am](https://f.cloud.github.com/assets/1994838/2342458/3c4cf2c6-a4f7-11e3-835a-7dde7a5a1dbd.png)
+-
 ![screen shot 2014-03-06 at 1 17 21 am](https://f.cloud.github.com/assets/1994838/2342459/45fdd74a-a4f7-11e3-8ad9-8321a62be2e5.png)
+-
 ![screen shot 2014-03-06 at 1 19 39 am](https://f.cloud.github.com/assets/1994838/2342462/527c893a-a4f7-11e3-82c5-cb51a2e3608e.png)
-
+-
 
 
 
