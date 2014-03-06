@@ -99,72 +99,6 @@ module Time_Analyzer
 		return issuesTime
 	end
 
-	def self.analyze_milestones
-		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
-			{"$project" => {type: 1, 
-							milestone_number: 1, 
-							_id: 1, 
-							repo: 1,
-							milestone_state: 1, 
-							milestone_title: 1, 
-							milestone_open_issue_count: 1,
-							milestone_closed_issue_count: 1,
-							budget_tracking_commits:{ duration: 1, 
-													type: 1}}},			
-			{ "$match" => { type: "Milestone" }},
-			{ "$unwind" => "$budget_tracking_commits" },
-			{ "$match" => { "budget_tracking_commits.type" => { "$in" => ["Milestone Budget"] }}},
-			{ "$group" => { _id: {
-							repo_name: "$repo",
-							milestone_number: "$milestone_number",
-							milestone_state: "$milestone_state",
-							milestone_title: "$milestone_title",
-							milestone_open_issue_count: "$milestone_open_issue_count",
-							milestone_closed_issue_count: "$milestone_closed_issue_count",},
-							milestone_duration_sum: { "$sum" => "$budget_tracking_commits.duration" }
-							}}
-							])
-		output = []
-		totalIssueSpentHoursBreakdown.each do |x|
-			x["_id"]["milestone_duration_sum"] = x["milestone_duration_sum"]
-			output << x["_id"]
-		end
-		return output
-	end
-
-
-	def self.analyze_issue_spent_hours_for_milestone(milestoneNumber)
-		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
-			{"$project" => {type: 1, 
-							issue_number: 1, 
-							_id: 1, 
-							repo: 1,
-							milestone_number: 1, 
-							time_tracking_commits:{ duration: 1, 
-													type: 1, 
-													comment_id: 1 }}},			
-			{ "$match" => { type: "Issue" }},
-			{ "$unwind" => "$time_tracking_commits" },
-			{ "$match" => { "time_tracking_commits.type" => { "$in" => ["Issue Time"] }}},
-			{ "$match" => { "milestone_number" => { "$in" => milestoneNumber }}},			
-			{ "$group" => { _id: {
-							repo_name: "$repo",
-							milestone_number: "$milestone_number"},
-							time_duration_sum: { "$sum" => "$time_tracking_commits.duration" }}}
-							])
-		output = []
-		totalIssueSpentHoursBreakdown.each do |x|
-			x["_id"]["time_duration_sum"] = x["time_duration_sum"]
-			# x["_id"]["time_comment_count"] = x["time_comment_count"]
-			output << x["_id"]
-		end
-		return output
-	end
-
-
-
-
-
 	# gets time per user for each issue
 	def self.analyze_issue_spent_hours_per_user(repo, issueNumber)
 
@@ -199,46 +133,6 @@ module Time_Analyzer
 		end
 		return output
 	end
-
-
-
-
-	# gets the issues and the spent hours for a specific milestone
-	# argument input is a array of integers: 1 or more, representing milestone numbers
-	def self.analyze_issue_spent_hours_per_milestone(milestoneNumber)
-		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
-			{"$project" => {type: 1, 
-							issue_number: 1, 
-							_id: 1, 
-							repo: 1,
-							milestone_number: 1, 
-							issue_state: 1, 
-							issue_title: 1, 
-							time_tracking_commits:{ duration: 1, 
-													type: 1, 
-													comment_id: 1 }}},			
-			{ "$match" => { type: "Issue", milestone_number: milestoneNumber }},
-			{ "$unwind" => "$time_tracking_commits" },
-			{ "$match" => { "time_tracking_commits.type" => { "$in" => ["Issue Time"] }}},
-			{ "$group" => { _id: {
-							repo_name: "$repo",
-							milestone_number: "$milestone_number",
-							issue_number: "$issue_number",
-							issue_title: "$issue_title",
-							issue_state: "$issue_state", },
-							time_duration_sum: { "$sum" => "$time_tracking_commits.duration" },
-							time_comment_count: { "$sum" => 1 }
-							}}
-							])
-		output = []
-		totalIssueSpentHoursBreakdown.each do |x|
-			x["_id"]["time_duration_sum"] = x["time_duration_sum"]
-			x["_id"]["time_comment_count"] = x["time_comment_count"]
-			output << x["_id"]
-		end
-		return output
-	end
-
 
 
 	# TODO: Review code for better structure.
@@ -315,6 +209,13 @@ module Time_Analyzer
 		end
 		return output
 	end
+
+	def self.budget_left?(large, small)
+		large - small
+	end
+
+
+
 end
 
 
