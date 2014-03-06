@@ -36,18 +36,18 @@ GitHub-Time-Tracking is designed to offer maximum flexibility in the way you use
 	
 	1.3. Application Name: `GitHub-Time-Tracking` or whatever you want to call your application.
 
-4. Install MongoDB (typically: `brew update`, followed by: `brew install mongodb`)
+2. Install MongoDB (typically: `brew update`, followed by: `brew install mongodb`)
 
-5. `cd` into the `app` folder and run the following commands in the `app` folder:
+3. `cd` into the `app` folder and run the following commands in the `app` folder:
 
-	5.1. Run `mongod` in terminal
+	3.1. Run `mongod` in terminal
 
-	5.2. Open a second terminal window and run: `bundle install`
+	3.2. Open a second terminal window and run: `bundle install`
 	
-	5.3.`GITHUB_CLIENT_ID="YOUR CLIENT ID" GITHUB_CLIENT_SECRET="YOUR CLIENT SECRET" bundle exec rackup`
+	3.3.`GITHUB_CLIENT_ID="YOUR CLIENT ID" GITHUB_CLIENT_SECRET="YOUR CLIENT SECRET" bundle exec rackup`
 	Get the Client ID and Client Secret from the settings of your created/registered GitHub Application in Step 1.
 
-6. Go to `http://localhost:9292`
+4. Go to `http://localhost:9292`
 
 
 NOTE: The web app is under development at the moment, so while the code will always be executable for demo purposes, there are many links that have hard coded variables at the moment.  So if you want to test out on your own repo you will have to make a few modifications.
