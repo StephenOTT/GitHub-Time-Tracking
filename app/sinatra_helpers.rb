@@ -25,30 +25,6 @@ module Sinatra_Helpers
 
     end
 
-
-
-    # def self.analyze_milestones(user, repo)
-    #   userRepo = "#{user}/#{repo}"
-    #   Time_Analyzer.controller
-    #   milestones = Time_Analyzer.analyze_milestones
-    #   milestones.each do |x|
-    #     if x["milestone_duration_sum"] != nil
-    #       x["milestone_duration_sum_human"] = Helpers.chronic_convert(x["milestone_duration_sum"], "long")
-    #     end
-    #     issuesSpentHours = Time_Analyzer.analyze_issue_spent_hours_for_milestone([x["milestone_number"]])
-    #    if issuesSpentHours.empty? == false
-    #       issuesSpentHoursHuman = Helpers.chronic_convert(issuesSpentHours[0]["time_duration_sum"], "long")
-    #       x["issues_duration_sum_raw"] = issuesSpentHours[0]["time_duration_sum"]
-    #       x["issues_duration_sum_human"] = issuesSpentHoursHuman
-    #     else
-    #       issuesSpentHoursHuman = Helpers.chronic_convert(0, "long")
-    #       x["issues_duration_sum_raw"] = 0
-    #       x["issues_duration_sum_human"] = issuesSpentHoursHuman
-    #     end
-    #   end
-    #   return milestones
-    # end
-
     def self.analyze_issueTime(user, repo, issueNumber)
       userRepo = "#{user}/#{repo}"
       Time_Analyzer.controller
