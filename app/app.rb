@@ -50,7 +50,15 @@ module Example
     #   issuesProcessed = Sinatra_Helpers.process_issues_for_budget_left(issuesRaw)
      
 
-      @issues = issuesProcessed
+    #   @issues = issuesProcessed
+    #   erb :issues
+
+    # end
+
+    get '/analyze-issues/:user/:repo' do
+
+      @issues = Sinatra_Helpers.issues(params['user'], params['repo'])
+
       erb :issues
 
     end
