@@ -8,16 +8,9 @@ module Example
       :scopes    => "user",
       :secret    => ENV['GITHUB_CLIENT_SECRET'],
       :client_id => ENV['GITHUB_CLIENT_ID'],
-      # :scope     => 'read:org'
     }
 
     register Sinatra::Auth::Github
-
-    # helpers do
-    #   def repos
-    #     github_request("user/repos")
-    #   end
-    # end
 
     get '/' do
       # authenticate!
