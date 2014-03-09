@@ -41,6 +41,7 @@ module Example
     get '/download/:user/:repo' do
       authenticate!
       Sinatra_Helpers.download_time_tracking_data(params['user'], params['repo'], github_api)
+      @successMessage = "Download Complete"
       redirect '/timetrack'
     end
 
