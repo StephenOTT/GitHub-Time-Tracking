@@ -2,6 +2,7 @@ require_relative '../controller'
 require_relative '../time_analyzer/time_analyzer'
 require_relative '../time_tracker/helpers'
 require_relative '../time_analyzer/milestones_processor'
+require_relative '../time_analyzer/issues_processor'
 
 module Sinatra_Helpers
 
@@ -11,21 +12,9 @@ module Sinatra_Helpers
     end
 
 
-    def self.analyze_issues(user, repo)
-      userRepo = "#{user}/#{repo}"
-      Time_Analyzer.controller
-      spentHours = Time_Analyzer.analyze_issue_spent_hours
-      budgetHours = Time_Analyzer.analyze_issue_budget_hours
-      issues = Time_Analyzer.merge_issue_time_and_budget(spentHours, budgetHours)
-      issues.each do |x|
-        if x["time_duration_sum"] != nil
-          x["time_duration_sum_human"] = Helpers.convertSecondsToDurationFormat(x["time_duration_sum"], "long")
-        end
-        if x["budget_duration_sum"] != nil
-          x["budget_duration_sum_human"] = Helpers.convertSecondsToDurationFormat(x["budget_duration_sum"], "long")
-        end
-      end
-      return issues
+    def self.issues(user, repo)
+
+      Issues_Processor.analyze_issues(user, repo)
 
     end
 
@@ -99,35 +88,6 @@ module Sinatra_Helpers
       end
       return issuesPerMilestone
     end
-
-
-    def self.process_issues_for_budget_left(issues)
-      issues.each do |i|
-        if i["budget_duration_sum"] != nil
-          # TODO Cleanup code for Budget left.
-          budgetLeftRaw = Time_Analyzer.budget_left?(i["budget_duration_sum"], i["time_duration_sum"])
-          budgetLeftHuman = Helpers.convertSecondsToDurationFormat(budgetLeftRaw, "long")
-          i["budget_left_raw"] = budgetLeftRaw
-          i["budget_left_human"] = budgetLeftHuman
-        end
-      end
-      return issues
-    end
-
-
-    # def self.process_milestone_budget_left(milestones)
-    #   milestones.each do |m|
-    #     if m["milestone_duration_sum"] != nil
-    #       puts m
-    #       budgetLeftRaw = Time_Analyzer_Calculations.budget_left?(m["milestone_duration_sum"], m["issues_duration_sum_raw"])
-    #       puts budgetLeftRaw
-    #       budgetLeftHuman = Helpers.chronic_convert(budgetLeftRaw, "long")
-    #       m["budget_left_raw"] = budgetLeftRaw
-    #       m["budget_left_human"] = budgetLeftHuman
-    #     end
-    #   end
-    #   return milestones
-    # end
 
 
 end
