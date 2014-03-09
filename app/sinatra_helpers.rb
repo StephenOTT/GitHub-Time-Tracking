@@ -27,8 +27,8 @@ module Sinatra_Helpers
 
     def self.analyze_issueTime(user, repo, issueNumber)
       userRepo = "#{user}/#{repo}"
-      Time_Analyzer.controller
-      issuesTime = Time_Analyzer.analyze_issue_spent_hours_per_user(userRepo, issueNumber.to_i)
+      Issues_Processor.controller
+      issuesTime = Issues_Processor.analyze_issue_spent_hours_per_user(userRepo, issueNumber.to_i)
       issuesTime.each do |x|
         if x["time_duration_sum"] != nil
           x["time_duration_sum"] = Helpers.convertSecondsToDurationFormat(x["time_duration_sum"], "long")
