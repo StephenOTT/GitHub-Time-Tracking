@@ -51,8 +51,6 @@ module Sinatra_Helpers
       Time_Analyzer.analyze_code_commits_spent_hours
     end
 
-
-
     # TODO come up with better way to call chronic duration
     def self.analyze_issue_time_in_milestone(user, repo, milestoneNumber)
       userRepo = "#{user}/#{repo}"
