@@ -63,18 +63,6 @@ module Example
 
     end
 
-
-
-
-    get '/analyze-issue-time/:user/:repo/:issueNumber' do
-      @issueTime = Sinatra_Helpers.analyze_issueTime(params['user'], params['repo'], params['issueNumber'])
-
-      erb :issue_time
-
-    end
-
-    
-
     get '/milestones/:user/:repo' do
       # milestones1 = Sinatra_Helpers.analyze_milestones(params['user'], params['repo'])
       # milestonesProcessed = Sinatra_Helpers.process_milestone_budget_left(milestones1)
@@ -82,6 +70,24 @@ module Example
       erb :milestones
 
     end
+
+
+    get '/issues-spent-hours/:user/:repo/:issueNumber' do
+      @issues_spent_hours = Sinatra_Helpers.issues_users(params['user'], params['repo'], params['issueNumber'])
+      erb :issue_time
+
+    end
+
+
+
+
+    # get '/analyze-issue-time/:user/:repo/:issueNumber' do
+    #   @issueTime = Sinatra_Helpers.analyze_issueTime(params['user'], params['repo'], params['issueNumber'])
+
+    #   erb :issue_time
+
+    # end
+
 
 
     get '/analyze-milestone-time/:user/:repo/:milestoneNumber' do
