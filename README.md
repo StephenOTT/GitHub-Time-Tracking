@@ -3,8 +3,6 @@ GitHub-Time-Tracking
 
 [![endorse](https://api.coderwall.com/stephenott/endorsecount.png)](https://coderwall.com/stephenott)
 
-[![Code Climate](https://codeclimate.com/github/StephenOTT/GitHub-Time-Tracking.png)](https://codeclimate.com/github/StephenOTT/GitHub-Time-Tracking)
-
 Ruby app that analyzes GitHub Issue Comments, Milestones, and Code Commit Messages for Time Tracking and Budget Tracking information.
 
 GitHub-Time-Tracking is designed to offer maximum flexibility in the way you use GitHub to track your time and budgets, but provide a time and budget syntax that is intuitive to use and read.  Any emoji that is used was specifically chosen to be intuitive to its purpose.  Of course you can choose your own set of Emoji if you do not like the predefined ones.
