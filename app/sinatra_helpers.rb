@@ -3,6 +3,7 @@ require_relative '../time_analyzer/time_analyzer'
 require_relative '../time_tracker/helpers'
 require_relative '../time_analyzer/milestones_processor'
 require_relative '../time_analyzer/issues_processor'
+require_relative '../time_analyzer/users_processor'
 
 module Sinatra_Helpers
 
@@ -24,6 +25,13 @@ module Sinatra_Helpers
       Milestones_Processor.milestones_and_issue_sums(user, repo)
 
     end
+
+    def self.issues_users(user, repo, issueNumber)
+
+      Users_Processor.analyze_issues_users(user, repo, issueNumber)
+
+    end
+
 
     def self.analyze_issueTime(user, repo, issueNumber)
       userRepo = "#{user}/#{repo}"
