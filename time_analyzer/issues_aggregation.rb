@@ -22,6 +22,7 @@ module Issues_Aggregation
 							time_tracking_commits:{ duration: 1, 
 													type: 1, 
 													comment_id: 1 }}},			
+			{ "$match" => { repo: repo }},
 			{ "$match" => { type: "Issue" }},
 			{ "$unwind" => "$time_tracking_commits" },
 			{ "$match" => { "time_tracking_commits.type" => { "$in" => ["Issue Time"] }}},
