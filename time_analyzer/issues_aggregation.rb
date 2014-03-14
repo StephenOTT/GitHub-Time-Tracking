@@ -83,8 +83,9 @@ module Issues_Aggregation
 
 
 
-	def self.analyze_issue_spent_hours_per_user(repo, issueNumber)
 
+	# old name: analyze_issue_budget_hours
+	def self.get_all_issues_budget(repo)
 		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
 			{"$project" => {type: 1, 
 							issue_number: 1,
