@@ -1,0 +1,35 @@
+
+
+
+Get all Issues Time
+Get all Issues Budget
+Get all issues Time and Budget
+
+Get a Issue Time
+Get a Issue Budget
+Get a Issue Time and Budget
+
+Get all Issues Time for a Milestone
+Get all Issues Budget for a Milestone
+Get all Issues Time and Budget for a Milestone
+
+
+
+Get all Milestones Budget
+Get a Milestone Budget
+
+
+Get User Time sum for all/each Issues
+Get User Time sum for a Issue Time
+
+
+Get User Time sum for all/each Milestone
+Get User Time sum for a Milestone
+
+
+Get all Issues with selected labels
+Get all Issues with selected labels for a Milestone
+
+
+Get all Code Commits
+Get all Comments for a Code Commit
