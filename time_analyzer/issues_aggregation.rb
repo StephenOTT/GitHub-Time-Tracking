@@ -9,8 +9,8 @@ module Issues_Aggregation
 
 	end
 
-
-	def self.analyze_issue_spent_hours
+	# old name: analyze_issue_spent_hours
+	def self.get_all_issues_time(repo)
 		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
 			{"$project" => {type: 1, 
 							issue_number: 1, 
