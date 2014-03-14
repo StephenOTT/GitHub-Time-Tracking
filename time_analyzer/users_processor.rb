@@ -7,7 +7,7 @@ module Users_Processor
     def self.analyze_issues_users(user, repo, issueNumber)
       userRepo = "#{user}/#{repo}"
       Users_Aggregation.controller
-      spentHours = Users_Aggregation.analyze_user_spent_hours_on_issue(issueNumber.to_i)
+      spentHours = Users_Aggregation.get_users_time_for_issue(userRepo, issueNumber.to_i)
       # budgetHours = Users_Aggregation.analyze_issue_budget_hours
       # issues = Helpers.merge_issue_time_and_budget(spentHours, budgetHours)
       spentHours.each do |x|
