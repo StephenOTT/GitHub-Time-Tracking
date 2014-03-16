@@ -120,12 +120,12 @@ module Example
 
 
 
-    get '/analyze-milestone-time/:user/:repo/:milestoneNumber' do
-      @issuesInMilestone = Sinatra_Helpers.analyze_issue_time_in_milestone(params['user'], params['repo'], params['milestoneNumber'])
+    # get '/analyze-milestone-time/:user/:repo/:milestoneNumber' do
+    #   @issuesInMilestone = Sinatra_Helpers.analyze_issue_time_in_milestone(params['user'], params['repo'], params['milestoneNumber'])
 
-      erb :issues_in_milestone
+    #   erb :issues_in_milestone
 
-    end
+    # end
 
     # TODO: Write better code/route to support multiple categories and labels
     get '/analyze-labels-time/:user/:repo/:category/:label' do
