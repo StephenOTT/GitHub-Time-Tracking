@@ -61,7 +61,7 @@ module Issues_Aggregation
 													comment_id: 1 }}},
 			{ "$match" => { repo: repo }},			
 			{ "$match" => { type: "Issue" }},
-			{ "$match" => {issue_number: issueNumber}},
+			{ "$match" => {issue_number: issueNumber.to_i}},
 			{ "$unwind" => "$time_tracking_commits" },
 			{ "$match" => { "time_tracking_commits.type" => { "$in" => ["Issue Time"] }}},
 			{ "$group" => { _id: {
@@ -139,7 +139,7 @@ module Issues_Aggregation
 													comment_id: 1 }}},			
 			{ "$match" => { repo: repo }},			
 			{ "$match" => { type: "Issue" }},
-			{ "$match" => {issue_number: issueNumber}},
+			{ "$match" => {issue_number: issueNumber.to_i}},
 			{ "$unwind" => "$time_tracking_commits" },
 			{ "$match" => { "time_tracking_commits.type" => { "$in" => ["Issue Budget"] }}},
 			{ "$group" => { _id: {
@@ -179,7 +179,7 @@ module Issues_Aggregation
 													comment_id: 1 }}},			
 			{ "$match" => { repo: repo }},			
 			{ "$match" => { type: "Issue" }},
-			{ "$match" => { milestone_number: milestoneNumber }},
+			{ "$match" => { milestone_number: milestoneNumber.to_i }},
 			{ "$unwind" => "$time_tracking_commits" },
 			{ "$match" => { "time_tracking_commits.type" => { "$in" => ["Issue Time"] }}},
 			{ "$group" => { _id: {
@@ -218,7 +218,7 @@ module Issues_Aggregation
 													comment_id: 1 }}},			
 			{ "$match" => { repo: repo }},			
 			{ "$match" => { type: "Issue" }},
-			{ "$match" => { milestone_number: milestoneNumber }},
+			{ "$match" => { milestone_number: milestoneNumber.to_i }},
 			{ "$unwind" => "$time_tracking_commits" },
 			{ "$match" => { "time_tracking_commits.type" => { "$in" => ["Issue Time"] }}},
 			{ "$group" => { _id: {
@@ -256,7 +256,7 @@ module Issues_Aggregation
 													comment_id: 1 }}},			
 			{ "$match" => { repo: repo }},
 			{ "$match" => { type: "Issue" }},
-			{ "$match" => { milestone_number: milestoneNumber }},
+			{ "$match" => { milestone_number: milestoneNumber.to_i }},
 			{ "$unwind" => "$time_tracking_commits" },
 			{ "$match" => { "time_tracking_commits.type" => { "$in" => ["Issue Budget"] }}},
 			{ "$group" => { _id: {
