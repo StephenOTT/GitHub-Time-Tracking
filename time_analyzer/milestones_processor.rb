@@ -16,7 +16,7 @@ module Milestones_Processor
 		x["milestone_duration_sum_human"] = Helpers.convertSecondsToDurationFormat(x["milestone_duration_sum"], "long")
 
 		# get the total hours of time spent on issues assigned to the milestone(x)
-		issuesSpentHours = Issues_Aggregation.get_total_issues_time_for_milestone(userRepo, [x["milestone_number"]])
+		issuesSpentHours = Issues_Aggregation.get_total_issues_time_for_milestone(userRepo, x["milestone_number"], githubAuthInfo)
 		
 		if issuesSpentHours.empty? == false # array would be empty if there was no time allocated to the issues in the milestone
 			issuesSpentHoursHuman = Helpers.convertSecondsToDurationFormat(issuesSpentHours[0]["time_duration_sum"], "long")
