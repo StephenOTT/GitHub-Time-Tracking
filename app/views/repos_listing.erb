@@ -1,0 +1,17 @@
+<h1>Repository Listing</h1>
+<table class="table">
+	<tbody>
+		<tr>
+			<td>Username</th>
+			<th>Repository Name</th>
+			<th>Full Repository Name</th>
+		</tr>
+		<% @reposList.each do |r| %>
+			<tr>
+				<td><%= r["username"] %></td>
+				<td><%= r["repo_name"] %></td>
+				<td><%= r["repo_name_full"] %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
