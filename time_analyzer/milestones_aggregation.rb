@@ -12,7 +12,7 @@ module Milestones_Aggregation
 
 
 	# old names: self.analyze_milestones
-	def self.get_all_milestones_budget(repo)
+	def self.get_all_milestones_budget(repo, githubAuthInfo)
 		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
 			{"$project" => {type: 1, 
 							milestone_number: 1, 
@@ -47,7 +47,7 @@ module Milestones_Aggregation
 	end
 
 
-	def self.get_milestone_budget(repo, milestoneNumber)
+	def self.get_milestone_budget(repo, milestoneNumber, githubAuthInfo)
 		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
 			{"$project" => {type: 1, 
 							milestone_number: 1, 
@@ -83,7 +83,7 @@ module Milestones_Aggregation
 	end
 
 	# Gets the sum of all milestones budgets for a repo
-	def self.get_repo_budget_from_milestones(repo)
+	def self.get_repo_budget_from_milestones(repo, githubAuthInfo)
 		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
 			{"$project" => {type: 1, 
 							milestone_number: 1, 
