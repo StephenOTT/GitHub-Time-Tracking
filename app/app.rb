@@ -26,6 +26,7 @@ module Example
         @username = github_user.login
         @gravatar_id = github_user.gravatar_id
         @fullName = github_user.name
+        @userID = github_user.id
 
 
       else
