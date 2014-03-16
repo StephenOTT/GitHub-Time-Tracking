@@ -5,12 +5,12 @@ require_relative 'helpers'
 
 module Milestones_Processor
 
-	def self.milestones_and_issue_sums(user, repo)
+	def self.milestones_and_issue_sums(user, repo, githubAuthInfo)
 		userRepo = "#{user}/#{repo}"
 		
 		Milestones_Aggregation.controller # makes mongo connection
 		
-		milestones = Milestones_Aggregation.get_all_milestones_budget(userRepo)
+		milestones = Milestones_Aggregation.get_all_milestones_budget(userRepo, githubAuthInfo)
 		
 		milestones.each do |x|
 		x["milestone_duration_sum_human"] = Helpers.convertSecondsToDurationFormat(x["milestone_duration_sum"], "long")
