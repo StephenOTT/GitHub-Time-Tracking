@@ -345,3 +345,10 @@ module Issues_Aggregation
 		return output
 	end
 end
+
+# Debug code
+# Issues_Aggregation.controller
+# puts Issues_Aggregation.get_all_issues_time_in_milestone("StephenOTT/Test1", 1, {:username => "StephenOTT", :userID => 1994838})
+
+
+
