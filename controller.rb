@@ -9,7 +9,7 @@ require_relative 'time_tracker/code_commits'
 module Time_Tracking_Controller
 
 	# def controller(repo, username, password, clearCollections = false)
-	def self.controller(repo, object1, clearCollections = false)
+	def self.controller(repo, object1, clearCollections = false, githubAuthInfo = {})
 		# GitHub_Data.gh_authenticate(username, password)
 		GitHub_Data.gh_sinatra_auth(object1)
 
@@ -31,7 +31,7 @@ module Time_Tracking_Controller
 			issueComments = GitHub_Data.get_Issue_Comments(repo, i.attrs[:number])
 
 			# Parses the specific issue for time tracking information
-			processedIssues = Gh_Issue.process_issue(repo, i, issueComments)
+			processedIssues = Gh_Issue.process_issue(repo, i, issueComments, githubAuthInfo)
 
 			# if data is returned from the parsing attempt, the data is passed into MongoDb
 			if processedIssues.empty? == false
@@ -45,7 +45,7 @@ module Time_Tracking_Controller
 
 		milestones.each do |m|
 
-			processedMilestones = Gh_Milestone.process_milestone(repo, m)
+			processedMilestones = Gh_Milestone.process_milestone(repo, m, githubAuthInfo)
 
 			if processedMilestones.empty? == false
 				Mongo_Connection.putIntoMongoCollTimeTrackingCommits(processedMilestones)
@@ -59,7 +59,7 @@ module Time_Tracking_Controller
 		codeCommits.each do |c|
 			commitComments = GitHub_Data.get_commit_comments(repo, c.attrs[:sha])
 
-			processedCodeCommits = GH_Commits.process_code_commit(repo, c, commitComments)
+			processedCodeCommits = GH_Commits.process_code_commit(repo, c, commitComments, githubAuthInfo)
 			if processedCodeCommits.empty? == false
 				Mongo_Connection.putIntoMongoCollTimeTrackingCommits(processedCodeCommits)
 			end
