@@ -4,11 +4,11 @@ require_relative 'helpers'
 
 module Issues_Processor
 
-    def self.analyze_issues(user, repo)
+    def self.analyze_issues(user, repo, githubAuthInfo)
       userRepo = "#{user}/#{repo}"
       Issues_Aggregation.controller
-      spentHours = Issues_Aggregation.get_all_issues_time(userRepo)
-      budgetHours = Issues_Aggregation.get_all_issues_budget(userRepo)
+      spentHours = Issues_Aggregation.get_all_issues_time(userRepo, githubAuthInfo)
+      budgetHours = Issues_Aggregation.get_all_issues_budget(userRepo, githubAuthInfo)
       issues = Helpers.merge_issue_time_and_budget(spentHours, budgetHours)
       issues.each do |x|
         if x["time_duration_sum"] != nil
