@@ -12,6 +12,14 @@ module Example
 
     register Sinatra::Auth::Github
 
+    helpers do
+
+      def get_auth_info
+        authInfo = {:username => github_user.login, :userID => github_user.id}
+      end
+
+    end
+
     get '/' do
       # authenticate!
       if authenticated? == true
