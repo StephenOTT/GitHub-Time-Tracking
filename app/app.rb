@@ -38,6 +38,19 @@ module Example
       erb :index
     end
 
+    get '/repos' do
+      if authenticated? == true
+        @reposList = Sinatra_Helpers.get_all_repos_for_logged_user(get_auth_info)
+        erb :repos_listing
+      else
+        @warningMessage = "You must be logged in"
+        erb :unauthenticated
+      end     
+    end
+
+
+
+
     get '/timetrack' do
       if authenticated? == true
         erb :download_data
