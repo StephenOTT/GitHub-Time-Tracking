@@ -96,6 +96,11 @@ module Example
 
     end
 
+    get '/:user/:repo/milestone/:milestoneNumber/issues' do
+      @issuesInMilestone = Sinatra_Helpers.milestone_issues(params['user'], params['repo'], params['milestoneNumber'], get_auth_info)
+      erb :issues_in_milestone
+    end
+
 
     get '/issues-spent-hours/:user/:repo/:issueNumber' do
       @issues_spent_hours = Sinatra_Helpers.issues_users(params['user'], params['repo'], params['issueNumber'], get_auth_info)
