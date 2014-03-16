@@ -4,8 +4,10 @@ require_relative 'code_commit_comments'
 
 module GH_Commits
 
-	def self.process_code_commit(repo, commitDetails, commitComments)
+	def self.process_code_commit(repo, commitDetails, commitComments, githubAuthInfo)
 		
+		githubUserName = githubAuthInfo[:username]
+		githubUserID = githubAuthInfo[:userID]
 		commitMessage = commitDetails.attrs[:commit].attrs[:message]
 
 		type = "Code Commit"
