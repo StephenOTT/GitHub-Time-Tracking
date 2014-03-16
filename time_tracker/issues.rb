@@ -7,8 +7,10 @@ require 'pp'
 
 module Gh_Issue
 
-	def self.process_issue(repo, issueDetails, issueComments)
+	def self.process_issue(repo, issueDetails, issueComments, githubAuthInfo)
 		
+		githubUserName = githubAuthInfo[:username]
+		githubUserID = githubAuthInfo[:userID]
 		issueState = issueDetails.attrs[:state]
 		issueTitle = issueDetails.attrs[:title]
 		issueNumber = issueDetails.attrs[:number]
@@ -81,7 +83,9 @@ module Gh_Issue
 		#====== End of Tests for Task Listings
 
 		if commentsTime.empty? == false
-			return output = {	"repo" => repo,
+			return output = {	"downloaded_by_username" => githubUserName,
+								"downloaded_by_userID" => githubUserID,
+								"repo" => repo,
 								"type" => "Issue",
 								"issue_state" => issueState,
 								"issue_title" => issueTitle,
