@@ -44,8 +44,10 @@ module GH_Commits
 		if parsedCommitMessage == nil and parsedCommitComments.empty? == true
 			return []
 		else
-			timeCommitHash = {	"type" => type,
-								"repo_name" => repo,
+			timeCommitHash = {	"downloaded_by_username" => githubUserName,
+								"downloaded_by_userID" => githubUserID,
+								"type" => type,
+								"repo" => repo,
 								"commit_author_username" => commitAuthorUsername,
 								"commit_author_date" => commitAuthorDate,
 								"commit_committer_username" => commitCommitterUsername,
