@@ -3,8 +3,10 @@ require_relative 'milestone_budget'
 
 module Gh_Milestone
 
-	def self.process_milestone(repo, milestoneDetail)
+	def self.process_milestone(repo, milestoneDetail, githubAuthInfo)
 		
+		githubUserName = githubAuthInfo[:username]
+		githubUserID = githubAuthInfo[:userID]
 		milestoneState = milestoneDetail.attrs[:state]
 		milestoneTitle = milestoneDetail.attrs[:title]
 		milestoneNumber = milestoneDetail.attrs[:number]
@@ -37,7 +39,9 @@ module Gh_Milestone
 		end
 
 		if budgetTime.empty? == false
-			return output = {	"repo" => repo,
+			return output = {	"downloaded_by_username" => githubUserName,
+								"downloaded_by_userID" => githubUserID,
+								"repo" => repo,
 								"type" => "Milestone",
 								"milestone_state" => milestoneState,
 								"milestone_title" => milestoneTitle,
