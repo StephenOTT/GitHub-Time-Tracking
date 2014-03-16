@@ -4,10 +4,17 @@ require_relative '../time_tracker/helpers'
 require_relative '../time_analyzer/milestones_processor'
 require_relative '../time_analyzer/issues_processor'
 require_relative '../time_analyzer/users_processor'
+require_relative '../time_analyzer/system_wide_processor'
 
 module Sinatra_Helpers
 
-    def self.download_time_tracking_data(user, repo, githubObject)
+    def self.get_all_repos_for_logged_user(githubAuthInfo)
+
+      System_Wide_Processor.all_repos_for_logged_user(githubAuthInfo)
+
+    end
+    
+
       userRepo = "#{user}/#{repo}" 
       Time_Tracking_Controller.controller(userRepo, githubObject, true)
     end
