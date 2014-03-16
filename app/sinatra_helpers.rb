@@ -34,9 +34,17 @@ module Sinatra_Helpers
 
     end
 
-    def self.issues_users(user, repo, issueNumber)
+    def self.milestone_issues(user, repo, milestoneNumber, githubAuthInfo)
 
-      Users_Processor.analyze_issues_users(user, repo, issueNumber)
+      Issues_Processor.get_issues_in_milestone(user, repo, milestoneNumber, githubAuthInfo)
+
+    end
+
+
+
+    def self.issues_users(user, repo, issueNumber, githubAuthInfo)
+
+      Users_Processor.analyze_issues_users(user, repo, issueNumber, githubAuthInfo)
 
     end
 
