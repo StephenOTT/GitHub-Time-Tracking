@@ -16,7 +16,7 @@
 		<td><a href="/issues-spent-hours/<%= i["repo_name"] %>/<%= i["issue_number"] %>"><%= i["issue_number"] %></a></td>
 		<td><%= i["issue_title"] %></td>
 		<td><%= i["issue_state"] %></td>
-		<td><%= i["time_duration_sum"] %>(<%= i["time_comment_count"] %>)</td>
+		<td><%= i["time_duration_sum_human"] %>(<%= i["time_comment_count"] %>)</td>
 	</tr>
 <% end %>
   </tbody>
