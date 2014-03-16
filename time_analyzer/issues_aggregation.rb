@@ -12,6 +12,7 @@ module Issues_Aggregation
 	# old name: analyze_issue_spent_hours
 	def self.get_all_issues_time(repo, githubAuthInfo)
 		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
+			{ "$match" => { downloaded_by_username: githubAuthInfo[:username], downloaded_by_userID: githubAuthInfo[:userID] }},
 			{"$project" => {type: 1, 
 							issue_number: 1, 
 							_id: 1, 
@@ -47,6 +48,7 @@ module Issues_Aggregation
 
 	def self.get_issue_time(repo, issueNumber, githubAuthInfo)
 		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
+			{ "$match" => { downloaded_by_username: githubAuthInfo[:username], downloaded_by_userID: githubAuthInfo[:userID] }},
 			{"$project" => {type: 1, 
 							issue_number: 1, 
 							_id: 1, 
@@ -87,6 +89,7 @@ module Issues_Aggregation
 	# old name: analyze_issue_budget_hours
 	def self.get_all_issues_budget(repo, githubAuthInfo)
 		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
+			{ "$match" => { downloaded_by_username: githubAuthInfo[:username], downloaded_by_userID: githubAuthInfo[:userID] }},
 			{"$project" => {type: 1, 
 							issue_number: 1, 
 							_id: 1, 
@@ -123,6 +126,7 @@ module Issues_Aggregation
 
 	def self.get_issue_budget(repo, issueNumber, githubAuthInfo)
 		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
+			{ "$match" => { downloaded_by_username: githubAuthInfo[:username], downloaded_by_userID: githubAuthInfo[:userID] }},
 			{"$project" => {type: 1, 
 							issue_number: 1, 
 							_id: 1, 
@@ -162,6 +166,7 @@ module Issues_Aggregation
 
 	def self.get_all_issues_time_in_milestone(repo, milestoneNumber, githubAuthInfo)
 		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
+			{ "$match" => { downloaded_by_username: githubAuthInfo[:username], downloaded_by_userID: githubAuthInfo[:userID] }},
 			{"$project" => {type: 1, 
 							issue_number: 1, 
 							_id: 1, 
@@ -200,6 +205,7 @@ module Issues_Aggregation
 
 	def self.get_total_issues_time_for_milestone(repo, milestoneNumber, githubAuthInfo)
 		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
+			{ "$match" => { downloaded_by_username: githubAuthInfo[:username], downloaded_by_userID: githubAuthInfo[:userID] }},
 			{"$project" => {type: 1, 
 							issue_number: 1, 
 							_id: 1, 
@@ -237,6 +243,7 @@ module Issues_Aggregation
 
 	def self.get_all_issues_budget_in_milestone(repo, milestoneNumber, githubAuthInfo)
 		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
+			{ "$match" => { downloaded_by_username: githubAuthInfo[:username], downloaded_by_userID: githubAuthInfo[:userID] }},
 			{"$project" => {type: 1, 
 							issue_number: 1, 
 							_id: 1, 
@@ -275,6 +282,7 @@ module Issues_Aggregation
 	# Get repo sum of issue time
 	def self.get_repo_time_from_issues(repo, githubAuthInfo)
 		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
+			{ "$match" => { downloaded_by_username: githubAuthInfo[:username], downloaded_by_userID: githubAuthInfo[:userID] }},
 			{"$project" => {type: 1, 
 							issue_number: 1, 
 							_id: 1, 
@@ -307,6 +315,7 @@ module Issues_Aggregation
 	# Sums all issue budgets for the repo and outputs the total budget based on issues
 	def self.get_repo_budget_from_issues(repo, githubAuthInfo)
 		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
+			{ "$match" => { downloaded_by_username: githubAuthInfo[:username], downloaded_by_userID: githubAuthInfo[:userID] }},
 			{"$project" => {type: 1, 
 							issue_number: 1, 
 							_id: 1, 
