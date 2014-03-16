@@ -159,7 +159,5 @@ module Example
       authenticate!
       redirect '/'
     end
-
-
   end
 end
