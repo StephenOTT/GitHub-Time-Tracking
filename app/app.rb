@@ -78,10 +78,13 @@ module Example
     # end
 
     get '/analyze-issues/:user/:repo' do
-
-      @issues = Sinatra_Helpers.issues(params['user'], params['repo'])
-
-      erb :issues
+      if authenticated? == true
+        @issues = Sinatra_Helpers.issues(params['user'], params['repo'], get_auth_info)
+        erb :issues
+      else
+        @warningMessage = "You must be logged in"
+        erb :unauthenticated
+      end  
 
     end
 
