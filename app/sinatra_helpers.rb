@@ -15,21 +15,22 @@ module Sinatra_Helpers
     end
     
 
+    def self.download_time_tracking_data(user, repo, githubObject, githubAuthInfo)
       userRepo = "#{user}/#{repo}" 
-      Time_Tracking_Controller.controller(userRepo, githubObject, true)
+      Time_Tracking_Controller.controller(userRepo, githubObject, true, githubAuthInfo)
     end
 
 
-    def self.issues(user, repo)
+    def self.issues(user, repo, githubAuthInfo)
 
-      Issues_Processor.analyze_issues(user, repo)
+      Issues_Processor.analyze_issues(user, repo, githubAuthInfo)
 
     end
 
 
-    def self.milestones(user, repo)
+    def self.milestones(user, repo, githubAuthInfo)
 
-      Milestones_Processor.milestones_and_issue_sums(user, repo)
+      Milestones_Processor.milestones_and_issue_sums(user, repo, githubAuthInfo)
 
     end
 
