@@ -62,7 +62,7 @@ module Example
 
     get '/download/:user/:repo' do
       authenticate!
-      Sinatra_Helpers.download_time_tracking_data(params['user'], params['repo'], github_api)
+      Sinatra_Helpers.download_time_tracking_data(params['user'], params['repo'], github_api, get_auth_info )
       @successMessage = "Download Complete"
       redirect '/timetrack'
     end
@@ -88,14 +88,14 @@ module Example
     get '/milestones/:user/:repo' do
       # milestones1 = Sinatra_Helpers.analyze_milestones(params['user'], params['repo'])
       # milestonesProcessed = Sinatra_Helpers.process_milestone_budget_left(milestones1)
-      @milestones = Sinatra_Helpers.milestones(params['user'], params['repo'])
+      @milestones = Sinatra_Helpers.milestones(params['user'], params['repo'], get_auth_info)
       erb :milestones
 
     end
 
 
     get '/issues-spent-hours/:user/:repo/:issueNumber' do
-      @issues_spent_hours = Sinatra_Helpers.issues_users(params['user'], params['repo'], params['issueNumber'])
+      @issues_spent_hours = Sinatra_Helpers.issues_users(params['user'], params['repo'], params['issueNumber'], get_auth_info)
       erb :issue_time
 
     end
