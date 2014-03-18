@@ -20,6 +20,9 @@ module Gh_Issue_Time
 								"comment_last_updated_date" =>issueComment.attrs[:updated_at],
 								"record_creation_date" => Time.now.utc}
 			mergedHash = parsedTimeDetails.merge(overviewDetails)
+			if mergedHash["work_date_provided"] == false
+				mergedHash["work_date"] = issueComment.attrs[:created_at]
+			end
 			return mergedHash
 		end
 	end
@@ -61,8 +64,10 @@ module Gh_Issue_Time
 			workDate = Helpers.get_time_work_date(parsedComment[1])
 				if workDate != nil
 					parsedCommentHash["work_date"] = workDate
+					parsedCommentHash["work_date_provided"] = true
 				elsif workDate == nil
 					parsedCommentHash["time_comment"] = Helpers.get_time_commit_comment(parsedComment[1])
+
 				end
 		end
 
