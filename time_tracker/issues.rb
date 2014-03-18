@@ -70,6 +70,7 @@ module Gh_Issue
 				gotCommentDetails = GH_Issue_Task_Aggregator.get_comment_details(x)
 				
 				mergedDetails = GH_Issue_Task_Aggregator.merge_details_and_tasks(gotCommentDetails, gotTasks)
+				
 				commentsArray << mergedDetails
 			end
 				
