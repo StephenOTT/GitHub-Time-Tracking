@@ -14,7 +14,7 @@
 <% @milestones.each do |m| %>
 	<tr>
 		<td><%= m["repo_name"] %></td>
-		<td><a href="/StephenOTT/Test1/milestone/<%= m["milestone_number"] %>/issues"><%= m["milestone_number"] %></a></td>
+		<td><a href="/<%= m["repo_name"] %>/milestone/<%= m["milestone_number"] %>/issues"><%= m["milestone_number"] %></a></td>
 		<td><%= m["milestone_state"] %></td>
 		<td><%= m["milestone_title"] %></td>
 		<td><%= m["milestone_open_issue_count"] %> / <%= m["milestone_closed_issue_count"] %></td>
