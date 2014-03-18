@@ -11,6 +11,8 @@
 				<td><%= r["username"] %></td>
 				<td><%= r["repo_name"] %></td>
 				<td><%= r["repo_name_full"] %></td>
+				<td><a href="/<%= r["repo_name_full"] %>/issues">Issues</a></td>
+				<td><a href="/<%= r["repo_name_full"] %>/milestones">Milestones</a></td>
 			</tr>
 		<% end %>
 	</tbody>
