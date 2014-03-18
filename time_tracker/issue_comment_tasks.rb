@@ -15,6 +15,17 @@ module Gh_Issue_Comment_Tasks
 
 		processedTasks = process_comment_task_for_time(rawTasks)
 		
+		# Checks the hash of arrays items to see if the work date provided YN value is 
+		# false and if it is then makes the work date value the same value as the comment 
+		# created date
+		processedTasks["tasks"].each do |t|
+			if t["work_date_provided"] == false
+					t["work_date"] = commentRaw.attrs[:created_at]
+			end
+		end
+
+
+		
 		if processedTasks.empty? == false
 			overviewDetails = {"type" => type,
 								"comment_id" => commentRaw.attrs[:id],
