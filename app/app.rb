@@ -20,6 +20,11 @@ module Example
 
     end
 
+    get '/cal' do
+
+      erb :calendar
+    end
+
     get '/' do
       # authenticate!
       if authenticated? == true
