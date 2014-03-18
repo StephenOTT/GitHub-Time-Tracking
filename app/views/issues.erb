@@ -14,7 +14,7 @@
     <% @issues.each do |i| %>
         <tr>
     			<td><%= i["repo_name"] %></td>
-    			<td><a href="/issues-spent-hours/<%= i["repo_name"] %>/<%= i["issue_number"] %>"><%= i["issue_number"] %></a></td>
+    			<td><a href="/<%= i["repo_name"] %>/issues/<%= i["issue_number"] %>"><%= i["issue_number"] %></a></td>
     			<td><%= i["issue_state"] %></td>
     			<td><%= i["issue_title"] %></td>
     			<td><%= i["milestone_number"] %></td>
