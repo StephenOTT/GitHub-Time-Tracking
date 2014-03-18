@@ -28,7 +28,7 @@ module Gh_Issue_Time
 		acceptedClockEmoji = Helpers.get_Issue_Time_Emoji
 		acceptedNonBilliableEmoji = Helpers.get_Non_Billable_Emoji
 
-		parsedCommentHash = { "duration" => nil, "non_billable" => nil, "work_date" => nil, "time_comment" => nil}
+		parsedCommentHash = { "duration" => nil, "non_billable" => nil, "work_date" => nil, "time_comment" => nil, "work_date_provided" => false}
 		parsedComment = []
 		
 		acceptedClockEmoji.each do |x|
