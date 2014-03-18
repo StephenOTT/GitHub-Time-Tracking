@@ -91,9 +91,13 @@ module Example
     get '/:user/:repo/milestones' do
       # milestones1 = Sinatra_Helpers.analyze_milestones(params['user'], params['repo'])
       # milestonesProcessed = Sinatra_Helpers.process_milestone_budget_left(milestones1)
+      if authenticated? == true
       @milestones = Sinatra_Helpers.milestones(params['user'], params['repo'], get_auth_info)
       erb :milestones
-
+      else
+        @warningMessage = "You must be logged in"
+        erb :unauthenticated
+      end   
     end
 
     get '/:user/:repo/milestone/:milestoneNumber/issues' do
