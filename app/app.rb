@@ -77,7 +77,7 @@ module Example
 
     # end
 
-    get '/analyze-issues/:user/:repo' do
+    get '/:user/:repo/issues' do
       if authenticated? == true
         @issues = Sinatra_Helpers.issues(params['user'], params['repo'], get_auth_info)
         erb :issues
@@ -88,7 +88,7 @@ module Example
 
     end
 
-    get '/milestones/:user/:repo' do
+    get '/:user/:repo/milestones' do
       # milestones1 = Sinatra_Helpers.analyze_milestones(params['user'], params['repo'])
       # milestonesProcessed = Sinatra_Helpers.process_milestone_budget_left(milestones1)
       @milestones = Sinatra_Helpers.milestones(params['user'], params['repo'], get_auth_info)
@@ -101,8 +101,8 @@ module Example
       erb :issues_in_milestone
     end
 
-
-    get '/issues-spent-hours/:user/:repo/:issueNumber' do
+    # Old route: get '/issues-spent-hours/:user/:repo/:issueNumber' do
+    get '/:user/:repo/issues/:issueNumber' do
       @issues_spent_hours = Sinatra_Helpers.issues_users(params['user'], params['repo'], params['issueNumber'], get_auth_info)
       erb :issue_time
 
