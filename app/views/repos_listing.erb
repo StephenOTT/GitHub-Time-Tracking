@@ -1,21 +1,33 @@
 <h1>Repository Listing</h1>
-<table class="table">
-	<tbody>
-		<tr>
-			<th>Username</th>
-			<th>Repository Name</th>
-			<th>Full Repository Name</th>
-			<th></th>
-			<th></th>
-		</tr>
-		<% @reposList.each do |r| %>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h2 class="panel-title">Repositories</h2>
+	</div>
+		<div class="panel-body">
+			<p>These are the repositories that you have downloaded</p>
+		</div>
+
+	<table class="table">
+		<tbody>
 			<tr>
-				<td><%= r["username"] %></td>
-				<td><%= r["repo_name"] %></td>
-				<td><%= r["repo_name_full"] %></td>
-				<td><a href="/<%= r["repo_name_full"] %>/issues">Issues</a></td>
-				<td><a href="/<%= r["repo_name_full"] %>/milestones">Milestones</a></td>
+				<th>Username</th>
+				<th>Repository Name</th>
+				<th>Full Repository Name</th>
+				<th></th>
+				<th></th>
 			</tr>
-		<% end %>
-	</tbody>
-</table>
+			<% @reposList.each do |r| %>
+				<tr>
+					<td><%= r["username"] %></td>
+					<td><%= r["repo_name"] %></td>
+					<td><%= r["repo_name_full"] %></td>
+					<td><a href="/<%= r["repo_name_full"] %>/issues">Issues</a></td>
+					<td><a href="/<%= r["repo_name_full"] %>/milestones">Milestones</a></td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+
+</div>
+

@@ -1,28 +1,40 @@
 <h1>Milestones List</h1>
-<table class="table">
-	<tbody>
-		<tr>
-		  <th>Repository</th>
-		  <th>Milestone #</th> 
-		  <th>Milestone State</th>
-		  <th>Milestone Title</th>
-		  <th>Milestone Open/Closed Issues</th>
-		  <th>Milestone Duration Sum</th>
-		  <th>Spent Hours on Issues for Milestone</th>
-		  <th>Milestone Budget Remaining</th>
-		</tr>
-<% @milestones.each do |m| %>
-	<tr>
-		<td><%= m["repo_name"] %></td>
-		<td><a href="/<%= m["repo_name"] %>/milestone/<%= m["milestone_number"] %>/issues"><%= m["milestone_number"] %></a></td>
-		<td><%= m["milestone_state"] %></td>
-		<td><%= m["milestone_title"] %></td>
-		<td><%= m["milestone_open_issue_count"] %> / <%= m["milestone_closed_issue_count"] %></td>
-		<td><%= m["milestone_duration_sum_human"] %></td>
-		<td><%= m["issues_duration_sum_human"] %></td>
-		<td><%= m["budget_left_human"] %><td>
-	</tr>
-<% end %>
-</tbody>
-</table>
 
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Repository</h2>
+  </div>
+  <div class="panel-body">
+    <p><%= @milestones.first["repo_name"] %> </p>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Milestones List</h2>
+  </div>
+	<table class="table">
+		<tbody>
+			<tr>
+			  <th>Milestone #</th> 
+			  <th>Milestone State</th>
+			  <th>Milestone Title</th>
+			  <th>Milestone Open/Closed Issues</th>
+			  <th>Milestone Duration Sum</th>
+			  <th>Spent Hours on Issues for Milestone</th>
+			  <th>Milestone Budget Remaining</th>
+			</tr>
+			<% @milestones.each do |m| %>
+				<tr>
+					<td><a href="/<%= m["repo_name"] %>/milestone/<%= m["milestone_number"] %>/issues"><%= m["milestone_number"] %></a></td>
+					<td><%= m["milestone_state"] %></td>
+					<td><%= m["milestone_title"] %></td>
+					<td><%= m["milestone_open_issue_count"] %> / <%= m["milestone_closed_issue_count"] %></td>
+					<td><%= m["milestone_duration_sum_human"] %></td>
+					<td><%= m["issues_duration_sum_human"] %></td>
+					<td><%= m["budget_left_human"] %><td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>

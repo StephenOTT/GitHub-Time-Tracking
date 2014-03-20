@@ -1,27 +1,36 @@
-<h1>Specific Issue Breakdown</h1>
-<table class="table">
-	<tbody>
-		<tr>
-		  <th>Repository</th>
-		  <th>Issue #</th>
-		  <th>Issue Title</th>
-		  <th>Issue State</th>
-		  <th>Milestone #</th>		  
-		  <th>Work Logged By</th>
-		  <th>Time Duration Sum</th>
-		  <th>Time Comment Count</th>
-		</tr>
-<% @issues_spent_hours.each do |i| %>
-	<tr>
-		<td><%= i["repo_name"] %></td>
-		<td><%= i["issue_number"] %></td>
-		<td><%= i["issue_title"] %></td>
-		<td><%= i["issue_state"] %></td>
-		<td><%= i["milestone_number"] %></td>
-		<td><%= i["work_logged_by"] %></td>
-		<td><%= i["time_duration_sum_human"] %></td>
-		<td><%= i["time_comment_count"] %></td>
-	</tr>
-<% end %>
-</tbody>
-</table>
+<h1>Issue Time Breakdown</h1>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Repository: <%= @issues_spent_hours.first["repo_name"] %></h2>
+  </div>
+  <div class="panel-body">
+    <p>Issue Number: <%= @issues_spent_hours.first["issue_number"] %> </p>
+    <p>Issue Title: <%= @issues_spent_hours.first["issue_title"] %> </p>
+    <p>Issue State: <%= @issues_spent_hours.first["issue_state"] %> </p>
+    <p>Milestone Number: <a href="/<%= @issues_spent_hours.first["repo_name"] %>/milestone/<%= @issues_spent_hours.first["milestone_number"] %>/issues"><%= @issues_spent_hours.first["milestone_number"] %></a> </p>
+  </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">User Hours</h2>
+  </div>
+	<table class="table">
+		<tbody>
+			<tr>	  
+			  <th>Work Logged By</th>
+			  <th>Time Duration Sum</th>
+			  <th>Time Comment Count</th>
+			</tr>
+			<% @issues_spent_hours.each do |i| %>
+				<tr>
+					<td><%= i["work_logged_by"] %></td>
+					<td><%= i["time_duration_sum_human"] %></td>
+					<td><%= i["time_comment_count"] %></td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>

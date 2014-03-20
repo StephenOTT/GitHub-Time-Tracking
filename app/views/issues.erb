@@ -1,27 +1,40 @@
 <h1>Issues List</h1>
-<table class="table">
-  <tbody>
-    <tr>
-      <th>Repository</th>
-      <th>Issue #</th> 
-      <th>Issue State</th>
-      <th>Issue Title</th>
-      <th>Milestone #</th>
-      <th>Time Duration Sum (Comment Count)</th>
-      <th>Budget Duration Sum (Comment Count)</th>
-      <th>Budget Left</th>
-    </tr>
-    <% @issues.each do |i| %>
-        <tr>
-    			<td><%= i["repo_name"] %></td>
-    			<td><a href="/<%= i["repo_name"] %>/issues/<%= i["issue_number"] %>"><%= i["issue_number"] %></a></td>
-    			<td><%= i["issue_state"] %></td>
-    			<td><%= i["issue_title"] %></td>
-    			<td><%= i["milestone_number"] %></td>
-    			<td><%= i["time_duration_sum_human"] %> <span class="badge"><%= i["time_comment_count"] %></span></td>
-          <td><%= i["budget_duration_sum_human"] %> <span class="badge"><%= i["budget_comment_count"] %></span></td>
-          <td><%= i["budget_left_human"] %></td>
-        </tr>
-		<% end %>
-  </tbody>
-</table>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Repository</h2>
+  </div>
+  <div class="panel-body">
+    <p><%= @issues.first["repo_name"] %> </p>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Issue List</h2>
+  </div>
+  <table class="table">
+    <tbody>
+      <tr>
+        <th>Issue #</th> 
+        <th>Issue State</th>
+        <th>Issue Title</th>
+        <th>Milestone #</th>
+        <th>Time Duration Sum (Comment Count)</th>
+        <th>Budget Duration Sum (Comment Count)</th>
+        <th>Budget Left</th>
+      </tr>
+      <% @issues.each do |i| %>
+          <tr>
+            <td><a href="/<%= i["repo_name"] %>/issues/<%= i["issue_number"] %>"><%= i["issue_number"] %></a></td>
+            <td><%= i["issue_state"] %></td>
+            <td><%= i["issue_title"] %></td>
+            <td><a href="/<%= i["repo_name"] %>/milestone/<%= i["milestone_number"] %>/issues"><%= i["milestone_number"] %></a></td>
+            <td><%= i["time_duration_sum_human"] %> <span class="badge"><%= i["time_comment_count"] %></span></td>
+            <td><%= i["budget_duration_sum_human"] %> <span class="badge"><%= i["budget_comment_count"] %></span></td>
+            <td><%= i["budget_left_human"] %></td>
+          </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
