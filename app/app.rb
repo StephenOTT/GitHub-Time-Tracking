@@ -89,9 +89,25 @@ module Example
       else
         @warningMessage = "You must be logged in"
         erb :unauthenticated
-      end  
-
+      end
     end
+
+
+    get '/repo-dates' do
+      if authenticated? == true
+        @repoDates = Sinatra_Helpers.issues_date_repo_year("StephenOTT", "Test1", 2013, get_auth_info)
+        erb :repo_dates
+      else
+        @warningMessage = "You must be logged in"
+        erb :unauthenticated
+      end
+    end
+
+
+
+
+
+
 
     get '/:user/:repo/milestones' do
       # milestones1 = Sinatra_Helpers.analyze_milestones(params['user'], params['repo'])
