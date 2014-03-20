@@ -5,6 +5,7 @@ require_relative '../time_analyzer/milestones_processor'
 require_relative '../time_analyzer/issues_processor'
 require_relative '../time_analyzer/users_processor'
 require_relative '../time_analyzer/system_wide_processor'
+require_relative '../time_analyzer/issues_date_processor'
 
 module Sinatra_Helpers
 
@@ -45,6 +46,13 @@ module Sinatra_Helpers
     def self.issues_users(user, repo, issueNumber, githubAuthInfo)
 
       Users_Processor.analyze_issues_users(user, repo, issueNumber, githubAuthInfo)
+
+    end
+
+
+    def self.issues_date_repo_year(user, repo, filterYear, githubAuthInfo)
+
+      Issues_Date_Processor.analyze_issues_date_year_repo(user, repo, filterYear, githubAuthInfo)
 
     end
 
