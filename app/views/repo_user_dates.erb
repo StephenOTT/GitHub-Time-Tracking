@@ -1,0 +1,25 @@
+<%= @repoDates %>
+
+
+<h1>Repo Time Spent Breakdown</h1>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Repository: <%= @repoDates.first["repo_name"] %> </h2>
+    <h2 class="panel-title">Year: <%= @repoDates.first["work_date_year"] %> </h2>
+
+  </div>
+  <table class="table">
+    <tbody>
+      <tr>
+        <th>Month</th>
+        <th>Time Duration</th>
+      </tr>
+      <% @repoDates.each do |d| %>
+          <tr>
+            <td><%= Date::MONTHNAMES[d["work_date_month"]] %></td>
+            <td><%= d["time_duration_sum_human"] %></td>
+          </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
