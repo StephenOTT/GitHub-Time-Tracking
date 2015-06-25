@@ -1,6 +1,8 @@
 GitHub-Time-Tracking
 ===========================
 
+[![Join the chat at https://gitter.im/StephenOTT/GitHub-Time-Tracking](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/StephenOTT/GitHub-Time-Tracking?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![endorse](https://api.coderwall.com/stephenott/endorsecount.png)](https://coderwall.com/stephenott)
 
 Ruby app that analyzes GitHub Issue Comments, Milestones, and Code Commit Messages for Time Tracking and Budget Tracking information.
