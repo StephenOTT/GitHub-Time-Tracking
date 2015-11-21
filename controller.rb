@@ -15,7 +15,7 @@ module Time_Tracking_Controller
 
 		# MongoDb connection: DB URL, Port, DB Name, Collection Name
 		Mongo_Connection.mongo_Connect("localhost", 27017, "GitHub-TimeTracking", "TimeTrackingCommits")
-		
+
 		# Clears the DB collections if clearCollections var in controller argument is true
 		if clearCollections == true
 			Mongo_Connection.clear_mongo_collections
@@ -23,7 +23,7 @@ module Time_Tracking_Controller
 
 		#======Start of Issues=======
 		issues = GitHub_Data.get_Issues(repo)
-		
+
 		# goes through each issue returned from get_Issues method
 		issues.each do |i|
 
@@ -32,14 +32,13 @@ module Time_Tracking_Controller
 
 			# Parses the specific issue for time tracking information
 			processedIssues = Gh_Issue.process_issue(repo, i, issueComments, githubAuthInfo)
-
 			# if data is returned from the parsing attempt, the data is passed into MongoDb
 			if processedIssues.empty? == false
 				Mongo_Connection.putIntoMongoCollTimeTrackingCommits(processedIssues)
 			end
 		end
 		#======End of Issues=======
-
+		
 		#======Start of Milestone=======
 		milestones = GitHub_Data.get_Milestones(repo)
 
@@ -72,4 +71,3 @@ end
 
 # # GitHubUsername/RepoName, GitHubUsername, GitHubPassword, ClearCollectionsTFValue
 # start.controller("StephenOTT/Test1", "USERNAME", "PASSWORD", true)
-
