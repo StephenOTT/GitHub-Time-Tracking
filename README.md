@@ -79,6 +79,7 @@ Some Initial same images for first iteration of development
 ### Logging Time for an Issue
 
 Logging time for a specific issue should be done in its own comment.  The comment should not include any data other than the time tracking information.
+**NOTE: The Body of the Issue (the text you write when you first open the issue), is not a comment.  You must make a comment for a time-comment to function.  The logic is that if you were to make a issue, the opening of the issue would contain the information about the issue, and then subsequent comments would have time-comments.**
 
 
 #### Examples
