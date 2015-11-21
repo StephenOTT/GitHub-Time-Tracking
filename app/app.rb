@@ -62,11 +62,21 @@ module Example
       end
     end
 
-    get '/download/:user/:repo' do
-      authenticate!
-      Sinatra_Helpers.download_time_tracking_data(params['user'], params['repo'], github_api, get_auth_info )
-      @successMessage = "Download Complete"
-      redirect '/timetrack'
+    post '/download' do
+        if authenticated? == true
+            post = params[:post]
+            if post['clearmongo'] == 'on'
+                post['clearmongo'] = true
+            else
+                post['clearmongo'] = false
+            end
+            Sinatra_Helpers.download_time_tracking_data(post['username'], post['repository'], github_api, get_auth_info, post['clearmongo'] )
+            @successMessage = "Download Complete"
+          redirect '/timetrack'
+        else
+          @warningMessage = "You must be logged in"
+          erb :unauthenticated
+        end
     end
 
     # get '/analyze-issues/:user/:repo' do
