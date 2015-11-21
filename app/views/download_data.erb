@@ -1,20 +1,20 @@
 <p>Provide your GitHub username/organization and Repository to download time tracking content.</p>
 
 <p> Example: StephenOTT/Test1 </p>
-<form class="form-inline" role="form">
+<form class="form-inline" role="form", action="/download", method="post">
   <div class="form-group">
     <label class="sr-only" for="username">Username/Organization</label>
-    <input type="text" class="form-control" id="username" placeholder="Username">
+    <input type="text" class="form-control" id="username" placeholder="Username", name="post[username]">
   </div>
   <div class="form-group">
     <label class="sr-only" for="repository">Repository</label>
-    <input type="text" class="form-control" id="repository" placeholder="Repository">
+    <input type="text" class="form-control" id="repository" placeholder="Repository", name="post[repository]">
   </div>
   <button type="submit" class="btn btn-primary">Run</button>
   <br>
   <div class="checkbox">
     <label>
-      <input type="checkbox"> Clear Mongo Collection (Debug)
+      <input type="checkbox", name="post[clearmongo]"> Clear Mongo Collection (Debug)
     </label>
   </div>
 </form>
