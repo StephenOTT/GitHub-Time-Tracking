@@ -1,11 +1,14 @@
-require_relative 'helpers'	
+require_relative 'helpers'
 require_relative 'code_commit_messages'
 require_relative 'code_commit_comments'
+require 'awesome_print'
 
 module GH_Commits
 
 	def self.process_code_commit(repo, commitDetails, commitComments, githubAuthInfo)
-		
+
+		# ap commitDetails.attrs[:author].attrs[:login]
+		ap commitDetails
 		githubUserName = githubAuthInfo[:username]
 		githubUserID = githubAuthInfo[:userID]
 		commitMessage = commitDetails.attrs[:commit].attrs[:message]
@@ -29,7 +32,7 @@ module GH_Commits
 		commitSha 				= commitDetails.attrs[:sha]
 		commitTreeSha 			= commitDetails.attrs[:commit].attrs[:tree].attrs[:sha]
 		commitParentsShas 		= []
-		
+
 		# TODO look to crate this if statement as a helper if it makes sense
 		if commitDetails.attrs[:parents] != nil
 			commitDetails.attrs[:parents].each do |x|
@@ -48,7 +51,7 @@ module GH_Commits
 				parsedCommitComments << parsedCommitComment
 			end
 		end
-		
+
 
 		if parsedCommitMessage == nil and parsedCommitComments.empty? == true
 			return []
