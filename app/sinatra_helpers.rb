@@ -16,9 +16,10 @@ module Sinatra_Helpers
     end
     
 
-    def self.download_time_tracking_data(user, repo, githubObject, githubAuthInfo)
-      userRepo = "#{user}/#{repo}" 
-      Time_Tracking_Controller.controller(userRepo, githubObject, true, githubAuthInfo)
+
+    def self.download_time_tracking_data(user, repo, githubObject, githubAuthInfo, clearMongo)
+      userRepo = "#{user}/#{repo}"
+      Time_Tracking_Controller.controller(userRepo, githubObject, clearMongo, githubAuthInfo)
     end
 
 
