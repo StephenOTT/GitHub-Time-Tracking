@@ -14,7 +14,6 @@ module Sinatra_Helpers
       System_Wide_Processor.all_repos_for_logged_user(githubAuthInfo)
 
     end
-    
 
 
     def self.download_time_tracking_data(user, repo, githubObject, githubAuthInfo, clearMongo)
