@@ -50,11 +50,8 @@ module Example
       else
         @warningMessage = "You must be logged in"
         erb :unauthenticated
-      end     
+      end
     end
-
-
-
 
     get '/timetrack' do
       if authenticated? == true
@@ -62,7 +59,7 @@ module Example
       else
         @warningMessage = "You must be logged in"
         erb :unauthenticated
-      end     
+      end
     end
 
     get '/download/:user/:repo' do
