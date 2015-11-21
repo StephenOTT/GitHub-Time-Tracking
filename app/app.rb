@@ -82,7 +82,7 @@ module Example
     # get '/analyze-issues/:user/:repo' do
     #   issuesRaw = Sinatra_Helpers.analyze_issues(params['user'], params['repo'])
     #   issuesProcessed = Sinatra_Helpers.process_issues_for_budget_left(issuesRaw)
-     
+
 
     #   @issues = issuesProcessed
     #   erb :issues
@@ -125,7 +125,7 @@ module Example
       else
         @warningMessage = "You must be logged in"
         erb :unauthenticated
-      end   
+      end
     end
 
     get '/:user/:repo/milestone/:milestoneNumber/issues' do
