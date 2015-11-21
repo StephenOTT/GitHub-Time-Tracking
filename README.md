@@ -33,7 +33,7 @@ GitHub-Time-Tracking is designed to offer maximum flexibility in the way you use
 	1.1. Homepage URL: `http://localhost:9292`
 
 	1.2. Authorization callback URL: `http://localhost:9292/auth/github/callback`
-	
+
 	1.3. Application Name: `GitHub-Time-Tracking` or whatever you want to call your application.
 
 2. Install MongoDB (typically: `brew update`, followed by: `brew install mongodb`)
@@ -43,7 +43,7 @@ GitHub-Time-Tracking is designed to offer maximum flexibility in the way you use
 	3.1. Run `mongod` in terminal
 
 	3.2. Open a second terminal window and run: `bundle install`
-	
+
 	3.3.`GITHUB_CLIENT_ID="YOUR CLIENT ID" GITHUB_CLIENT_SECRET="YOUR CLIENT SECRET" bundle exec rackup`
 	Get the Client ID and Client Secret from the settings of your created/registered GitHub Application in Step 1.
 
@@ -175,7 +175,7 @@ Logging a budget for a specific issue should be done in its own comment.  The co
 
 1. `:dart: 5d` # => :dart: 5d
 
-2. `:dart: 5d | We cannot go over this time at all!` # => :dart: 5d | We cannot go over this time at all! 
+2. `:dart: 5d | We cannot go over this time at all!` # => :dart: 5d | We cannot go over this time at all!
 
 #### Sample
 ![screen shot 2013-12-15 at 8 46 33 pm](https://f.cloud.github.com/assets/1994838/1751609/24b45bbe-65f4-11e3-8a5e-86b0cfb12a74.png)
@@ -189,7 +189,7 @@ Logging a budget for a milestone should be done at the beginning of the mileston
 
 1. `:dart: 5d` # => :dart: 5d
 
-2. `:dart: 5d | We cannot go over this time at all!` # => :dart: 5d | We cannot go over this time at all! 
+2. `:dart: 5d | We cannot go over this time at all!` # => :dart: 5d | We cannot go over this time at all!
 
 #### Sample
 ![screen shot 2013-12-15 at 8 42 04 pm](https://f.cloud.github.com/assets/1994838/1751601/bb73ed86-65f3-11e3-9abb-4c47eabbc608.png)
@@ -306,21 +306,21 @@ Using the MongoDB Aggregation Framework a series of high level aggregations are 
 ```
 [
     {
-        "repo_name"=>"StephenOTT/Test1", 
-        "type"=>"Issue Time", 
-        "assigned_milestone_number"=>1, 
-        "issue_number"=>6, 
-        "issue_state"=>"open", 
-        "duration_sum"=>43200, 
+        "repo_name"=>"StephenOTT/Test1",
+        "type"=>"Issue Time",
+        "assigned_milestone_number"=>1,
+        "issue_number"=>6,
+        "issue_state"=>"open",
+        "duration_sum"=>43200,
         "issue_count"=>3
-    }, 
+    },
     {
-        "repo_name"=>"StephenOTT/Test1", 
-        "type"=>"Issue Time", 
-        "assigned_milestone_number"=>1, 
-        "issue_number"=>7, 
-        "issue_state"=>"open", 
-        "duration_sum"=>14400, 
+        "repo_name"=>"StephenOTT/Test1",
+        "type"=>"Issue Time",
+        "assigned_milestone_number"=>1,
+        "issue_number"=>7,
+        "issue_state"=>"open",
+        "duration_sum"=>14400,
         "issue_count"=>1
     }
 ]
@@ -331,12 +331,12 @@ Using the MongoDB Aggregation Framework a series of high level aggregations are 
 ```
 [
     {
-        "repo_name"=>"StephenOTT/Test1", 
-        "type"=>"Issue Budget", 
-        "issue_number"=>7, 
-        "assigned_milestone_number"=>1, 
-        "issue_state"=>"open", 
-        "duration_sum"=>57600, 
+        "repo_name"=>"StephenOTT/Test1",
+        "type"=>"Issue Budget",
+        "issue_number"=>7,
+        "assigned_milestone_number"=>1,
+        "issue_state"=>"open",
+        "duration_sum"=>57600,
         "issue_count"=>1
     }
 ]
@@ -347,11 +347,11 @@ Using the MongoDB Aggregation Framework a series of high level aggregations are 
 ```
 [
     {
-        "repo_name"=>"StephenOTT/Test1", 
-        "type"=>"Milestone Budget", 
-        "milestone_number"=>1, 
-        "milestone_state"=>"open", 
-        "duration_sum"=>604800, 
+        "repo_name"=>"StephenOTT/Test1",
+        "type"=>"Milestone Budget",
+        "milestone_number"=>1,
+        "milestone_state"=>"open",
+        "duration_sum"=>604800,
         "milestone_count"=>1
     }
 ]
