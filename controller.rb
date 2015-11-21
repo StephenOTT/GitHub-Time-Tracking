@@ -26,7 +26,7 @@ module Time_Tracking_Controller
 
 		# goes through each issue returned from get_Issues method
 		issues.each do |i|
-
+			ap "downloading # #{i.attrs[:number]}"
 			# Gets the comments for the specific issue
 			issueComments = GitHub_Data.get_Issue_Comments(repo, i.attrs[:number])
 
