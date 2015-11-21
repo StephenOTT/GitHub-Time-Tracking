@@ -5,7 +5,11 @@
     <h2 class="panel-title">Repository</h2>
   </div>
   <div class="panel-body">
-    <p><%= @milestones.first["repo_name"] %> </p>
+    <p><% if @milestones.empty? == false %>
+            <% @milestones.first["repo_name"] %>
+        <% else %>
+            No Milestones
+        <% end %> </p>
   </div>
 </div>
 
@@ -16,7 +20,7 @@
 	<table class="table">
 		<tbody>
 			<tr>
-			  <th>Milestone #</th> 
+			  <th>Milestone #</th>
 			  <th>Milestone State</th>
 			  <th>Milestone Title</th>
 			  <th>Milestone Open/Closed Issues</th>
