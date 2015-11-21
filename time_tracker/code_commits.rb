@@ -12,10 +12,19 @@ module GH_Commits
 
 		type = "Code Commit"
 		recordCreationDate = Time.now.utc
-		
-		commitAuthorUsername 	= commitDetails.attrs[:author].attrs[:login]
-		commitAuthorDate 		= commitDetails.attrs[:commit].attrs[:author].attrs[:date]
-		commitCommitterUsername = commitDetails.attrs[:committer].attrs[:login]
+		if commitDetails.attrs[:author] != nil
+			commitAuthorUsername 	= commitDetails.attrs[:author].attrs[:login]
+			commitAuthorDate 		= commitDetails.attrs[:commit].attrs[:author].attrs[:date]
+		else
+			commitAuthorUsername = nil
+		end
+		if commitDetails.attrs[:committer] != nil
+			commitCommitterUsername = commitDetails.attrs[:committer].attrs[:login]
+		else
+			commitCommitterUsername = nil
+		end
+
+
 		commitCommitterDate 	= commitDetails.attrs[:commit].attrs[:committer].attrs[:date]
 		commitSha 				= commitDetails.attrs[:sha]
 		commitTreeSha 			= commitDetails.attrs[:commit].attrs[:tree].attrs[:sha]
