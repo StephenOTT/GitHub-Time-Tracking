@@ -20,7 +20,8 @@ Gem::Specification.new do |s|
   s.add_dependency "chronic_duration"
   s.add_dependency "mongo"
   s.add_dependency "bson_ext"
- 
+  s.add_dependency "awesome_print"
+
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec",     "~>2.4.0"
