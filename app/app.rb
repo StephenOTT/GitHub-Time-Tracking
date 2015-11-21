@@ -163,7 +163,7 @@ module Example
     get '/analyze-labels-time/:user/:repo/:category/:label' do
       category = []
       label = []
-      
+
       category << params['category']
       label << params['label']
 
