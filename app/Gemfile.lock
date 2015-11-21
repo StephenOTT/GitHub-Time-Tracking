@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     sinatra_auth_github (1.0.0)
+      awesome_print
       bson_ext
       chronic_duration
       mongo
@@ -12,6 +13,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     addressable (2.3.5)
+    awesome_print (1.6.1)
     bson (1.9.2)
     bson_ext (1.9.1)
       bson (~> 1.9.1)
@@ -67,3 +69,6 @@ DEPENDENCIES
   rspec (~> 2.4.0)
   shotgun
   sinatra_auth_github!
+
+BUNDLED WITH
+   1.10.6
